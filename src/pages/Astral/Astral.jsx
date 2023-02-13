@@ -41,6 +41,23 @@ const Astral = () => {
   useEffect(() => {
     getGeolocationInfo();
   }, []);
+  
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const subjectRef = useRef<HTMLInputElement>(null);
+  const messageRef = useRef<HTMLTextAreaElement>(null);
+
+  const onClickSubmit = async () => {
+    //
+    const infoObj = {
+      name: nameRef.current!.value,
+      email: emailRef.current!.value,
+      subject: subjectRef.current!.value,
+      message: messageRef.current!.value,
+    };
+    
+    await sendMessage(JSON.stringify(infoObj));
+  }
 
   const [$main, set$main] = useState(null);
   const [$panels, set$panels] = useState(null);
@@ -288,19 +305,19 @@ const Astral = () => {
             <div>
               <div className="row">
                 <div className="col-6 col-12-medium">
-                  <input type="text" name="name" placeholder="Name"/>
+                  <input ref={nameRef} type="text" name="name" placeholder="Name"/>
                 </div>
                 <div className="col-6 col-12-medium">
-                  <input type="text" name="email" placeholder="Email"/>
+                  <input ref={emailRef} type="text" name="email" placeholder="Email"/>
                 </div>
                 <div className="col-12">
-                  <input type="text" name="subject" placeholder="Subject"/>
+                  <input ref={subjectRef} type="text" name="subject" placeholder="Subject"/>
                 </div>
                 <div className="col-12">
-                  <textarea name="message" placeholder="Message" rows="6"></textarea>
+                  <textarea ref={messageRef} name="message" placeholder="Message" rows={6}/>
                 </div>
                 <div className="col-12">
-                  <input type="submit" value="Send Message"/>
+                  <input type="submit" value="Send Message" onClick={onClickSubmit} />
                 </div>
               </div>
             </div>
