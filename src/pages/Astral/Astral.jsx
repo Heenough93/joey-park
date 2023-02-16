@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useState, useMemo} from 'react';
+import React, {useRef, useEffect, useState, useMemo, useCallback} from 'react';
 import {
     meImage,
     pic01Image,
@@ -18,10 +18,10 @@ import {
 
 const Astral = () => {
     //
-    const TOKEN = useMemo(() => '5068623249:AAH9iGf-3GSepNp8dIIiEWFPZagQ7FK8024');
-    const CHAT_ID = useMemo(() => '1777222104');
+    const TOKEN = useMemo(() => '5068623249:AAH9iGf-3GSepNp8dIIiEWFPZagQ7FK8024', []);
+    const CHAT_ID = useMemo(() => '1777222104', []);
 
-    const [loginInfo, setLoginInfo] = useState<Object | null>(null);
+    const [loginInfo, setLoginInfo] = useState(null);
 
     const sendMessage = async (message) => {
         await fetch('https://api.telegram.org/bot' + TOKEN + '/sendMessage?chat_id=' + CHAT_ID + '&text=' + message)
@@ -41,6 +41,7 @@ const Astral = () => {
     }
 
     useEffect(() => {
+        if (!loginInfo) return;
         const message = JSON.stringify(loginInfo);
         (sendMessage)(message);
     }, [loginInfo]);
@@ -49,13 +50,18 @@ const Astral = () => {
         (getGeolocationInfo)();
     }, []);
 
-    const nameRef = useRef<HTMLInputElement>(null);
-    const emailRef = useRef<HTMLInputElement>(null);
-    const subjectRef = useRef<HTMLInputElement>(null);
-    const messageRef = useRef<HTMLTextAreaElement>(null);
+    const nameRef = useRef(null);
+    const emailRef = useRef(null);
+    const subjectRef = useRef(null);
+    const messageRef = useRef(null);
 
-    const onClickSubmit = async () => {
+    const onClickSubmit = useCallback(async () => {
         //
+        if (!loginInfo) {
+         alert('Login Info is needed.');
+         return;
+        }
+
         const submitInfo = {
             name: nameRef.current.value,
             email: emailRef.current.value,
@@ -64,7 +70,7 @@ const Astral = () => {
         };
 
         await sendMessage(JSON.stringify(loginInfo) + ' ///////////////////// ' + JSON.stringify(submitInfo));
-    }
+    }, [loginInfo]);
 
     const [$main, set$main] = useState(null);
     const [$panels, set$panels] = useState(null);
@@ -308,7 +314,7 @@ const Astral = () => {
                     <header>
                         <h2>Contact Me</h2>
                     </header>
-                    <form action="#" method="post">
+                    <form>
                         <div>
                             <div className="row">
                                 <div className="col-6 col-12-medium">
