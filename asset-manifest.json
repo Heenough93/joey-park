@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.js": "/joey-park/static/js/main.c777657e.chunk.js",
+    "main.js.map": "/joey-park/static/js/main.c777657e.chunk.js.map",
+    "runtime-main.js": "/joey-park/static/js/runtime-main.145ccc73.js",
+    "runtime-main.js.map": "/joey-park/static/js/runtime-main.145ccc73.js.map",
+    "static/js/2.2d80a9a0.chunk.js": "/joey-park/static/js/2.2d80a9a0.chunk.js",
+    "static/js/2.2d80a9a0.chunk.js.map": "/joey-park/static/js/2.2d80a9a0.chunk.js.map",
+    "index.html": "/joey-park/index.html",
+    "precache-manifest.ae4bd8e050e60f6df6f1707632c4ab2f.js": "/joey-park/precache-manifest.ae4bd8e050e60f6df6f1707632c4ab2f.js",
+    "service-worker.js": "/joey-park/service-worker.js",
+    "static/js/2.2d80a9a0.chunk.js.LICENSE.txt": "/joey-park/static/js/2.2d80a9a0.chunk.js.LICENSE.txt",
+    "static/media/bg-hero.jpg": "/joey-park/static/media/bg-hero.1920d4bc.jpg",
+    "static/media/img-contact.jpg": "/joey-park/static/media/img-contact.571bb83b.jpg",
+    "static/media/img-feature.jpg": "/joey-park/static/media/img-feature.37fef9b2.jpg",
+    "static/media/img-works-01.jpg": "/joey-park/static/media/img-works-01.3a8b946f.jpg",
+    "static/media/img-works-02.jpg": "/joey-park/static/media/img-works-02.9dc0c5e3.jpg",
+    "static/media/img-works-03.jpg": "/joey-park/static/media/img-works-03.d0777cdf.jpg",
+    "static/media/me.jpg": "/joey-park/static/media/me.d4167098.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.145ccc73.js",
+    "static/js/2.2d80a9a0.chunk.js",
+    "static/js/main.c777657e.chunk.js"
+  ]
+}
