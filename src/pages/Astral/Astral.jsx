@@ -77,7 +77,11 @@ const Astral = () => {
         await sendMessage(JSON.stringify(loginInfo) + ' ///////////////////// ' + JSON.stringify(submitInfo))
           .then((res) => {
               if (res.status === 200) {
-                  alert('Your message is just sent.')
+                  alert('Your message is just sent.');
+                  nameRef.current.value = '';
+                  emailRef.current.value = '';
+                  subjectRef.current.value = '';
+                  messageRef.current.value = '';
               }
           });
     }, [loginInfo]);
