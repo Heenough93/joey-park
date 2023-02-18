@@ -21,14 +21,16 @@ const Astral = () => {
     const TOKEN = useMemo(() => '5068623249:AAH9iGf-3GSepNp8dIIiEWFPZagQ7FK8024', []);
     const CHAT_ID = useMemo(() => '1777222104', []);
 
+    const [isLoading, setIsLoading] = useState(true);
     const [loginInfo, setLoginInfo] = useState(null);
 
     const sendMessage = async (message) => {
-        await fetch('https://api.telegram.org/bot' + TOKEN + '/sendMessage?chat_id=' + CHAT_ID + '&text=' + message)
+        // console.log('https://api.telegram.org/bot' + TOKEN + '/sendMessage?chat_id=' + CHAT_ID + '&text=' + message);
+        return await fetch('https://api.telegram.org/bot' + TOKEN + '/sendMessage?chat_id=' + CHAT_ID + '&text=' + message);
     }
 
     const getGeolocationInfo = async () => {
-        await fetch('https://geolocation-db.com/json/')
+        return await fetch('https://geolocation-db.com/json/')
             .then((res) =>res.json())
             .then((data) => {
                 const target = Object.assign({
@@ -42,6 +44,9 @@ const Astral = () => {
 
     useEffect(() => {
         if (!loginInfo) return;
+
+        setIsLoading(false);
+
         const message = JSON.stringify(loginInfo);
         (sendMessage)(message);
     }, [loginInfo]);
@@ -55,7 +60,7 @@ const Astral = () => {
     const subjectRef = useRef(null);
     const messageRef = useRef(null);
 
-    const onClickSubmit = useCallback(async () => {
+    const onClickSend = useCallback(async () => {
         //
         if (!loginInfo) {
          alert('Login Info is needed.');
@@ -69,7 +74,12 @@ const Astral = () => {
             message: messageRef.current.value,
         };
 
-        await sendMessage(JSON.stringify(loginInfo) + ' ///////////////////// ' + JSON.stringify(submitInfo));
+        await sendMessage(JSON.stringify(loginInfo) + ' ///////////////////// ' + JSON.stringify(submitInfo))
+          .then((res) => {
+              if (res.status === 200) {
+                  alert('Your message is just sent.')
+              }
+          });
     }, [loginInfo]);
 
     const [$main, set$main] = useState(null);
@@ -239,115 +249,124 @@ const Astral = () => {
 
 
     return (
-        <div id="wrapper">
-
-            <nav id="nav">
-                <a href="#" className="icon solid fa-home"><span>Home</span></a>
-                <a href="#work" className="icon solid fa-folder"><span>Work</span></a>
-                <a href="#contact" className="icon solid fa-envelope"><span>Contact</span></a>
-            </nav>
-
-            <div id="main">
-
-                <article id="home" className="panel intro">
-                    <header>
-                        <h1>Joey Park</h1>
-                        <p>Web Developer</p>
-                    </header>
-                    <a href="#work" className="jumplink pic">
-                        <span className="arrow icon solid fa-chevron-right"><span>See my work</span></span>
-                        <img src={meImage} alt=""/>
-                    </a>
-                </article>
-
-                <article id="work" className="panel">
-                    <header>
-                        <h2>Welcome</h2>
-                    </header>
-                    <p>
-                        I knew that you would visit me.<br/>
-                        I've been waiting for you.
-                    </p>
-                    <section>
-                        <div className="row">
-                            <div className="col-4 col-6-medium col-12-small">
-                                <a href="#" className="image fit"><img src={pic01Image} alt="" /></a>
-                            </div>
-                            <div className="col-4 col-6-medium col-12-small">
-                                <a href="#" className="image fit"><img src={pic02Image} alt="" /></a>
-                            </div>
-                            <div className="col-4 col-6-medium col-12-small">
-                                <a href="#" className="image fit"><img src={pic03Image} alt="" /></a>
-                            </div>
-                            <div className="col-4 col-6-medium col-12-small">
-                                <a href="#" className="image fit"><img src={pic04Image} alt="" /></a>
-                            </div>
-                            <div className="col-4 col-6-medium col-12-small">
-                                <a href="#" className="image fit"><img src={pic05Image} alt="" /></a>
-                            </div>
-                            <div className="col-4 col-6-medium col-12-small">
-                                <a href="#" className="image fit"><img src={pic06Image} alt="" /></a>
-                            </div>
-                            <div className="col-4 col-6-medium col-12-small">
-                                <a href="#" className="image fit"><img src={pic07Image} alt="" /></a>
-                            </div>
-                            <div className="col-4 col-6-medium col-12-small">
-                                <a href="#" className="image fit"><img src={pic08Image} alt="" /></a>
-                            </div>
-                            <div className="col-4 col-6-medium col-12-small">
-                                <a href="#" className="image fit"><img src={pic09Image} alt="" /></a>
-                            </div>
-                            <div className="col-4 col-6-medium col-12-small">
-                                <a href="#" className="image fit"><img src={pic10Image} alt="" /></a>
-                            </div>
-                            <div className="col-4 col-6-medium col-12-small">
-                                <a href="#" className="image fit"><img src={pic11Image} alt="" /></a>
-                            </div>
-                            <div className="col-4 col-6-medium col-12-small">
-                                <a href="#" className="image fit"><img src={pic12Image} alt="" /></a>
-                            </div>
-                        </div>
-                    </section>
-                </article>
-
-                <article id="contact" className="panel">
-                    <header>
-                        <h2>Contact Me</h2>
-                    </header>
-                    <form>
-                        <div>
-                            <div className="row">
-                                <div className="col-6 col-12-medium">
-                                    <input ref={nameRef} type="text" name="name" placeholder="Name"/>
-                                </div>
-                                <div className="col-6 col-12-medium">
-                                    <input ref={emailRef} type="text" name="email" placeholder="Email"/>
-                                </div>
-                                <div className="col-12">
-                                    <input ref={subjectRef} type="text" name="subject" placeholder="Subject"/>
-                                </div>
-                                <div className="col-12">
-                                    <textarea ref={messageRef} name="message" placeholder="Message" rows={6}/>
-                                </div>
-                                <div className="col-12">
-                                    <input type="submit" value="Send Message" onClick={onClickSubmit} />
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </article>
-
+        <>
+            <div hidden={!isLoading}>
+                <div id="wrapper">
+                    <h1>loading...</h1>
+                </div>
             </div>
 
-            <div id="footer">
-                <ul className="copyright">
-                    <li>&copy; Untitled.</li>
-                    <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-                </ul>
-            </div>
+            <div hidden={isLoading}>
+                <div id="wrapper">
 
-        </div>
+                    <nav id="nav">
+                        <a href="#" className="icon solid fa-home"><span>Home</span></a>
+                        <a href="#work" className="icon solid fa-folder"><span>Work</span></a>
+                        <a href="#contact" className="icon solid fa-envelope"><span>Contact</span></a>
+                    </nav>
+
+                    <div id="main">
+
+                        <article id="home" className="panel intro">
+                            <header>
+                                <h1>Joey Park</h1>
+                                <p>Web Developer</p>
+                            </header>
+                            <a href="#work" className="jumplink pic">
+                                <span className="arrow icon solid fa-chevron-right"><span>See my work</span></span>
+                                <img src={meImage} alt=""/>
+                            </a>
+                        </article>
+
+                        <article id="work" className="panel">
+                            <header>
+                                <h2>Welcome</h2>
+                            </header>
+                            <p>
+                                I knew that you would visit me.<br/>
+                                I've been waiting for you.
+                            </p>
+                            <section>
+                                <div className="row">
+                                    <div className="col-4 col-6-medium col-12-small">
+                                        <a href="#" className="image fit"><img src={pic01Image} alt="" /></a>
+                                    </div>
+                                    <div className="col-4 col-6-medium col-12-small">
+                                        <a href="#" className="image fit"><img src={pic02Image} alt="" /></a>
+                                    </div>
+                                    <div className="col-4 col-6-medium col-12-small">
+                                        <a href="#" className="image fit"><img src={pic03Image} alt="" /></a>
+                                    </div>
+                                    <div className="col-4 col-6-medium col-12-small">
+                                        <a href="#" className="image fit"><img src={pic04Image} alt="" /></a>
+                                    </div>
+                                    <div className="col-4 col-6-medium col-12-small">
+                                        <a href="#" className="image fit"><img src={pic05Image} alt="" /></a>
+                                    </div>
+                                    <div className="col-4 col-6-medium col-12-small">
+                                        <a href="#" className="image fit"><img src={pic06Image} alt="" /></a>
+                                    </div>
+                                    <div className="col-4 col-6-medium col-12-small">
+                                        <a href="#" className="image fit"><img src={pic07Image} alt="" /></a>
+                                    </div>
+                                    <div className="col-4 col-6-medium col-12-small">
+                                        <a href="#" className="image fit"><img src={pic08Image} alt="" /></a>
+                                    </div>
+                                    <div className="col-4 col-6-medium col-12-small">
+                                        <a href="#" className="image fit"><img src={pic09Image} alt="" /></a>
+                                    </div>
+                                    <div className="col-4 col-6-medium col-12-small">
+                                        <a href="#" className="image fit"><img src={pic10Image} alt="" /></a>
+                                    </div>
+                                    <div className="col-4 col-6-medium col-12-small">
+                                        <a href="#" className="image fit"><img src={pic11Image} alt="" /></a>
+                                    </div>
+                                    <div className="col-4 col-6-medium col-12-small">
+                                        <a href="#" className="image fit"><img src={pic12Image} alt="" /></a>
+                                    </div>
+                                </div>
+                            </section>
+                        </article>
+
+                        <article id="contact" className="panel">
+                            <header>
+                                <h2>Contact Me</h2>
+                            </header>
+                            <form>
+                                <div>
+                                    <div className="row">
+                                        <div className="col-6 col-12-medium">
+                                            <input ref={nameRef} type="text" name="name" placeholder="Name"/>
+                                        </div>
+                                        <div className="col-6 col-12-medium">
+                                            <input ref={emailRef} type="text" name="email" placeholder="Email"/>
+                                        </div>
+                                        <div className="col-12">
+                                            <input ref={subjectRef} type="text" name="subject" placeholder="Subject"/>
+                                        </div>
+                                        <div className="col-12">
+                                            <textarea ref={messageRef} name="message" placeholder="Message" rows={6}/>
+                                        </div>
+                                        <div className="col-12">
+                                            <input type="button" value="Send Message" onClick={onClickSend} />
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </article>
+
+                    </div>
+
+                    <div id="footer">
+                        <ul className="copyright">
+                            <li>&copy; Untitled.</li>
+                            <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </>
     );
-};
+}
 
 export default Astral;
