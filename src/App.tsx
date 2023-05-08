@@ -4,6 +4,7 @@ import {
     Home,
     Work,
     Contact,
+    List,
     Footer,
 } from "./components";
 import {ILoginInfo} from "./interfaces";
@@ -28,6 +29,13 @@ function App() {
         const message = JSON.stringify(loginInfo);
         (sendMessage)(message);
     }, [loginInfo]);
+
+    const onClickList = React.useCallback(() => {
+        const password = prompt('Admin Only!');
+        if (!password || password !== 'aa') {
+            window.location.href = '';
+        }
+    }, [])
 
     const [$main, set$main] = React.useState<HTMLElement | null>(null);
     const [$panels, set$panels] = React.useState<HTMLCollectionOf<Element> | null>(null);
@@ -208,6 +216,7 @@ function App() {
                         <a href="#" className="icon solid fa-home"><span>Home</span></a>
                         <a href="#work" className="icon solid fa-folder"><span>Work</span></a>
                         <a href="#contact" className="icon solid fa-envelope"><span>Contact</span></a>
+                        <a href="#list" className="icon solid fa-list" onClick={onClickList}><span>List</span></a>
                     </nav>
 
                     <div id="main">
@@ -216,6 +225,7 @@ function App() {
                         <Contact
                             loginInfo={loginInfo}
                         />
+                        <List />
                     </div>
 
                     <div id="footer">
