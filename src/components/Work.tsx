@@ -14,7 +14,7 @@ import {
     pic12Image
 } from "../images";
 
-const Loading = () => {
+const Work = () => {
     //
     return (
         <article id="work" className="panel">
@@ -69,4 +69,4 @@ const Loading = () => {
     );
 }
 
-export default Loading;
+export default Work;

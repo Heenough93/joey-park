@@ -5,7 +5,7 @@ import {sendMessage} from "../functions/functions";
 interface Props {
     loginInfo: ILoginInfo | null,
 }
-const Loading = (props: Props) => {
+const Contact = (props: Props) => {
     //
     const { loginInfo } = props;
 
@@ -70,4 +70,4 @@ const Loading = (props: Props) => {
     );
 }
 
-export default Loading;
+export default Contact;

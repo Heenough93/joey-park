@@ -1,7 +1,7 @@
 import React from 'react';
 import {meImage} from "../images";
 
-const Loading = () => {
+const Home = () => {
     //
     return (
         <article id="home" className="panel intro">
@@ -17,4 +17,4 @@ const Loading = () => {
     );
 }
 
-export default Loading;
+export default Home;

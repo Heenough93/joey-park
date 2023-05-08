@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Loading = () => {
+const Footer = () => {
     //
     return (
         <ul className="copyright">
@@ -10,4 +10,4 @@ const Loading = () => {
     );
 }
 
-export default Loading;
+export default Footer;
