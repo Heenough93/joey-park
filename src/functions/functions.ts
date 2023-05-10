@@ -19,7 +19,17 @@ export const sendMessage = async (message: string) => {
 };
 
 export const getSubmitInfos = async () => {
-    return await fetch("http://localhost:5000/submits")
+    return await fetch(process.env.REACT_APP_BASE_URL + "submits")
+        .then((res) => res.json())
+        .then((data: ISubmitInfo[]) => data);
+};
+
+export const aaa = async () => {
+    return await fetch(process.env.REACT_APP_BASE_URL + "submits", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: "Suzan", alias: "고슴도치" })
+    })
         .then((res) => res.json())
         .then((data: ISubmitInfo[]) => data);
 };

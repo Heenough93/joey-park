@@ -30,13 +30,11 @@ function App() {
         (sendMessage)(message);
     }, [loginInfo]);
 
-    const PASSWORD = React.useMemo(() => 'admin', []);
-
     const [listModalOpen, setListModalOpen] = React.useState(false);
 
     const onClickList = React.useCallback(() => {
         const password = prompt('Admin Only!');
-        if (password && password === PASSWORD) {
+        if (password && password === process.env.REACT_APP_ADMIN_PASSWORD) {
             setListModalOpen(true)
         }
     }, []);
