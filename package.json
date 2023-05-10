@@ -47,6 +47,7 @@
       "last 1 safari version"
     ]
   },
+  "proxy": "https://json-server-heenough93.koyeb.app",
   "homepage": "https://Heenough93.github.io/joey-park",
   "devDependencies": {
     "gh-pages": "^5.0.0"
