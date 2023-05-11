@@ -12,7 +12,7 @@ import {
     Typography,
     Button,
 } from '@mui/material';
-import {findLoginInfos, getSubmitInfos} from "../functions/functions";
+import {findLoginInfos, findSubmitInfos} from "../functions/functions";
 import {ILoginInfo, ISubmitInfo} from "../interfaces";
 
 
@@ -88,7 +88,7 @@ const ListModal = (props: Props) => {
     }, []);
 
     const onGridReadySubmit = React.useCallback((params: GridReadyEvent) => {
-        (getSubmitInfos)()
+        (findSubmitInfos)()
             .then((data) => {
                 setRowDataSubmit(data);
             })

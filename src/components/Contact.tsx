@@ -1,6 +1,6 @@
 import React from 'react';
 import {ILoginInfo, ISubmitInfo} from "../interfaces";
-import {sendMessage} from "../functions/functions";
+import {registerSubmitInfo, sendMessage} from "../functions/functions";
 
 interface Props {
     loginInfo: ILoginInfo | null,
@@ -29,13 +29,15 @@ const Contact = (props: Props) => {
         };
 
         await sendMessage(JSON.stringify(loginInfo) + ' ///////////////////// ' + JSON.stringify(submitInfo))
-            .then((res) => {
+            .then(async (res) => {
                 if (res.status === 200) {
                     alert('Your message is just sent.');
                     if (nameRef.current) nameRef.current.value = '';
                     if (emailRef.current) emailRef.current.value = '';
                     if (subjectRef.current) subjectRef.current.value = '';
                     if (messageRef.current) messageRef.current.value = '';
+
+                    await registerSubmitInfo(Object.assign(submitInfo, {date: new Date().toISOString()}));
                 }
             });
     }, [loginInfo]);
