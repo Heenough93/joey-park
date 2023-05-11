@@ -24,12 +24,38 @@ export const getSubmitInfos = async () => {
         .then((data: ISubmitInfo[]) => data);
 };
 
-export const aaa = async () => {
-    return await fetch(process.env.REACT_APP_BASE_URL + "submits", {
+export const findLoginInfos = async () => {
+    return await fetch(process.env.REACT_APP_BASE_URL + "find-login-infos", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: "Suzan", alias: "고슴도치" })
+        headers: { "Content-Type": "application/json" }
     })
         .then((res) => res.json())
-        .then((data: ISubmitInfo[]) => data);
+        .then((data: ILoginInfo[]) => data);
+};
+
+export const registerLoginInfo = async (loginInfo: ILoginInfo) => {
+    return await fetch(process.env.REACT_APP_BASE_URL + "register-login-info", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(loginInfo)
+    })
+        .then((res) => res.json());
+};
+
+export const modifyLoginInfo = async (id: string, loginInfo: Partial<ILoginInfo>) => {
+    return await fetch(process.env.REACT_APP_BASE_URL + "modify-login-info", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(loginInfo)
+    })
+        .then((res) => res.json());
+};
+
+export const removeLoginInfo = async (id: string, loginInfo: Partial<ILoginInfo>) => {
+    return await fetch(process.env.REACT_APP_BASE_URL + "remove-login-info", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(loginInfo)
+    })
+        .then((res) => res.json());
 };
