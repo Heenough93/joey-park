@@ -1,1 +1,1 @@
-export type {ILoginInfo, ISubmitInfo} from './interfaces';
+export type {ILoginInfo, ISubmitInfo, IOffsetResponse} from './interfaces';

@@ -22,3 +22,10 @@ export interface ISubmitInfo {
     subject: string,
     message: string,
 }
+
+export interface IOffsetResponse<T> {
+    total: number,
+    offset: number,
+    limit: number,
+    data: T[],
+}
