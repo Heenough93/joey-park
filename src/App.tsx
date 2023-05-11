@@ -23,12 +23,16 @@ function App() {
     }, []);
 
     React.useEffect(() => {
+        console.log(111);
         if (!loginInfo) return;
 
+        console.log(222);
         setIsLoading(false);
 
+        console.log(333);
         (registerLoginInfo)(Object.assign(loginInfo, { id: uuidv4(), date: new Date().toISOString() }));
 
+        console.log(444);
         // const message = JSON.stringify(loginInfo);
         // (sendMessage)(message);
     }, [loginInfo]);
