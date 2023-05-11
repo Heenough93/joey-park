@@ -9,7 +9,6 @@ import {ColDef} from "ag-grid-community";
 import {
     Box,
     Modal,
-    Typography,
     Button,
 } from '@mui/material';
 import {findLoginInfos, findSubmitInfos} from "../functions/functions";
@@ -117,15 +116,17 @@ const ListModal = (props: Props) => {
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Text in a modal
-                </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                </Typography>
+                {/*<Typography id="modal-modal-title" variant="h6" component="h2">*/}
+                {/*    List Modal*/}
+                {/*</Typography>*/}
+                {/*<Typography id="modal-modal-description" sx={{ mt: 2 }}>*/}
+                {/*    Admin Only*/}
+                {/*</Typography>*/}
 
-                <Button variant='contained' size='small' onClick={() => setTab('LoginInfo')}>LoginInfo</Button>
-                <Button variant='contained' size='small' onClick={() => setTab('SubmitInfo')}>SubmitInfo</Button>
+                <div style={{ marginBottom: '10px', marginTop: '10px' }}>
+                    <Button style={{ marginLeft: '3px', marginRight: '3px', backgroundColor: '#E8B09F' }} variant='contained' size='small' onClick={() => setTab('LoginInfo')}>LoginInfo</Button>
+                    <Button style={{ marginLeft: '3px', marginRight: '3px', backgroundColor: '#E8B09F' }} variant='contained' size='small' onClick={() => setTab('SubmitInfo')}>SubmitInfo</Button>
+                </div>
 
                 <div className="ag-theme-alpine" style={{height: 400, width: '100%'}}>
                     {tab === "LoginInfo" && <AgGridReact
