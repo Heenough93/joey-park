@@ -31,7 +31,9 @@ export const useLogin = (open: boolean) => {
         onSuccess: (res) => {
             const loginInfos = res.pages.reduce((prev, curr) => {
                 const data = curr.data;
-                prev.push(...data);
+                if (data) {
+                    prev.push(...data);
+                }
                 return prev;
             }, [] as ILoginInfo[]);
             setLoginInfos(loginInfos);
