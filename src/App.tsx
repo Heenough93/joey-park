@@ -1,4 +1,5 @@
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import {
     Loading,
     Home,
@@ -26,7 +27,7 @@ function App() {
 
         setIsLoading(false);
 
-        (registerLoginInfo)(Object.assign(loginInfo, {date: new Date().toISOString()}));
+        (registerLoginInfo)(Object.assign(loginInfo, { id: uuidv4(), date: new Date().toISOString() }));
 
         // const message = JSON.stringify(loginInfo);
         // (sendMessage)(message);

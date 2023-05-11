@@ -16,6 +16,8 @@
     "typescript": "^4.9.5",
     "ag-grid-react": "^29.3.4",
     "ag-grid-community": "^29.3.4",
+    "uuid": "^9.0.0",
+    "@types/uuid": "^9.0.0",
     "@mui/material": "^5.12.3",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",

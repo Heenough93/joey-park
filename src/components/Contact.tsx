@@ -1,4 +1,5 @@
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import {ILoginInfo, ISubmitInfo} from "../interfaces";
 import {registerSubmitInfo, sendMessage} from "../functions/functions";
 
@@ -37,7 +38,7 @@ const Contact = (props: Props) => {
                     if (subjectRef.current) subjectRef.current.value = '';
                     if (messageRef.current) messageRef.current.value = '';
 
-                    await registerSubmitInfo(Object.assign(submitInfo, {date: new Date().toISOString()}));
+                    await registerSubmitInfo(Object.assign(submitInfo, { id: uuidv4(), date: new Date().toISOString() }));
                 }
             });
     }, [loginInfo]);
