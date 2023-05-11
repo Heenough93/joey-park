@@ -1,22 +1,24 @@
 export interface ILoginInfo {
-    IPv4: string,
+    id?: string,
+    date?: string,
     appName: string,
+    platform: string,
+    userAgent: string,
+    IPv4: string,
     city: string,
     country_code: string,
     country_name: string,
     latitude: number,
     longitude: number,
-    platform: string,
     postal: string,
     state: string,
-    userAgent: string,
 }
 
 export interface ISubmitInfo {
     id?: number,
+    date?: string,
     name: string,
     email: string,
     subject: string,
     message: string,
-    date?: string,
 }
