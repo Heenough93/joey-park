@@ -1,7 +1,7 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import {ILoginInfo, ISubmitInfo} from "../interfaces";
-import {registerSubmitInfo, sendMessage} from "../functions/functions";
+import {registerSubmitInfo, sendMessage} from "../functions";
 
 interface Props {
     loginInfo: ILoginInfo | null,

@@ -11,7 +11,7 @@ import {
     Modal,
     Button,
 } from '@mui/material';
-import {findSubmitInfos} from "../functions/functions";
+import {findSubmitInfos} from "../functions";
 import {ILoginInfo, ISubmitInfo} from "../interfaces";
 import {useLogin} from "../hooks";
 

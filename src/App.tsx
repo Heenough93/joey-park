@@ -9,7 +9,7 @@ import {
     Footer,
 } from "./components";
 import {ILoginInfo} from "./interfaces";
-import {getGeolocationInfo, registerLoginInfo} from "./functions/functions";
+import {getGeolocationInfo, registerLoginInfo} from "./functions";
 
 
 function App() {
