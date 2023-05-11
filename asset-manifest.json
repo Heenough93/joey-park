@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/joey-park/static/css/main.6bba183b.css",
-    "main.js": "/joey-park/static/js/main.44ea2143.js",
+    "main.js": "/joey-park/static/js/main.bf5974ec.js",
     "static/js/787.1963c2a1.chunk.js": "/joey-park/static/js/787.1963c2a1.chunk.js",
     "static/media/me.jpg": "/joey-park/static/media/me.358b519f48327c8a68ef.jpg",
     "index.html": "/joey-park/index.html",
     "main.6bba183b.css.map": "/joey-park/static/css/main.6bba183b.css.map",
-    "main.44ea2143.js.map": "/joey-park/static/js/main.44ea2143.js.map",
+    "main.bf5974ec.js.map": "/joey-park/static/js/main.bf5974ec.js.map",
     "787.1963c2a1.chunk.js.map": "/joey-park/static/js/787.1963c2a1.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.6bba183b.css",
-    "static/js/main.44ea2143.js"
+    "static/js/main.bf5974ec.js"
   ]
 }
