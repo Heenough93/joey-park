@@ -19,7 +19,10 @@ function App() {
 
     React.useEffect(() => {
         (getGeolocationInfo)()
-            .then((data) => setLoginInfo(data));
+            .then((data) => {
+                console.log('data', data);
+                setLoginInfo(data)
+            });
     }, []);
 
     React.useEffect(() => {
