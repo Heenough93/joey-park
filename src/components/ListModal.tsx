@@ -3,7 +3,7 @@ import React from 'react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { AgGridReact } from "ag-grid-react";
-import {GridReadyEvent} from "ag-grid-community/dist/lib/events";
+import {BodyScrollEndEvent, GridReadyEvent} from "ag-grid-community/dist/lib/events";
 import {ColDef} from "ag-grid-community";
 
 import {
@@ -11,8 +11,9 @@ import {
     Modal,
     Button,
 } from '@mui/material';
-import {findLoginInfos, findSubmitInfos} from "../functions/functions";
+import {findSubmitInfos} from "../functions/functions";
 import {ILoginInfo, ISubmitInfo} from "../interfaces";
+import {useLogin} from "../hooks";
 
 
 type TabType = 'LoginInfo' | 'SubmitInfo';
@@ -76,15 +77,16 @@ const ListModal = (props: Props) => {
         ];
     }, []);
 
-    const [rowDataLogin, setRowDataLogin] = React.useState<ILoginInfo[]>([]);
-    const [rowDataSubmit, setRowDataSubmit] = React.useState<ISubmitInfo[]>([]);
+    const { loginInfos, fetchNextPage } = useLogin(open);
 
-    const onGridReadyLogin = React.useCallback((params: GridReadyEvent) => {
-        (findLoginInfos)()
-            .then((data) => {
-                setRowDataLogin(data);
-            })
-    }, []);
+    const onBodyScrollEnd = React.useCallback(async (event: BodyScrollEndEvent) => {
+        const { direction, api } = event;
+        if (direction === 'vertical' && api.getLastDisplayedRow() + 1 === loginInfos.length) {
+            await fetchNextPage();
+        }
+    }, [loginInfos]);
+
+    const [rowDataSubmit, setRowDataSubmit] = React.useState<ISubmitInfo[]>([]);
 
     const onGridReadySubmit = React.useCallback((params: GridReadyEvent) => {
         (findSubmitInfos)()
@@ -92,21 +94,6 @@ const ListModal = (props: Props) => {
                 setRowDataSubmit(data);
             })
     }, []);
-
-    // const onGridReady = (params: GridReadyEvent) => {
-    //     setGridApi(params.api);
-    //     setColumnApi(params.columnApi);
-    //
-    //     fetch(
-    //         "https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/olympicWinnersSmall.json"
-    //     )
-    //         .then(res => res.json())
-    //         .then(data => {
-    //             // data.forEach(row => (row.id = uuid()));
-    //             setRowData(data.slice(0, 100));
-    //         });
-    //     params.api.sizeColumnsToFit();
-    // }
 
     return (
         <Modal
@@ -129,12 +116,15 @@ const ListModal = (props: Props) => {
                 </div>
 
                 <div className="ag-theme-alpine" style={{height: 400, width: '100%'}}>
-                    {tab === "LoginInfo" && <AgGridReact
+                    {tab === "LoginInfo" && <AgGridReact<ILoginInfo>
                         columnDefs={columnDefsLogin}
                         defaultColDef={defaultColDef}
-                        rowData={rowDataLogin}
+                        rowData={loginInfos}
                         // getRowNodeId={data => data.id}
-                        onGridReady={onGridReadyLogin}
+                        // onGridReady={onGridReadyLogin}
+                        onBodyScrollEnd={onBodyScrollEnd}
+                        suppressScrollOnNewData
+                        suppressBrowserResizeObserver
                         // components={components}
                         editType="fullRow"
                         suppressClickEdit
@@ -142,12 +132,13 @@ const ListModal = (props: Props) => {
                         //     statusPanels: [{ statusPanel: "addRowStatusBar" }]
                         // }}
                     />}
-                    {tab === "SubmitInfo" && <AgGridReact
+                    {tab === "SubmitInfo" && <AgGridReact<ISubmitInfo>
                         columnDefs={columnDefsSubmit}
                         defaultColDef={defaultColDef}
                         rowData={rowDataSubmit}
                         // getRowNodeId={data => data.id}
                         onGridReady={onGridReadySubmit}
+                        suppressBrowserResizeObserver
                         // components={components}
                         editType="fullRow"
                         suppressClickEdit
