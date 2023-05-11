@@ -4,7 +4,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { AgGridReact } from "ag-grid-react";
 import {GridReadyEvent} from "ag-grid-community/dist/lib/events";
-import {ColDef, ColumnApi, GridApi} from "ag-grid-community";
+import {ColDef} from "ag-grid-community";
 
 import {
     Box,
@@ -12,8 +12,8 @@ import {
     Typography,
     Button,
 } from '@mui/material';
-import {getSubmitInfos} from "../functions/functions";
-import {ISubmitInfo} from "../interfaces";
+import {findLoginInfos, getSubmitInfos} from "../functions/functions";
+import {ILoginInfo, ISubmitInfo} from "../interfaces";
 
 
 type TabType = 'LoginInfo' | 'SubmitInfo';
@@ -47,8 +47,8 @@ const ListModal = (props: Props) => {
 
     const [tab, setTab] = React.useState<TabType>('LoginInfo');
 
-    const [gridApi, setGridApi] = React.useState<GridApi | null>(null);
-    const [columnApi, setColumnApi] = React.useState<ColumnApi | null>(null);
+    // const [gridApi, setGridApi] = React.useState<GridApi | null>(null);
+    // const [columnApi, setColumnApi] = React.useState<ColumnApi | null>(null);
 
     const defaultColDef: ColDef = React.useMemo(() => {
         return {
@@ -57,57 +57,57 @@ const ListModal = (props: Props) => {
         }
     }, []);
 
-    const columnDefs: ColDef[] = React.useMemo(() => {
+    const columnDefsLogin: ColDef[] = React.useMemo(() => {
         return [
-            {
-                field: "name",
-                headerName: "Name",
-                flex: 1,
-            },
-            {
-                field: "email",
-                headerName: "Email",
-                flex: 1,
-            },
-            {
-                field: "subject",
-                headerName: "Subject",
-                flex: 1,
-            },
-            {
-                field: "message",
-                headerName: "Message",
-                flex: 1,
-            },
-            {
-                field: "date",
-                headerName: "Date",
-                flex: 1,
-            },
+            { field: "IPv4", headerName: "IPv4", flex: 1 },
+            { field: "platform", headerName: "Platform", flex: 1 },
+            { field: "country_name", headerName: "Country", flex: 1 },
+            { field: "city", headerName: "City", flex: 1 },
+            { field: "date", headerName: "Date", flex: 1 },
         ];
     }, []);
 
-    const [rowData, setRowData] = React.useState<ISubmitInfo[]>([]);
+    const columnDefsSubmit: ColDef[] = React.useMemo(() => {
+        return [
+            { field: "name", headerName: "Name", flex: 1 },
+            { field: "email", headerName: "Email", flex: 1 },
+            { field: "subject", headerName: "Subject", flex: 1 },
+            { field: "message", headerName: "Message", flex: 1 },
+            { field: "date", headerName: "Date", flex: 1 },
+        ];
+    }, []);
 
-    const onGridReady = (params: GridReadyEvent) => {
-        setGridApi(params.api);
-        setColumnApi(params.columnApi);
+    const [rowDataLogin, setRowDataLogin] = React.useState<ILoginInfo[]>([]);
+    const [rowDataSubmit, setRowDataSubmit] = React.useState<ISubmitInfo[]>([]);
 
+    const onGridReadyLogin = React.useCallback((params: GridReadyEvent) => {
+        (findLoginInfos)()
+            .then((data) => {
+                setRowDataLogin(data);
+            })
+    }, []);
+
+    const onGridReadySubmit = React.useCallback((params: GridReadyEvent) => {
         (getSubmitInfos)()
             .then((data) => {
-                setRowData(data);
+                setRowDataSubmit(data);
             })
+    }, []);
 
-        // fetch(
-        //     "https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/olympicWinnersSmall.json"
-        // )
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         // data.forEach(row => (row.id = uuid()));
-        //         setRowData(data.slice(0, 100));
-        //     });
-        // params.api.sizeColumnsToFit();
-    }
+    // const onGridReady = (params: GridReadyEvent) => {
+    //     setGridApi(params.api);
+    //     setColumnApi(params.columnApi);
+    //
+    //     fetch(
+    //         "https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/olympicWinnersSmall.json"
+    //     )
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             // data.forEach(row => (row.id = uuid()));
+    //             setRowData(data.slice(0, 100));
+    //         });
+    //     params.api.sizeColumnsToFit();
+    // }
 
     return (
         <Modal
@@ -129,11 +129,11 @@ const ListModal = (props: Props) => {
 
                 <div className="ag-theme-alpine" style={{height: 400, width: '100%'}}>
                     {tab === "LoginInfo" && <AgGridReact
-                        columnDefs={columnDefs}
+                        columnDefs={columnDefsLogin}
                         defaultColDef={defaultColDef}
-                        rowData={rowData}
+                        rowData={rowDataLogin}
                         // getRowNodeId={data => data.id}
-                        onGridReady={onGridReady}
+                        onGridReady={onGridReadyLogin}
                         // components={components}
                         editType="fullRow"
                         suppressClickEdit
@@ -142,11 +142,11 @@ const ListModal = (props: Props) => {
                         // }}
                     />}
                     {tab === "SubmitInfo" && <AgGridReact
-                        columnDefs={columnDefs}
+                        columnDefs={columnDefsSubmit}
                         defaultColDef={defaultColDef}
-                        rowData={[]}
+                        rowData={rowDataSubmit}
                         // getRowNodeId={data => data.id}
-                        onGridReady={onGridReady}
+                        onGridReady={onGridReadySubmit}
                         // components={components}
                         editType="fullRow"
                         suppressClickEdit

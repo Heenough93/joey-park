@@ -8,7 +8,7 @@ import {
     Footer,
 } from "./components";
 import {ILoginInfo} from "./interfaces";
-import {getGeolocationInfo, sendMessage} from "./functions/functions";
+import {getGeolocationInfo, registerLoginInfo} from "./functions/functions";
 
 
 function App() {
@@ -26,8 +26,10 @@ function App() {
 
         setIsLoading(false);
 
-        const message = JSON.stringify(loginInfo);
-        (sendMessage)(message);
+        (registerLoginInfo)(Object.assign(loginInfo, {date: new Date().toISOString()}));
+
+        // const message = JSON.stringify(loginInfo);
+        // (sendMessage)(message);
     }, [loginInfo]);
 
     const [listModalOpen, setListModalOpen] = React.useState(false);
