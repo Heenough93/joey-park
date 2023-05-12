@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/joey-park/static/css/main.6bba183b.css",
-    "main.js": "/joey-park/static/js/main.3112c6cb.js",
-    "static/js/787.1963c2a1.chunk.js": "/joey-park/static/js/787.1963c2a1.chunk.js",
-    "static/media/me.jpg": "/joey-park/static/media/me.358b519f48327c8a68ef.jpg",
-    "index.html": "/joey-park/index.html",
-    "main.6bba183b.css.map": "/joey-park/static/css/main.6bba183b.css.map",
-    "main.3112c6cb.js.map": "/joey-park/static/js/main.3112c6cb.js.map",
-    "787.1963c2a1.chunk.js.map": "/joey-park/static/js/787.1963c2a1.chunk.js.map"
+    "main.css": "/static/css/main.6bba183b.css",
+    "main.js": "/static/js/main.87716fa9.js",
+    "static/js/787.1963c2a1.chunk.js": "/static/js/787.1963c2a1.chunk.js",
+    "static/media/me.jpg": "/static/media/me.358b519f48327c8a68ef.jpg",
+    "index.html": "/index.html",
+    "main.6bba183b.css.map": "/static/css/main.6bba183b.css.map",
+    "main.87716fa9.js.map": "/static/js/main.87716fa9.js.map",
+    "787.1963c2a1.chunk.js.map": "/static/js/787.1963c2a1.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.6bba183b.css",
-    "static/js/main.3112c6cb.js"
+    "static/js/main.87716fa9.js"
   ]
 }
