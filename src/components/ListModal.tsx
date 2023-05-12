@@ -3,17 +3,16 @@ import React from 'react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { AgGridReact } from "ag-grid-react";
-import {BodyScrollEndEvent, GridReadyEvent} from "ag-grid-community/dist/lib/events";
-import {ColDef} from "ag-grid-community";
+import {ColDef, BodyScrollEndEvent} from "ag-grid-community";
 
 import {
     Box,
     Modal,
     Button,
 } from '@mui/material';
-import {findSubmitInfos} from "../functions";
 import {ILoginInfo, ISubmitInfo} from "../interfaces";
-import {useLogin} from "../hooks";
+import {useLogin, useSubmit} from "../hooks";
+import ActionsRenderer from "./Renderers/ActionsRenderer";
 
 
 type TabType = 'LoginInfo' | 'SubmitInfo';
@@ -47,6 +46,9 @@ const ListModal = (props: Props) => {
 
     const [tab, setTab] = React.useState<TabType>('LoginInfo');
 
+    const { loginInfos, fetchNextPageLoginInfos, removeLoginInfo } = useLogin(open);
+    const { submitInfos, fetchNextPageSubmitInfos, removeSubmitInfo } = useSubmit(open);
+
     // const [gridApi, setGridApi] = React.useState<GridApi | null>(null);
     // const [columnApi, setColumnApi] = React.useState<ColumnApi | null>(null);
 
@@ -59,41 +61,45 @@ const ListModal = (props: Props) => {
 
     const columnDefsLogin: ColDef[] = React.useMemo(() => {
         return [
-            { field: "IPv4", headerName: "IPv4", flex: 1 },
-            { field: "platform", headerName: "Platform", flex: 1 },
-            { field: "country_name", headerName: "Country", flex: 1 },
-            { field: "city", headerName: "City", flex: 1 },
-            { field: "date", headerName: "Date", flex: 1 },
+            { headerName: "No.", valueGetter: (params) => typeof params.node?.rowIndex === 'number' ? params.node?.rowIndex + 1 : 0, flex: 1 },
+            { field: "IPv4", headerName: "IPv4", tooltipField: "IPv4", flex: 1 },
+            { field: "platform", headerName: "Platform", tooltipField: "platform", flex: 1 },
+            { field: "country_name", headerName: "Country", tooltipField: "country_name", flex: 1 },
+            { field: "city", headerName: "City", tooltipField: "city", flex: 1 },
+            { field: "date", headerName: "Date", tooltipField: "date", flex: 1 },
+            { cellRenderer: "actionsRenderer", cellRendererParams: { removeFn: removeLoginInfo },flex: 0.5 },
         ];
     }, []);
 
     const columnDefsSubmit: ColDef[] = React.useMemo(() => {
         return [
-            { field: "name", headerName: "Name", flex: 1 },
-            { field: "email", headerName: "Email", flex: 1 },
-            { field: "subject", headerName: "Subject", flex: 1 },
-            { field: "message", headerName: "Message", flex: 1 },
-            { field: "date", headerName: "Date", flex: 1 },
+            { headerName: "No.", valueGetter: (params) => typeof params.node?.rowIndex === 'number' ? params.node?.rowIndex + 1 : 0, flex: 1 },
+            { field: "name", headerName: "Name", tooltipField: "name", flex: 1 },
+            { field: "email", headerName: "Email", tooltipField: "email", flex: 1 },
+            { field: "subject", headerName: "Subject", tooltipField: "subject", flex: 1 },
+            { field: "message", headerName: "Message", tooltipField: "message", flex: 1 },
+            { field: "date", headerName: "Date", tooltipField: "date", flex: 1 },
+            { cellRenderer: "actionsRenderer", cellRendererParams: { removeFn: removeSubmitInfo },flex: 0.5 },
         ];
     }, []);
 
-    const { loginInfos, fetchNextPage } = useLogin(open);
+    const components = {
+        actionsRenderer: ActionsRenderer,
+    };
 
-    const onBodyScrollEnd = React.useCallback(async (event: BodyScrollEndEvent) => {
+    const onBodyScrollEndLogin = React.useCallback(async (event: BodyScrollEndEvent) => {
         const { direction, api } = event;
         if (direction === 'vertical' && api.getLastDisplayedRow() + 1 === loginInfos.length) {
-            await fetchNextPage();
+            await fetchNextPageLoginInfos();
         }
     }, [loginInfos]);
 
-    const [rowDataSubmit, setRowDataSubmit] = React.useState<ISubmitInfo[]>([]);
-
-    const onGridReadySubmit = React.useCallback((params: GridReadyEvent) => {
-        (findSubmitInfos)()
-            .then((data) => {
-                setRowDataSubmit(data);
-            })
-    }, []);
+    const onBodyScrollEndSubmit = React.useCallback(async (event: BodyScrollEndEvent) => {
+        const { direction, api } = event;
+        if (direction === 'vertical' && api.getLastDisplayedRow() + 1 === submitInfos.length) {
+            await fetchNextPageSubmitInfos();
+        }
+    }, [submitInfos]);
 
     return (
         <Modal
@@ -122,10 +128,10 @@ const ListModal = (props: Props) => {
                         rowData={loginInfos}
                         // getRowNodeId={data => data.id}
                         // onGridReady={onGridReadyLogin}
-                        onBodyScrollEnd={onBodyScrollEnd}
+                        onBodyScrollEnd={onBodyScrollEndLogin}
                         suppressScrollOnNewData
                         suppressBrowserResizeObserver
-                        // components={components}
+                        components={components}
                         editType="fullRow"
                         suppressClickEdit
                         // statusBar={{
@@ -135,11 +141,13 @@ const ListModal = (props: Props) => {
                     {tab === "SubmitInfo" && <AgGridReact<ISubmitInfo>
                         columnDefs={columnDefsSubmit}
                         defaultColDef={defaultColDef}
-                        rowData={rowDataSubmit}
+                        rowData={submitInfos}
                         // getRowNodeId={data => data.id}
-                        onGridReady={onGridReadySubmit}
+                        // onGridReady={onGridReadySubmit}
+                        onBodyScrollEnd={onBodyScrollEndSubmit}
+                        suppressScrollOnNewData
                         suppressBrowserResizeObserver
-                        // components={components}
+                        components={components}
                         editType="fullRow"
                         suppressClickEdit
                         // statusBar={{

@@ -1,13 +1,11 @@
 import React from 'react';
-import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
-import {ILoginInfo, IOffsetResponse} from "../interfaces";
+import {useInfiniteQuery, useMutation, useQueryClient} from '@tanstack/react-query';
+import {ILoginInfo, ISubmitInfo, IOffsetResponse} from "../interfaces";
+import {findLoginInfosOffset, removeLoginInfo, findSubmitInfosOffset, removeSubmitInfo} from "../functions";
+
 
 export const useLogin = (open: boolean) => {
-    const queryFn = (offset: number, limit: number) => fetch(process.env.REACT_APP_BASE_URL + "find-login-infos-offset", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ offset, limit })
-    });
+    const queryFn = (offset: number, limit: number) => findLoginInfosOffset(offset, limit);
     const queryKey = ['login'];
 
     const [loginInfos, setLoginInfos] = React.useState<ILoginInfo[]>([]);
@@ -17,13 +15,13 @@ export const useLogin = (open: boolean) => {
         queryFn: async (queryFuncCtx) => {
             const res = await queryFn(
                 queryFuncCtx.pageParam ? queryFuncCtx.pageParam.offset : 0,
-                queryFuncCtx.pageParam ? queryFuncCtx.pageParam.limit : 50,
+                queryFuncCtx.pageParam ? queryFuncCtx.pageParam.limit : 10,
             );
-            return res.json();
+            return res;
         },
         getNextPageParam: (res) => {
             if (res.total >= res.offset + res.limit) {
-                return { offset: res.offset + res.limit, limit: 50 };
+                return { offset: res.offset + res.limit, limit: 10 };
             } else {
                 return undefined;
             }
@@ -40,12 +38,16 @@ export const useLogin = (open: boolean) => {
             console.log('error', error);
         },
         staleTime: 10,
+        // refetchOnWindowFocus: false,
         enabled: open,
     });
 
+    const queryClient = useQueryClient()
+
     const { mutateAsync } = useMutation({
-        mutationFn: async ({}) => {
-            return null;
+        mutationFn: async (loginInfo: ILoginInfo) => {
+            await removeLoginInfo({ id: loginInfo.id });
+            await queryClient.invalidateQueries(queryKey);
         },
         onError: (error) => {
             console.log('error', error);
@@ -55,8 +57,67 @@ export const useLogin = (open: boolean) => {
     return {
         loginInfos,
         setLoginInfos,
-        refetch,
-        fetchNextPage,
-        mutateAsync,
+        refetchLoginInfos: refetch,
+        fetchNextPageLoginInfos: fetchNextPage,
+        removeLoginInfo: mutateAsync,
+    }
+}
+
+export const useSubmit = (open: boolean) => {
+    const queryFn = (offset: number, limit: number) => findSubmitInfosOffset(offset, limit);
+    const queryKey = ['submit'];
+
+    const [submitInfos, setSubmitInfos] = React.useState<ISubmitInfo[]>([]);
+
+    const { refetch, fetchNextPage } = useInfiniteQuery<IOffsetResponse<ISubmitInfo>, Error, IOffsetResponse<ISubmitInfo>, string[]>({
+        queryKey,
+        queryFn: async (queryFuncCtx) => {
+            const res = await queryFn(
+                queryFuncCtx.pageParam ? queryFuncCtx.pageParam.offset : 0,
+                queryFuncCtx.pageParam ? queryFuncCtx.pageParam.limit : 10,
+            );
+            return res;
+        },
+        getNextPageParam: (res) => {
+            if (res.total >= res.offset + res.limit) {
+                return { offset: res.offset + res.limit, limit: 10 };
+            } else {
+                return undefined;
+            }
+        },
+        onSuccess: (res) => {
+            const submitInfos = res.pages.reduce((prev, curr) => {
+                const data = curr.data;
+                prev.push(...data);
+                return prev;
+            }, [] as ISubmitInfo[]);
+            setSubmitInfos(submitInfos);
+        },
+        onError: (error) => {
+            console.log('error', error);
+        },
+        staleTime: 10,
+        // refetchOnWindowFocus: false,
+        enabled: open,
+    });
+
+    const queryClient = useQueryClient()
+
+    const { mutateAsync } = useMutation({
+        mutationFn: async (submitInfo: ISubmitInfo) => {
+            await removeSubmitInfo({ id: submitInfo.id });
+            await queryClient.invalidateQueries(queryKey);
+        },
+        onError: (error) => {
+            console.log('error', error);
+        },
+    });
+
+    return {
+        submitInfos,
+        setSubmitInfos,
+        refetchSubmitInfos: refetch,
+        fetchNextPageSubmitInfos: fetchNextPage,
+        removeSubmitInfo: mutateAsync,
     }
 }

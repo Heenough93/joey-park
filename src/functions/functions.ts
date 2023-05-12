@@ -19,6 +19,15 @@ export const sendMessage = async (message: string) => {
 };
 
 /** login */
+export const findLoginInfosOffset = async (offset: number, limit: number) => {
+    return await fetch(process.env.REACT_APP_BASE_URL + "find-login-infos-offset", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ offset, limit })
+    })
+        .then((res) => res.json());
+};
+
 export const findLoginInfos = async () => {
     return await fetch(process.env.REACT_APP_BASE_URL + "find-login-infos", {
         method: "POST",
@@ -37,7 +46,7 @@ export const registerLoginInfo = async (loginInfo: ILoginInfo) => {
         .then((res) => res.json());
 };
 
-export const modifyLoginInfo = async (id: string, loginInfo: Partial<ILoginInfo>) => {
+export const modifyLoginInfo = async (loginInfo: Partial<ILoginInfo>) => {
     return await fetch(process.env.REACT_APP_BASE_URL + "modify-login-info", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -46,7 +55,7 @@ export const modifyLoginInfo = async (id: string, loginInfo: Partial<ILoginInfo>
         .then((res) => res.json());
 };
 
-export const removeLoginInfo = async (id: string, loginInfo: Partial<ILoginInfo>) => {
+export const removeLoginInfo = async (loginInfo: Partial<ILoginInfo>) => {
     return await fetch(process.env.REACT_APP_BASE_URL + "remove-login-info", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -56,6 +65,15 @@ export const removeLoginInfo = async (id: string, loginInfo: Partial<ILoginInfo>
 };
 
 /** submit */
+export const findSubmitInfosOffset = async (offset: number, limit: number) => {
+    return await fetch(process.env.REACT_APP_BASE_URL + "find-submit-infos-offset", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ offset, limit })
+    })
+        .then((res) => res.json());
+};
+
 export const findSubmitInfos = async () => {
     return await fetch(process.env.REACT_APP_BASE_URL + "find-submit-infos", {
         method: "POST",
@@ -74,7 +92,7 @@ export const registerSubmitInfo = async (submitInfo: ISubmitInfo) => {
         .then((res) => res.json());
 };
 
-export const modifySubmitInfo = async (id: string, submitInfo: Partial<ISubmitInfo>) => {
+export const modifySubmitInfo = async (submitInfo: Partial<ISubmitInfo>) => {
     return await fetch(process.env.REACT_APP_BASE_URL + "modify-submit-info", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -83,7 +101,7 @@ export const modifySubmitInfo = async (id: string, submitInfo: Partial<ISubmitIn
         .then((res) => res.json());
 };
 
-export const removeSubmitInfo = async (id: string, submitInfo: Partial<ISubmitInfo>) => {
+export const removeSubmitInfo = async (submitInfo: Partial<ISubmitInfo>) => {
     return await fetch(process.env.REACT_APP_BASE_URL + "remove-submit-info", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
