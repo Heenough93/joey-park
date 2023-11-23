@@ -8,32 +8,32 @@ import {
     ListModal,
     Footer,
 } from "./components";
-import {ILoginInfo} from "./interfaces";
-import {getGeolocationInfo, registerLoginInfo} from "./functions";
+import {Visitor} from "./interfaces";
+import {getGeolocationInfo, registerVisitor} from "./functions";
 
 
 function App() {
     //
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
-    const [loginInfo, setLoginInfo] = React.useState<ILoginInfo | null>(null);
+    const [visitor, setVisitor] = React.useState<Visitor | null>(null);
 
     React.useEffect(() => {
         (getGeolocationInfo)()
             .then((data) => {
-                setLoginInfo(data)
+                setVisitor(data)
             });
     }, []);
 
     React.useEffect(() => {
-        if (!loginInfo) return;
+        if (!visitor) return;
 
         setIsLoading(false);
 
-        (registerLoginInfo)(Object.assign(loginInfo, { id: uuidv4(), date: new Date().toISOString() }));
+        (registerVisitor)(Object.assign(visitor, { id: uuidv4(), date: new Date().toISOString() }));
 
-        // const message = JSON.stringify(loginInfo);
+        // const message = JSON.stringify(visitor);
         // (sendMessage)(message);
-    }, [loginInfo]);
+    }, [visitor]);
 
     const [listModalOpen, setListModalOpen] = React.useState(false);
 
@@ -231,7 +231,7 @@ function App() {
                         <Home />
                         <Work />
                         <Contact
-                            loginInfo={loginInfo}
+                            visitor={visitor}
                         />
                         <ListModal
                             open={listModalOpen}
