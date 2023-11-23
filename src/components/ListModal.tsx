@@ -13,9 +13,10 @@ import {
 import {Visitor, Message} from "../interfaces";
 import {useVisitor, useMessage} from "../hooks";
 import ActionsRenderer from "./Renderers/ActionsRenderer";
+import { StockTable } from '.';
 
 
-type TabType = 'Visitor' | 'Message';
+type TabType = 'Visitor' | 'Message' | 'Stock';
 
 interface Props {
     open: boolean,
@@ -119,42 +120,48 @@ const ListModal = (props: Props) => {
                 <div style={{ marginBottom: '10px', marginTop: '10px' }}>
                     <Button style={{ marginLeft: '3px', marginRight: '3px', backgroundColor: '#E8B09F' }} variant='contained' size='small' onClick={() => setTab('Visitor')}>Visitor</Button>
                     <Button style={{ marginLeft: '3px', marginRight: '3px', backgroundColor: '#E8B09F' }} variant='contained' size='small' onClick={() => setTab('Message')}>Message</Button>
+                    <Button style={{ marginLeft: '3px', marginRight: '3px', backgroundColor: '#E8B09F' }} variant='contained' size='small' onClick={() => setTab('Stock')}>Stock</Button>
                 </div>
 
-                <div className="ag-theme-alpine" style={{height: 400, width: '100%'}}>
-                    {tab === "Visitor" && <AgGridReact<Visitor>
-                        columnDefs={columnDefsVisitor}
-                        defaultColDef={defaultColDef}
-                        rowData={visitors}
-                        // getRowNodeId={data => data.id}
-                        // onGridReady={onGridReadyVisitor}
-                        onBodyScrollEnd={onBodyScrollEndVisitor}
-                        suppressScrollOnNewData
-                        suppressBrowserResizeObserver
-                        components={components}
-                        editType="fullRow"
-                        suppressClickEdit
-                        // statusBar={{
-                        //     statusPanels: [{ statusPanel: "addRowStatusBar" }]
-                        // }}
-                    />}
-                    {tab === "Message" && <AgGridReact<Message>
-                        columnDefs={columnDefsMessage}
-                        defaultColDef={defaultColDef}
-                        rowData={messages}
-                        // getRowNodeId={data => data.id}
-                        // onGridReady={onGridReadyMessage}
-                        onBodyScrollEnd={onBodyScrollEndMessage}
-                        suppressScrollOnNewData
-                        suppressBrowserResizeObserver
-                        components={components}
-                        editType="fullRow"
-                        suppressClickEdit
-                        // statusBar={{
-                        //     statusPanels: [{ statusPanel: "addRowStatusBar" }]
-                        // }}
-                    />}
-                </div>
+                {tab === "Visitor" && <div className="ag-theme-alpine" style={{height: 400, width: '100%'}}>
+                    <AgGridReact<Visitor>
+                      columnDefs={columnDefsVisitor}
+                      defaultColDef={defaultColDef}
+                      rowData={visitors}
+                      // getRowNodeId={data => data.id}
+                      // onGridReady={onGridReadyVisitor}
+                      onBodyScrollEnd={onBodyScrollEndVisitor}
+                      suppressScrollOnNewData
+                      suppressBrowserResizeObserver
+                      components={components}
+                      editType="fullRow"
+                      suppressClickEdit
+                      // statusBar={{
+                      //     statusPanels: [{ statusPanel: "addRowStatusBar" }]
+                      // }}
+                    />
+                </div>}
+                {tab === "Message" && <div className="ag-theme-alpine" style={{height: 400, width: '100%'}}>
+                    <AgGridReact<Message>
+                      columnDefs={columnDefsMessage}
+                      defaultColDef={defaultColDef}
+                      rowData={messages}
+                      // getRowNodeId={data => data.id}
+                      // onGridReady={onGridReadyMessage}
+                      onBodyScrollEnd={onBodyScrollEndMessage}
+                      suppressScrollOnNewData
+                      suppressBrowserResizeObserver
+                      components={components}
+                      editType="fullRow"
+                      suppressClickEdit
+                      // statusBar={{
+                      //     statusPanels: [{ statusPanel: "addRowStatusBar" }]
+                      // }}
+                    />
+                </div>}
+                {tab === "Stock" && <div style={{height: 400, width: '100%'}}>
+                    <StockTable />
+                </div>}
             </Box>
         </Modal>
     );
