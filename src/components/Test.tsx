@@ -180,7 +180,19 @@ const Test = () => {
   }, [token])
 
   const handleClickAuthorRegister = React.useCallback(async () => {
-
+    await fetch(process.env.REACT_APP_BASE_URL + 'authors', {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": token },
+      body: JSON.stringify({
+        "name": "user11",
+        "email": "user11@test.com"
+      })
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res.message);
+        console.log('Author Register', res.data);
+      });
   }, [token])
 
   const handleClickAuthorModify = React.useCallback(async (id: string) => {
@@ -188,7 +200,19 @@ const Test = () => {
       alert('id is empty.');
       return;
     }
-
+    await fetch(process.env.REACT_APP_BASE_URL + 'authors/' + id, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", "Authorization": token },
+      body: JSON.stringify({
+        "name": "user12",
+        "email": "user12@test.com"
+      })
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res.message);
+        console.log('Author Modify', res.data);
+      });
   }, [token])
 
   const handleClickAuthorRemove = React.useCallback(async (id: string) => {
@@ -196,7 +220,15 @@ const Test = () => {
       alert('id is empty.');
       return;
     }
-
+    await fetch(process.env.REACT_APP_BASE_URL + 'authors/' + id, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json", "Authorization": token },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res.message);
+        console.log('Author Remove', res.data);
+      });
   }, [token])
 
   /**
@@ -231,7 +263,21 @@ const Test = () => {
   }, [token])
 
   const handleClickBookRegister = React.useCallback(async () => {
-
+    await fetch(process.env.REACT_APP_BASE_URL + 'books', {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": token },
+      body: JSON.stringify({
+        "title": "title1",
+        "authorId": 1,
+        "price": 40000,
+        "category": "asdasd"
+      })
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res.message);
+        console.log('Book Register', res.data);
+      });
   }, [token])
 
   const handleClickBookModify = React.useCallback(async (id: string) => {
@@ -239,7 +285,21 @@ const Test = () => {
       alert('id is empty.');
       return;
     }
-
+    await fetch(process.env.REACT_APP_BASE_URL + 'books/' + id, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", "Authorization": token },
+      body: JSON.stringify({
+        "title": "title2",
+        "authorId": 1,
+        "price": 40000,
+        "category": "asdasd"
+      })
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res.message);
+        console.log('Book Modify', res.data);
+      });
   }, [token])
 
   const handleClickBookRemove = React.useCallback(async (id: string) => {
@@ -247,7 +307,15 @@ const Test = () => {
       alert('id is empty.');
       return;
     }
-
+    await fetch(process.env.REACT_APP_BASE_URL + 'books/' + id, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json", "Authorization": token },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res.message);
+        console.log('Book Remove', res.data);
+      });
   }, [token])
 
     return (
