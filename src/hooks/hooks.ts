@@ -1,16 +1,16 @@
 import React from 'react';
 import {useInfiniteQuery, useMutation, useQueryClient} from '@tanstack/react-query';
-import {ILoginInfo, ISubmitInfo, IOffsetResponse} from "../interfaces";
-import {findLoginInfosOffset, removeLoginInfo, findSubmitInfosOffset, removeSubmitInfo} from "../functions";
+import {Visitor, Message, OffsetResponseData} from "../interfaces";
+import {findVisitorsOffset, removeVisitor, findMessagesOffset, removeMessage} from "../functions";
 
 
-export const useLogin = (open: boolean) => {
-    const queryFn = (offset: number, limit: number) => findLoginInfosOffset(offset, limit);
-    const queryKey = ['login'];
+export const useVisitor = (open: boolean) => {
+    const queryFn = (offset: number, limit: number) => findVisitorsOffset(offset, limit);
+    const queryKey = ['visitor'];
 
-    const [loginInfos, setLoginInfos] = React.useState<ILoginInfo[]>([]);
+    const [visitors, setVisitors] = React.useState<Visitor[]>([]);
 
-    const { refetch, fetchNextPage } = useInfiniteQuery<IOffsetResponse<ILoginInfo>, Error, IOffsetResponse<ILoginInfo>, string[]>({
+    const { refetch, fetchNextPage } = useInfiniteQuery<OffsetResponseData<Visitor[]>, Error, OffsetResponseData<Visitor[]>, string[]>({
         queryKey,
         queryFn: async (queryFuncCtx) => {
             const res = await queryFn(
@@ -27,12 +27,12 @@ export const useLogin = (open: boolean) => {
             }
         },
         onSuccess: (res) => {
-            const loginInfos = res.pages.reduce((prev, curr) => {
+            const visitors = res.pages.reduce((prev, curr) => {
                 const data = curr.data;
                 prev.push(...data);
                 return prev;
-            }, [] as ILoginInfo[]);
-            setLoginInfos(loginInfos);
+            }, [] as Visitor[]);
+            setVisitors(visitors);
         },
         onError: (error) => {
             console.log('error', error);
@@ -45,8 +45,8 @@ export const useLogin = (open: boolean) => {
     const queryClient = useQueryClient()
 
     const { mutateAsync } = useMutation({
-        mutationFn: async (loginInfo: ILoginInfo) => {
-            await removeLoginInfo({ id: loginInfo.id });
+        mutationFn: async (visitor: Visitor) => {
+            await removeVisitor(visitor.id);
             await queryClient.invalidateQueries(queryKey);
         },
         onError: (error) => {
@@ -55,21 +55,21 @@ export const useLogin = (open: boolean) => {
     });
 
     return {
-        loginInfos,
-        setLoginInfos,
-        refetchLoginInfos: refetch,
-        fetchNextPageLoginInfos: fetchNextPage,
-        removeLoginInfo: mutateAsync,
+        visitors,
+        setVisitors,
+        refetchVisitors: refetch,
+        fetchNextPageVisitors: fetchNextPage,
+        removeVisitor: mutateAsync,
     }
 }
 
-export const useSubmit = (open: boolean) => {
-    const queryFn = (offset: number, limit: number) => findSubmitInfosOffset(offset, limit);
-    const queryKey = ['submit'];
+export const useMessage = (open: boolean) => {
+    const queryFn = (offset: number, limit: number) => findMessagesOffset(offset, limit);
+    const queryKey = ['nme'];
 
-    const [submitInfos, setSubmitInfos] = React.useState<ISubmitInfo[]>([]);
+    const [messages, setMessages] = React.useState<Message[]>([]);
 
-    const { refetch, fetchNextPage } = useInfiniteQuery<IOffsetResponse<ISubmitInfo>, Error, IOffsetResponse<ISubmitInfo>, string[]>({
+    const { refetch, fetchNextPage } = useInfiniteQuery<OffsetResponseData<Message[]>, Error, OffsetResponseData<Message[]>, string[]>({
         queryKey,
         queryFn: async (queryFuncCtx) => {
             const res = await queryFn(
@@ -86,12 +86,12 @@ export const useSubmit = (open: boolean) => {
             }
         },
         onSuccess: (res) => {
-            const submitInfos = res.pages.reduce((prev, curr) => {
+            const messages = res.pages.reduce((prev, curr) => {
                 const data = curr.data;
                 prev.push(...data);
                 return prev;
-            }, [] as ISubmitInfo[]);
-            setSubmitInfos(submitInfos);
+            }, [] as Message[]);
+            setMessages(messages);
         },
         onError: (error) => {
             console.log('error', error);
@@ -104,8 +104,8 @@ export const useSubmit = (open: boolean) => {
     const queryClient = useQueryClient()
 
     const { mutateAsync } = useMutation({
-        mutationFn: async (submitInfo: ISubmitInfo) => {
-            await removeSubmitInfo({ id: submitInfo.id });
+        mutationFn: async (message: Message) => {
+            await removeMessage(message.id);
             await queryClient.invalidateQueries(queryKey);
         },
         onError: (error) => {
@@ -114,10 +114,10 @@ export const useSubmit = (open: boolean) => {
     });
 
     return {
-        submitInfos,
-        setSubmitInfos,
-        refetchSubmitInfos: refetch,
-        fetchNextPageSubmitInfos: fetchNextPage,
-        removeSubmitInfo: mutateAsync,
+        messages,
+        setMessages,
+        refetchMessages: refetch,
+        fetchNextPageMessages: fetchNextPage,
+        removeMessage: mutateAsync,
     }
 }

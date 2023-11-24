@@ -10,12 +10,13 @@ import {
     Modal,
     Button,
 } from '@mui/material';
-import {ILoginInfo, ISubmitInfo} from "../interfaces";
-import {useLogin, useSubmit} from "../hooks";
+import {Visitor, Message} from "../interfaces";
+import {useVisitor, useMessage} from "../hooks";
 import ActionsRenderer from "./Renderers/ActionsRenderer";
+import { StockTable, Test } from '.';
 
 
-type TabType = 'LoginInfo' | 'SubmitInfo';
+type TabType = 'Visitor' | 'Message' | 'Stock' | 'Test';
 
 interface Props {
     open: boolean,
@@ -44,10 +45,10 @@ const ListModal = (props: Props) => {
         };
     }, []);
 
-    const [tab, setTab] = React.useState<TabType>('LoginInfo');
+    const [tab, setTab] = React.useState<TabType>('Visitor');
 
-    const { loginInfos, fetchNextPageLoginInfos, removeLoginInfo } = useLogin(open);
-    const { submitInfos, fetchNextPageSubmitInfos, removeSubmitInfo } = useSubmit(open);
+    const { visitors, fetchNextPageVisitors, removeVisitor } = useVisitor(open);
+    const { messages, fetchNextPageMessages, removeMessage } = useMessage(open);
 
     // const [gridApi, setGridApi] = React.useState<GridApi | null>(null);
     // const [columnApi, setColumnApi] = React.useState<ColumnApi | null>(null);
@@ -59,7 +60,7 @@ const ListModal = (props: Props) => {
         }
     }, []);
 
-    const columnDefsLogin: ColDef[] = React.useMemo(() => {
+    const columnDefsVisitor: ColDef[] = React.useMemo(() => {
         return [
             { headerName: "No.", valueGetter: (params) => typeof params.node?.rowIndex === 'number' ? params.node?.rowIndex + 1 : 0, flex: 1 },
             { field: "IPv4", headerName: "IPv4", tooltipField: "IPv4", flex: 1 },
@@ -67,11 +68,11 @@ const ListModal = (props: Props) => {
             { field: "country_name", headerName: "Country", tooltipField: "country_name", flex: 1 },
             { field: "city", headerName: "City", tooltipField: "city", flex: 1 },
             { field: "date", headerName: "Date", tooltipField: "date", flex: 1 },
-            { cellRenderer: "actionsRenderer", cellRendererParams: { removeFn: removeLoginInfo },flex: 0.5 },
+            { cellRenderer: "actionsRenderer", cellRendererParams: { removeFn: removeVisitor },flex: 0.5 },
         ];
     }, []);
 
-    const columnDefsSubmit: ColDef[] = React.useMemo(() => {
+    const columnDefsMessage: ColDef[] = React.useMemo(() => {
         return [
             { headerName: "No.", valueGetter: (params) => typeof params.node?.rowIndex === 'number' ? params.node?.rowIndex + 1 : 0, flex: 1 },
             { field: "name", headerName: "Name", tooltipField: "name", flex: 1 },
@@ -79,7 +80,7 @@ const ListModal = (props: Props) => {
             { field: "subject", headerName: "Subject", tooltipField: "subject", flex: 1 },
             { field: "message", headerName: "Message", tooltipField: "message", flex: 1 },
             { field: "date", headerName: "Date", tooltipField: "date", flex: 1 },
-            { cellRenderer: "actionsRenderer", cellRendererParams: { removeFn: removeSubmitInfo },flex: 0.5 },
+            { cellRenderer: "actionsRenderer", cellRendererParams: { removeFn: removeMessage },flex: 0.5 },
         ];
     }, []);
 
@@ -87,19 +88,19 @@ const ListModal = (props: Props) => {
         actionsRenderer: ActionsRenderer,
     };
 
-    const onBodyScrollEndLogin = React.useCallback(async (event: BodyScrollEndEvent) => {
+    const onBodyScrollEndVisitor = React.useCallback(async (event: BodyScrollEndEvent) => {
         const { direction, api } = event;
-        if (direction === 'vertical' && api.getLastDisplayedRow() + 1 === loginInfos.length) {
-            await fetchNextPageLoginInfos();
+        if (direction === 'vertical' && api.getLastDisplayedRow() + 1 === visitors.length) {
+            await fetchNextPageVisitors();
         }
-    }, [loginInfos]);
+    }, [visitors]);
 
-    const onBodyScrollEndSubmit = React.useCallback(async (event: BodyScrollEndEvent) => {
+    const onBodyScrollEndMessage = React.useCallback(async (event: BodyScrollEndEvent) => {
         const { direction, api } = event;
-        if (direction === 'vertical' && api.getLastDisplayedRow() + 1 === submitInfos.length) {
-            await fetchNextPageSubmitInfos();
+        if (direction === 'vertical' && api.getLastDisplayedRow() + 1 === messages.length) {
+            await fetchNextPageMessages();
         }
-    }, [submitInfos]);
+    }, [messages]);
 
     return (
         <Modal
@@ -117,44 +118,54 @@ const ListModal = (props: Props) => {
                 {/*</Typography>*/}
 
                 <div style={{ marginBottom: '10px', marginTop: '10px' }}>
-                    <Button style={{ marginLeft: '3px', marginRight: '3px', backgroundColor: '#E8B09F' }} variant='contained' size='small' onClick={() => setTab('LoginInfo')}>LoginInfo</Button>
-                    <Button style={{ marginLeft: '3px', marginRight: '3px', backgroundColor: '#E8B09F' }} variant='contained' size='small' onClick={() => setTab('SubmitInfo')}>SubmitInfo</Button>
+                    <Button style={{ marginLeft: '3px', marginRight: '3px', backgroundColor: '#E8B09F' }} variant='contained' size='small' onClick={() => setTab('Visitor')}>Visitor</Button>
+                    <Button style={{ marginLeft: '3px', marginRight: '3px', backgroundColor: '#E8B09F' }} variant='contained' size='small' onClick={() => setTab('Message')}>Message</Button>
+                    <Button style={{ marginLeft: '3px', marginRight: '3px', backgroundColor: '#E8B09F' }} variant='contained' size='small' onClick={() => setTab('Stock')}>Stock</Button>
+                    <Button style={{ marginLeft: '3px', marginRight: '3px', backgroundColor: '#E8B09F' }} variant='contained' size='small' onClick={() => setTab('Test')}>Test</Button>
                 </div>
 
-                <div className="ag-theme-alpine" style={{height: 400, width: '100%'}}>
-                    {tab === "LoginInfo" && <AgGridReact<ILoginInfo>
-                        columnDefs={columnDefsLogin}
-                        defaultColDef={defaultColDef}
-                        rowData={loginInfos}
-                        // getRowNodeId={data => data.id}
-                        // onGridReady={onGridReadyLogin}
-                        onBodyScrollEnd={onBodyScrollEndLogin}
-                        suppressScrollOnNewData
-                        suppressBrowserResizeObserver
-                        components={components}
-                        editType="fullRow"
-                        suppressClickEdit
-                        // statusBar={{
-                        //     statusPanels: [{ statusPanel: "addRowStatusBar" }]
-                        // }}
-                    />}
-                    {tab === "SubmitInfo" && <AgGridReact<ISubmitInfo>
-                        columnDefs={columnDefsSubmit}
-                        defaultColDef={defaultColDef}
-                        rowData={submitInfos}
-                        // getRowNodeId={data => data.id}
-                        // onGridReady={onGridReadySubmit}
-                        onBodyScrollEnd={onBodyScrollEndSubmit}
-                        suppressScrollOnNewData
-                        suppressBrowserResizeObserver
-                        components={components}
-                        editType="fullRow"
-                        suppressClickEdit
-                        // statusBar={{
-                        //     statusPanels: [{ statusPanel: "addRowStatusBar" }]
-                        // }}
-                    />}
-                </div>
+                {tab === "Visitor" && <div className="ag-theme-alpine" style={{height: 400, width: '100%'}}>
+                    <AgGridReact<Visitor>
+                      columnDefs={columnDefsVisitor}
+                      defaultColDef={defaultColDef}
+                      rowData={visitors}
+                      // getRowNodeId={data => data.id}
+                      // onGridReady={onGridReadyVisitor}
+                      onBodyScrollEnd={onBodyScrollEndVisitor}
+                      suppressScrollOnNewData
+                      suppressBrowserResizeObserver
+                      components={components}
+                      editType="fullRow"
+                      suppressClickEdit
+                      // statusBar={{
+                      //     statusPanels: [{ statusPanel: "addRowStatusBar" }]
+                      // }}
+                    />
+                </div>}
+                {tab === "Message" && <div className="ag-theme-alpine" style={{height: 400, width: '100%'}}>
+                    <AgGridReact<Message>
+                      columnDefs={columnDefsMessage}
+                      defaultColDef={defaultColDef}
+                      rowData={messages}
+                      // getRowNodeId={data => data.id}
+                      // onGridReady={onGridReadyMessage}
+                      onBodyScrollEnd={onBodyScrollEndMessage}
+                      suppressScrollOnNewData
+                      suppressBrowserResizeObserver
+                      components={components}
+                      editType="fullRow"
+                      suppressClickEdit
+                      // statusBar={{
+                      //     statusPanels: [{ statusPanel: "addRowStatusBar" }]
+                      // }}
+                    />
+                </div>}
+                {tab === "Stock" && <div style={{height: 400, width: '100%'}}>
+                    <StockTable />
+                </div>}
+                {tab === "Test" && <div style={{height: 400, width: '100%'}}>
+                    <Test />
+                </div>}
             </Box>
         </Modal>
     );

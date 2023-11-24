@@ -1,14 +1,14 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import {ILoginInfo, ISubmitInfo} from "../interfaces";
-import {registerSubmitInfo, sendMessage} from "../functions";
+import {Visitor, Message} from "../interfaces";
+import {registerMessage, sendMessage} from "../functions";
 
 interface Props {
-    loginInfo: ILoginInfo | null,
+    visitor: Visitor | null,
 }
 const Contact = (props: Props) => {
     //
-    const { loginInfo } = props;
+    const { visitor } = props;
 
     const nameRef = React.useRef<HTMLInputElement>(null);
     const emailRef = React.useRef<HTMLInputElement>(null);
@@ -17,19 +17,21 @@ const Contact = (props: Props) => {
 
     const onClickSend = React.useCallback(async () => {
         //
-        if (!loginInfo) {
-            alert('Login Info is needed.');
+        if (!visitor) {
+            alert('Visitor is needed.');
             return;
         }
 
-        const submitInfo: ISubmitInfo = {
+        const message: Message = {
             name: nameRef.current ? nameRef.current.value : '',
             email: emailRef.current ? emailRef.current.value : '',
             subject: subjectRef.current ? subjectRef.current.value : '',
             message: messageRef.current ? messageRef.current.value : '',
+            id: '',
+            date: '',
         };
 
-        await sendMessage(JSON.stringify(loginInfo) + ' ///////////////////// ' + JSON.stringify(submitInfo))
+        await sendMessage(JSON.stringify(visitor) + ' ///////////////////// ' + JSON.stringify(message))
             .then(async (res) => {
                 if (res.status === 200) {
                     alert('Your message is just sent.');
@@ -38,10 +40,10 @@ const Contact = (props: Props) => {
                     if (subjectRef.current) subjectRef.current.value = '';
                     if (messageRef.current) messageRef.current.value = '';
 
-                    await registerSubmitInfo(Object.assign(submitInfo, { id: uuidv4(), date: new Date().toISOString() }));
+                    await registerMessage(Object.assign(message, { id: uuidv4(), date: new Date().toISOString() }));
                 }
             });
-    }, [loginInfo]);
+    }, [visitor]);
 
     return (
         <article id="contact" className="panel">
