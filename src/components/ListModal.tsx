@@ -13,10 +13,10 @@ import {
 import {Visitor, Message} from "../interfaces";
 import {useVisitor, useMessage} from "../hooks";
 import ActionsRenderer from "./Renderers/ActionsRenderer";
-import { StockTable, Test } from '.';
+import { StockTable, Test, MapTest } from '.';
 
 
-type TabType = 'Visitor' | 'Message' | 'Stock' | 'Test';
+type TabType = 'Visitor' | 'Message' | 'Stock' | 'Test' | 'MapTest';
 
 interface Props {
     open: boolean,
@@ -122,6 +122,7 @@ const ListModal = (props: Props) => {
                     <Button style={{ marginLeft: '3px', marginRight: '3px', backgroundColor: '#E8B09F' }} variant='contained' size='small' onClick={() => setTab('Message')}>Message</Button>
                     <Button style={{ marginLeft: '3px', marginRight: '3px', backgroundColor: '#E8B09F' }} variant='contained' size='small' onClick={() => setTab('Stock')}>Stock</Button>
                     <Button style={{ marginLeft: '3px', marginRight: '3px', backgroundColor: '#E8B09F' }} variant='contained' size='small' onClick={() => setTab('Test')}>Test</Button>
+                    <Button style={{ marginLeft: '3px', marginRight: '3px', backgroundColor: '#E8B09F' }} variant='contained' size='small' onClick={() => setTab('MapTest')}>MapTest</Button>
                 </div>
 
                 {tab === "Visitor" && <div className="ag-theme-alpine" style={{height: 400, width: '100%'}}>
@@ -165,6 +166,9 @@ const ListModal = (props: Props) => {
                 </div>}
                 {tab === "Test" && <div style={{height: 400, width: '100%'}}>
                     <Test />
+                </div>}
+                {tab === "MapTest" && <div style={{height: 400, width: '100%'}}>
+                    <MapTest />
                 </div>}
             </Box>
         </Modal>
