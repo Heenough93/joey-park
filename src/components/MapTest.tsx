@@ -1,9 +1,12 @@
 import React from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import LocationMarker from './LocationMarker';
-
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+
+import DisplayPosition from './DisplayPosition';
+import SetViewOnClick from './SetViewOnClick';
+import LocationMarker from './LocationMarker';
+import DraggableMarker from './DraggableMarker';
 
 
 L.Icon.Default.mergeOptions({
@@ -12,12 +15,25 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
+const center: L.LatLngExpression = { lat: 51.505, lng: -0.09 };
+const zoom: number = 13;
+
 const MapTest = () => {
-  const position = { lat: 51.505, lng: -0.09 };
+  //
+  const [map, setMap] = React.useState<L.Map | null>(null)
+
+  const animateRef = React.useRef<boolean>(true)
 
     return (
       <>
-        <MapContainer style={{ height: '100%'}} center={position} zoom={13} scrollWheelZoom={false}>
+        {map && <DisplayPosition map={map} center={center} zoom={zoom} />}
+        <MapContainer
+          style={{ height: '100%'}}
+          ref={setMap}
+          center={center}
+          zoom={zoom}
+          scrollWheelZoom={false}
+        >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -27,7 +43,9 @@ const MapTest = () => {
           {/*    A pretty CSS3 popup. <br /> Easily customizable.*/}
           {/*  </Popup>*/}
           {/*</Marker>*/}
+          <SetViewOnClick animateRef={animateRef} />
           <LocationMarker />
+          <DraggableMarker center={center} />
         </MapContainer>
       </>
     );
