@@ -20,21 +20,28 @@ L.Icon.Default.mergeOptions({
 const center: L.LatLngExpression = { lat: 51.505, lng: -0.09 };
 const zoom: number = 13;
 
-interface Props {
-  visitors: Visitor[],
-}
 
-const MapTest = ({visitors}: Props) => {
+const MapTest = () => {
   //
+  const [visitors, setVisitors] = React.useState<Visitor[]>([])
   const [map, setMap] = React.useState<L.Map | null>(null)
 
   const animateRef = React.useRef<boolean>(true)
+
+  React.useEffect(() => {
+    fetch(process.env.REACT_APP_BASE_URL + 'find-visitors', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: null,
+    })
+      .then((res) => res.json())
+      .then((res) => setVisitors(res.data))
+  }, [])
 
     return (
       <>
         {map && <DisplayPosition map={map} center={center} zoom={zoom} />}
         <MapContainer
-          className="markercluster-map"
           style={{ height: '100%'}}
           ref={setMap}
           center={center}
