@@ -168,7 +168,7 @@ const ListModal = (props: Props) => {
                     <Test />
                 </div>}
                 {tab === "MapTest" && <div style={{height: 400, width: '100%'}}>
-                    <MapTest />
+                    <MapTest visitors={visitors} />
                 </div>}
             </Box>
         </Modal>

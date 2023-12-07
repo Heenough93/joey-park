@@ -7,6 +7,8 @@ import DisplayPosition from './DisplayPosition';
 import SetViewOnClick from './SetViewOnClick';
 import LocationMarker from './LocationMarker';
 import DraggableMarker from './DraggableMarker';
+import GroupMarker from './GroupMarker';
+import { Visitor } from '../interfaces';
 
 
 L.Icon.Default.mergeOptions({
@@ -18,7 +20,11 @@ L.Icon.Default.mergeOptions({
 const center: L.LatLngExpression = { lat: 51.505, lng: -0.09 };
 const zoom: number = 13;
 
-const MapTest = () => {
+interface Props {
+  visitors: Visitor[],
+}
+
+const MapTest = ({visitors}: Props) => {
   //
   const [map, setMap] = React.useState<L.Map | null>(null)
 
@@ -28,6 +34,7 @@ const MapTest = () => {
       <>
         {map && <DisplayPosition map={map} center={center} zoom={zoom} />}
         <MapContainer
+          className="markercluster-map"
           style={{ height: '100%'}}
           ref={setMap}
           center={center}
@@ -46,6 +53,7 @@ const MapTest = () => {
           <SetViewOnClick animateRef={animateRef} />
           <LocationMarker />
           <DraggableMarker center={center} />
+          <GroupMarker visitors={visitors} />
         </MapContainer>
       </>
     );
