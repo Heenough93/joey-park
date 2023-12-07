@@ -7,6 +7,9 @@ import DisplayPosition from './DisplayPosition';
 import SetViewOnClick from './SetViewOnClick';
 import LocationMarker from './LocationMarker';
 import DraggableMarker from './DraggableMarker';
+import GroupMarker from './GroupMarker';
+import { Visitor } from '../interfaces';
+import AddDeleteMarker from './AddDeleteMarker';
 
 
 L.Icon.Default.mergeOptions({
@@ -18,11 +21,23 @@ L.Icon.Default.mergeOptions({
 const center: L.LatLngExpression = { lat: 51.505, lng: -0.09 };
 const zoom: number = 13;
 
+
 const MapTest = () => {
   //
+  const [visitors, setVisitors] = React.useState<Visitor[]>([])
   const [map, setMap] = React.useState<L.Map | null>(null)
 
   const animateRef = React.useRef<boolean>(true)
+
+  React.useEffect(() => {
+    fetch(process.env.REACT_APP_BASE_URL + 'find-visitors', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: null,
+    })
+      .then((res) => res.json())
+      .then((res) => setVisitors(res.data))
+  }, [])
 
     return (
       <>
@@ -46,6 +61,8 @@ const MapTest = () => {
           <SetViewOnClick animateRef={animateRef} />
           <LocationMarker />
           <DraggableMarker center={center} />
+          <GroupMarker visitors={visitors} />
+          <AddDeleteMarker map={map} />
         </MapContainer>
       </>
     );
