@@ -9,6 +9,7 @@ import LocationMarker from './LocationMarker';
 import DraggableMarker from './DraggableMarker';
 import GroupMarker from './GroupMarker';
 import { Visitor } from '../interfaces';
+import AddDeleteMarker from './AddDeleteMarker';
 
 
 L.Icon.Default.mergeOptions({
@@ -61,6 +62,7 @@ const MapTest = () => {
           <LocationMarker />
           <DraggableMarker center={center} />
           <GroupMarker visitors={visitors} />
+          <AddDeleteMarker map={map} />
         </MapContainer>
       </>
     );
