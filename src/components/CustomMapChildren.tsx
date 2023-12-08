@@ -1,5 +1,4 @@
 import React from 'react';
-import { useMap, useMapEvent } from 'react-leaflet';
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
@@ -15,17 +14,17 @@ interface Props {
 }
 const CustomMapChildren = ({center}: Props) => {
   //
-  const map = useMap();
-
-  const animateRef = React.useRef<boolean>(true)
-
-  const mapClickEvent = React.useCallback((e: L.LeafletMouseEvent) => {
-    map.setView(e.latlng, map.getZoom(), {
-      animate: animateRef.current || false,
-    })
-  }, [animateRef])
-
-  useMapEvent('click', mapClickEvent);
+  // const map = useMap();
+  //
+  // const animateRef = React.useRef<boolean>(true)
+  //
+  // const mapClickEvent = React.useCallback((e: L.LeafletMouseEvent) => {
+  //   map.setView(e.latlng, map.getZoom(), {
+  //     animate: animateRef.current || false,
+  //   })
+  // }, [animateRef])
+  //
+  // useMapEvent('click', mapClickEvent);
 
   const [visitors, setVisitors] = React.useState<Visitor[]>([])
 
