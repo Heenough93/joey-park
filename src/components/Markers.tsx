@@ -18,16 +18,13 @@ const Markers = () => {
 
   return (
       <>
-        {positions.length > 0 &&
-          positions.map((position, index) => {
-            return (
-              <DraggableMarker
-                key={index}
-                position={position}
-                setPositions={setPositions}
-              />
-            )
-          })}
+        {positions.length > 0 && positions.map((position, index) => (
+          <DraggableMarker
+            key={index}
+            position={position}
+            setPositions={setPositions}
+          />
+        ))}
       </>
     );
 }
