@@ -1,45 +1,73 @@
 import React from 'react';
-import { Marker, Popup } from 'react-leaflet';
+import { Marker, Popup, useMap } from 'react-leaflet';
 import L, { Marker as LeafletMarker } from 'leaflet';
 
 
 interface Props {
-  center:  L.LatLngExpression,
+  position:  L.LatLngExpression & { id: number },
+  setPositions: React.Dispatch<React.SetStateAction<(L.LatLngExpression & { id: number })[]>>,
 }
 
-const DraggableMarker = ({ center }: Props) => {
+const DraggableMarker = ({ position, setPositions }: Props) => {
+  //
   const [draggable, setDraggable] = React.useState(false)
-  const [position, setPosition] = React.useState(center)
 
   const markerRef = React.useRef<LeafletMarker>(null)
 
-  const eventHandlers = React.useMemo(
-    () => ({
+  const map = useMap();
+
+  const eventHandlers = React.useMemo(() => {
+    return {
       dragend() {
         const marker = markerRef.current
         if (marker != null) {
-          setPosition(marker.getLatLng())
+          setPositions((prev) => {
+            return prev.map((target) => {
+              if (target.id === position.id) {
+                return { ...marker.getLatLng(), id: target.id };
+              } else {
+                return target;
+              }
+            })
+          });
         }
       },
-    }),
-    [],
-  )
+    }
+  }, [position])
+
   const toggleDraggable = React.useCallback(() => {
-    setDraggable((d) => !d)
+    setDraggable((prev) => !prev)
   }, [])
+
+  const removeMarker = React.useCallback((id: number) => {
+    map.eachLayer((layer) => {
+      if (layer.options && layer.options.pane === "markerPane") {
+        if (layer.options.attribution === id.toString()) {
+          map.removeLayer(layer);
+          setPositions((prev) => {
+            return prev.filter((target) => target.id !== id)
+          });
+        }
+      }
+    });
+  }, [map])
 
   return (
     <Marker
-      draggable={draggable}
-      eventHandlers={eventHandlers}
+      key={position.id}
+      ref={markerRef}
+      attribution={position.id.toString()}
       position={position}
-      ref={markerRef}>
+      eventHandlers={eventHandlers}
+      draggable={draggable}
+    >
       <Popup minWidth={90}>
         <span onClick={toggleDraggable}>
           {draggable
             ? 'Marker is draggable'
             : 'Click here to make marker draggable'}
         </span>
+        <button onClick={() => removeMarker(position.id)}>delete marker</button>
       </Popup>
     </Marker>
   )
