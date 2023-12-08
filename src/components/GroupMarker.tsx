@@ -11,7 +11,13 @@ interface Props {
 
 const GroupMarker = ({ visitors }: Props) => {
   //
-  const points = visitors.map((visitor) => ({lat: visitor.latitude, lng: visitor.longitude, title: visitor.date}));
+  const points = visitors.map((visitor) => {
+    return {
+      lat: visitor.latitude,
+      lng: visitor.longitude,
+      title: visitor.date
+    }
+  });
 
   return (
     <MarkerClusterGroup>
