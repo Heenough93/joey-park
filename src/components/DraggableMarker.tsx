@@ -12,6 +12,10 @@ const DraggableMarker = ({ position, setPositions }: Props) => {
   //
   const [draggable, setDraggable] = React.useState(false)
 
+  const handleClickDraggable = React.useCallback(() => {
+    setDraggable((prev) => !prev)
+  }, [])
+
   const markerRef = React.useRef<LeafletMarker>(null)
 
   const map = useMap();
@@ -35,10 +39,6 @@ const DraggableMarker = ({ position, setPositions }: Props) => {
     }
   }, [position])
 
-  const toggleDraggable = React.useCallback(() => {
-    setDraggable((prev) => !prev)
-  }, [])
-
   const removeMarker = React.useCallback((id: number) => {
     map.eachLayer((layer) => {
       if (layer.options && layer.options.pane === "markerPane") {
@@ -61,13 +61,9 @@ const DraggableMarker = ({ position, setPositions }: Props) => {
       eventHandlers={eventHandlers}
       draggable={draggable}
     >
-      <Popup minWidth={90}>
-        <span onClick={toggleDraggable}>
-          {draggable
-            ? 'Marker is draggable'
-            : 'Click here to make marker draggable'}
-        </span>
-        <button onClick={() => removeMarker(position.id)}>delete marker</button>
+      <Popup>
+        <button onClick={handleClickDraggable}>{draggable ? 'not draggable' : 'draggable'}</button>
+        <button onClick={() => removeMarker(position.id)}>delete</button>
       </Popup>
     </Marker>
   )
