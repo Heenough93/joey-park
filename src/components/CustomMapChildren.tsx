@@ -1,5 +1,6 @@
 import React from 'react';
-import L from 'leaflet'
+import { useMap } from 'react-leaflet';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css'
 
 import GroupMarker from './GroupMarker';
@@ -10,7 +11,7 @@ import { Visitor } from '../interfaces';
 
 
 interface Props {
-  center: L.LatLngExpression,
+  center: L.LatLngLiteral,
 }
 const CustomMapChildren = ({center}: Props) => {
   //
@@ -25,6 +26,38 @@ const CustomMapChildren = ({center}: Props) => {
   // }, [animateRef])
   //
   // useMapEvent('click', mapClickEvent);
+
+
+  const map = useMap();
+
+  React.useEffect(() => {
+    if (!map) return;
+
+    const contentText = (bounds: L.LatLngBounds) => {
+      return `latitude: ${bounds.getCenter().lat}, longitude: ${bounds.getCenter().lng}`;
+    }
+
+    const info = L.DomUtil.create('div', 'legend');
+
+    const position = L.Control.extend({
+      options: {
+        position: 'bottomleft'
+      },
+
+      onAdd: function () {
+        const bounds = map.getBounds();
+        info.innerHTML = contentText(bounds);
+        return info;
+      }
+    })
+
+    map.addControl(new position());
+
+    map.on('moveend zoomend', () => {
+      const bounds = map.getBounds();
+      info.textContent = contentText(bounds);
+    });
+  }, [map])
 
   const [visitors, setVisitors] = React.useState<Visitor[]>([])
 
