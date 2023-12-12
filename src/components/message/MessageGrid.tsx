@@ -42,26 +42,24 @@ const MessageGrid = () => {
   }, [messages]);
 
   return (
-    <>
-      <div className="ag-theme-alpine" style={{height: 400, width: '100%'}}>
-        <AgGridReact<Message>
-          columnDefs={columnDefsMessage}
-          defaultColDef={defaultColDef}
-          rowData={messages}
-          // getRowNodeId={data => data.id}
-          // onGridReady={onGridReadyMessage}
-          onBodyScrollEnd={onBodyScrollEndMessage}
-          suppressScrollOnNewData
-          suppressBrowserResizeObserver
-          components={components}
-          editType="fullRow"
-          suppressClickEdit
-          // statusBar={{
-          //     statusPanels: [{ statusPanel: "addRowStatusBar" }]
-          // }}
-        />
-      </div>
-    </>
+    <div className="ag-theme-alpine" style={{ height: 400, width: '100%' }}>
+      <AgGridReact<Message>
+        columnDefs={columnDefsMessage}
+        defaultColDef={defaultColDef}
+        rowData={messages}
+        // getRowNodeId={data => data.id}
+        // onGridReady={onGridReadyMessage}
+        onBodyScrollEnd={onBodyScrollEndMessage}
+        suppressScrollOnNewData
+        suppressBrowserResizeObserver
+        components={components}
+        editType="fullRow"
+        suppressClickEdit
+        // statusBar={{
+        //     statusPanels: [{ statusPanel: "addRowStatusBar" }]
+        // }}
+      />
+    </div>
   );
 }
 

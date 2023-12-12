@@ -42,26 +42,24 @@ const VisitorGrid = () => {
   }, [visitors]);
 
   return (
-    <>
-      <div className="ag-theme-alpine" style={{height: 400, width: '100%'}}>
-        <AgGridReact<Visitor>
-          columnDefs={columnDefsVisitor}
-          defaultColDef={defaultColDef}
-          rowData={visitors}
-          // getRowNodeId={data => data.id}
-          // onGridReady={onGridReadyVisitor}
-          onBodyScrollEnd={onBodyScrollEndVisitor}
-          suppressScrollOnNewData
-          suppressBrowserResizeObserver
-          components={components}
-          editType="fullRow"
-          suppressClickEdit
-          // statusBar={{
-          //     statusPanels: [{ statusPanel: "addRowStatusBar" }]
-          // }}
-        />
-      </div>
-    </>
+    <div className="ag-theme-alpine" style={{ height: 400, width: '100%' }}>
+      <AgGridReact<Visitor>
+        columnDefs={columnDefsVisitor}
+        defaultColDef={defaultColDef}
+        rowData={visitors}
+        // getRowNodeId={data => data.id}
+        // onGridReady={onGridReadyVisitor}
+        onBodyScrollEnd={onBodyScrollEndVisitor}
+        suppressScrollOnNewData
+        suppressBrowserResizeObserver
+        components={components}
+        editType="fullRow"
+        suppressClickEdit
+        // statusBar={{
+        //     statusPanels: [{ statusPanel: "addRowStatusBar" }]
+        // }}
+      />
+    </div>
   );
 }
 

@@ -20,24 +20,22 @@ const CustomMap = () => {
   const center = React.useMemo<L.LatLngLiteral>(() => ({ lat: 51.505, lng: -0.09 }), [map]);
 
   return (
-    <>
-      <div style={{height: 400, width: '100%'}}>
-        <MapContainer
-          style={{ height: '100%' }}
-          ref={setMap}
-          center={center}
-          zoom={13}
-          scrollWheelZoom={true}
-          doubleClickZoom={false}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <CustomMapChildren center={center} />
-        </MapContainer>
-      </div>
-    </>
+    <div style={{ height: 400, width: '100%' }}>
+      <MapContainer
+        style={{ height: '100%' }}
+        ref={setMap}
+        center={center}
+        zoom={13}
+        scrollWheelZoom={true}
+        doubleClickZoom={false}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <CustomMapChildren center={center} />
+      </MapContainer>
+    </div>
   );
 }
 
