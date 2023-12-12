@@ -1,5 +1,7 @@
 import React from 'react';
-import {meImage} from "../images";
+
+import {meImage} from "../../images";
+
 
 const Home = () => {
     //

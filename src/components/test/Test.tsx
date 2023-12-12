@@ -36,7 +36,7 @@ const Test = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        "email": "admin@bookie.local",
+        "email": "admin@test.com",
         "password": "password123"
       })
     })
@@ -318,39 +318,39 @@ const Test = () => {
       });
   }, [token])
 
-    return (
-      <>
-        <div>
-          <Button onClick={handleClickRegister}>Register</Button>
-          <Button onClick={handleClickLoginAdmin}>Login Admin</Button>
-          <Button onClick={handleClickLoginUser}>Login User</Button>
-        </div>
-        <div>
-          <input onChange={handleChangeId} value={id} />
-        </div>
-        <div>
-          <Button onClick={handleClickUserList}>User List</Button>
-          <Button onClick={() => handleClickUser(id)}>User</Button>
-          <Button onClick={handleClickUserRegister}>User Register</Button>
-          <Button onClick={() => handleClickUserModify(id)}>User Modify</Button>
-          <Button onClick={() => handleClickUserRemove(id)}>User Remove</Button>
-        </div>
-        <div>
-          <Button onClick={handleClickAuthorList}>Author List</Button>
-          <Button onClick={() => handleClickAuthor(id)}>Author</Button>
-          <Button onClick={handleClickAuthorRegister}>Author Register</Button>
-          <Button onClick={() => handleClickAuthorModify(id)}>Author Modify</Button>
-          <Button onClick={() => handleClickAuthorRemove(id)}>Author Remove</Button>
-        </div>
-        <div>
-          <Button onClick={handleClickBookList}>Book List</Button>
-          <Button onClick={() => handleClickBook(id)}>Book</Button>
-          <Button onClick={handleClickBookRegister}>Book Register</Button>
-          <Button onClick={() => handleClickBookModify(id)}>Book Modify</Button>
-          <Button onClick={() => handleClickBookRemove(id)}>Book Remove</Button>
-        </div>
-      </>
-    );
+  return (
+    <div style={{ height: 600, width: '100%' }}>
+      <div>
+        <Button onClick={handleClickRegister}>Register</Button>
+        <Button onClick={handleClickLoginAdmin}>Login Admin</Button>
+        <Button onClick={handleClickLoginUser}>Login User</Button>
+      </div>
+      <div>
+        <input onChange={handleChangeId} value={id} />
+      </div>
+      <div>
+        <Button onClick={handleClickUserList}>User List</Button>
+        <Button onClick={() => handleClickUser(id)}>User</Button>
+        <Button onClick={handleClickUserRegister}>User Register</Button>
+        <Button onClick={() => handleClickUserModify(id)}>User Modify</Button>
+        <Button onClick={() => handleClickUserRemove(id)}>User Remove</Button>
+      </div>
+      <div>
+        <Button onClick={handleClickAuthorList}>Author List</Button>
+        <Button onClick={() => handleClickAuthor(id)}>Author</Button>
+        <Button onClick={handleClickAuthorRegister}>Author Register</Button>
+        <Button onClick={() => handleClickAuthorModify(id)}>Author Modify</Button>
+        <Button onClick={() => handleClickAuthorRemove(id)}>Author Remove</Button>
+      </div>
+      <div>
+        <Button onClick={handleClickBookList}>Book List</Button>
+        <Button onClick={() => handleClickBook(id)}>Book</Button>
+        <Button onClick={handleClickBookRegister}>Book Register</Button>
+        <Button onClick={() => handleClickBookModify(id)}>Book Modify</Button>
+        <Button onClick={() => handleClickBookRemove(id)}>Book Remove</Button>
+      </div>
+    </div>
+  );
 }
 
 export default Test;

@@ -20,9 +20,9 @@ const CustomMap = () => {
   const center = React.useMemo<L.LatLngLiteral>(() => ({ lat: 51.505, lng: -0.09 }), [map]);
 
   return (
-    <>
+    <div style={{ height: 600, width: '100%' }}>
       <MapContainer
-        style={{ height: '100%'}}
+        style={{ height: '100%' }}
         ref={setMap}
         center={center}
         zoom={13}
@@ -35,7 +35,7 @@ const CustomMap = () => {
         />
         <CustomMapChildren center={center} />
       </MapContainer>
-    </>
+    </div>
   );
 }
 

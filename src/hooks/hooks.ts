@@ -15,13 +15,13 @@ export const useVisitor = (open: boolean) => {
         queryFn: async (queryFuncCtx) => {
             const res = await queryFn(
                 queryFuncCtx.pageParam ? queryFuncCtx.pageParam.offset : 0,
-                queryFuncCtx.pageParam ? queryFuncCtx.pageParam.limit : 10,
+                queryFuncCtx.pageParam ? queryFuncCtx.pageParam.limit : 15,
             );
             return res;
         },
         getNextPageParam: (res) => {
             if (res.total >= res.offset + res.limit) {
-                return { offset: res.offset + res.limit, limit: 10 };
+                return { offset: res.offset + res.limit, limit: 15 };
             } else {
                 return undefined;
             }
@@ -74,13 +74,13 @@ export const useMessage = (open: boolean) => {
         queryFn: async (queryFuncCtx) => {
             const res = await queryFn(
                 queryFuncCtx.pageParam ? queryFuncCtx.pageParam.offset : 0,
-                queryFuncCtx.pageParam ? queryFuncCtx.pageParam.limit : 10,
+                queryFuncCtx.pageParam ? queryFuncCtx.pageParam.limit : 15,
             );
             return res;
         },
         getNextPageParam: (res) => {
             if (res.total >= res.offset + res.limit) {
-                return { offset: res.offset + res.limit, limit: 10 };
+                return { offset: res.offset + res.limit, limit: 15 };
             } else {
                 return undefined;
             }

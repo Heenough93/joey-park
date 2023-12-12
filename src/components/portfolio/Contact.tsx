@@ -1,7 +1,9 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import {Visitor, Message} from "../interfaces";
-import {registerMessage, sendMessage} from "../functions";
+
+import { Visitor, Message } from "../../interfaces";
+import { registerMessage, sendMessage } from "../../functions";
+
 
 interface Props {
     visitor: Visitor | null,

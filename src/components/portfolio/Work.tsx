@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
     pic01Image,
     pic02Image,
@@ -12,7 +13,8 @@ import {
     pic10Image,
     pic11Image,
     pic12Image
-} from "../images";
+} from "../../images";
+
 
 const Work = () => {
     //

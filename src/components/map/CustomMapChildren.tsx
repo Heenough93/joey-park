@@ -7,7 +7,7 @@ import GroupMarker from './GroupMarker';
 import CenterMarker from './CenterMarker';
 import LocationMarker from './LocationMarker';
 import Markers from './Markers';
-import { Visitor } from '../interfaces';
+import { Visitor } from '../../interfaces';
 
 
 interface Props {

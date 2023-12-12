@@ -7,11 +7,13 @@ import {
   FormGroup,
   Table,
   TableBody,
-  TableCell, TableContainer,
+  TableCell,
+  TableContainer,
   TableHead,
   TableRow,
 } from '@mui/material';
-import { HoldingStockRdo } from '../interfaces';
+
+import { HoldingStockRdo } from '../../interfaces';
 
 
 interface Column {
@@ -156,70 +158,72 @@ const StockTable = () => {
     }
   };
 
-    return (
-      <>
-          {isLoading && <>
-              <Backdrop
-                style={{color: '#fff', zIndex: 1000}}
-                open={isLoading}
-              >
-                  <CircularProgress color="inherit" />
-              </Backdrop>
-          </>}
-          <FormGroup row>
-              {columns.map(({key, value, check, disabled}, index) => {
-                  return (
-                    <FormControlLabel control={<Checkbox key={index} checked={check} disabled={disabled} onClick={() => onClickCheckbox(key)} />} label={value} />
-                  )
+  return (
+    <div style={{ height: 600, width: '100%' }}>
+      {isLoading && <>
+        <Backdrop
+          style={{color: '#fff', zIndex: 1000}}
+          open={isLoading}
+        >
+          <CircularProgress color="inherit" />
+          </Backdrop>
+      </>}
+
+      <FormGroup row>
+        {columns.map(({key, value, check, disabled}, index) => {
+          return (
+            <FormControlLabel control={<Checkbox key={index} checked={check} disabled={disabled} onClick={() => onClickCheckbox(key)} />} label={value} />
+          )
+        })}
+      </FormGroup>
+
+      <TableContainer style={{
+        width: '100%',
+        maxHeight: 600,
+        overflowX: 'auto',
+      }}>
+        <Table stickyHeader style={{minWidth: 650}}>
+          <TableHead>
+            <TableRow>
+              {columns.map((column) => {
+                return (
+                  <>{column.check && <TableCell key={column.key}>{column.value}</TableCell>}</>
+                )
               })}
-          </FormGroup>
-        <TableContainer style={{
-          width: '100%',
-          maxHeight: 300,
-          overflowX: 'auto',
-        }}>
-          <Table stickyHeader style={{minWidth: 650}}>
-              <TableHead>
-                  <TableRow>
-                      {columns.map((column) => {
-                          return (
-                            <>{column.check && <TableCell key={column.key}>{column.value}</TableCell>}</>
-                          )
-                      })}
-                  </TableRow>
-              </TableHead>
-              <TableBody>
-                  {data && data.stockCodes.map((stockCode, index) => {
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data && data.stockCodes.map((stockCode, index) => {
+              return (
+                <TableRow key={index}>
+                  {columns.map((column) => {
+                    if (column.disabled) {
+                      const counts = data[column.key + 's'].reduce(callbackFnc, [] as number[]);
                       return (
-                        <TableRow key={index}>
-                            {columns.map((column) => {
-                                if (column.disabled) {
-                                    const counts = data[column.key + 's'].reduce(callbackFnc, [] as number[]);
-                                    return (
-                                      <>
-                                          {column.check && counts[index] !== 0 && <TableCell rowSpan={counts[index]}>
-                                              {data[column.key + 's'][index].split('\n').map(i => <div>{i}</div>)}
-                                          </TableCell>}
-                                      </>
-                                    )
-                                } else {
-                                    return (
-                                      <>
-                                          {column.check && <TableCell>
-                                              {data[column.key + 's'][index].split('\n').map(i => <div style={{color: i.charAt(0) === '-' ? 'red' : 'black'}}>{i}</div>)}
-                                          </TableCell>}
-                                      </>
-                                    )
-                                }
-                            })}
-                        </TableRow>
+                        <>
+                          {column.check && counts[index] !== 0 && <TableCell rowSpan={counts[index]}>
+                            {data[column.key + 's'][index].split('\n').map(i => <div>{i}</div>)}
+                          </TableCell>}
+                        </>
                       )
+                    } else {
+                      return (
+                        <>
+                          {column.check && <TableCell>
+                            {data[column.key + 's'][index].split('\n').map(i => <div style={{color: i.charAt(0) === '-' ? 'red' : 'black'}}>{i}</div>)}
+                          </TableCell>}
+                        </>
+                      )
+                    }
                   })}
-              </TableBody>
-          </Table>
-        </TableContainer>
-      </>
-    );
+                </TableRow>
+              )
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+  );
 }
 
 export default StockTable;
