@@ -10,10 +10,10 @@ import {
     Modal,
     Button,
 } from '@mui/material';
-import {Visitor, Message} from "../interfaces";
-import {useVisitor, useMessage} from "../hooks";
-import ActionsRenderer from "./Renderers/ActionsRenderer";
-import { StockTable, Test, CustomMap } from '.';
+import { Visitor, Message } from "../../interfaces";
+import { useVisitor, useMessage } from "../../hooks";
+import ActionsRenderer from "../Renderers/ActionsRenderer";
+import { StockTable, Test, CustomMap } from '../index';
 
 
 type TabType = 'Visitor' | 'Message' | 'Stock' | 'Test' | 'Map';
