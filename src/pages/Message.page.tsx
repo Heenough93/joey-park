@@ -1,16 +1,25 @@
+import React from 'react';
 import { Button } from '@mui/material';
-import { useSideBarStore } from '../stores';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
 
-const Message = () => {
+import { useSideBarStore } from '../stores';
+import { MessageGrid } from '../components';
+
+
+const MessagePage = () => {
   //
   const { openDrawer } = useSideBarStore();
 
   return (
-    <div>
-      Message Page
-      <Button onClick={openDrawer( true)}>drawer</Button>
-    </div>
+    <>
+      <div>
+        Message Page
+        <Button onClick={openDrawer( true)}>drawer</Button>
+      </div>
+      <MessageGrid />
+    </>
   )
 }
 
-export default Message
+export default MessagePage

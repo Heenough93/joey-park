@@ -3,8 +3,8 @@ import { useRoutes } from 'react-router-dom';
 
 import {
   PortfolioPage,
-  Visitor,
-  Message,
+  VisitorPage,
+  MessagePage,
   Stock,
   Test,
   Map,
@@ -21,11 +21,11 @@ const MyRoutes = () => {
       },
       {
         path: '/visitor',
-        element: <Visitor />,
+        element: <VisitorPage />,
       },
       {
         path: '/message',
-        element: <Message />,
+        element: <MessagePage />,
       },
       {
         path: '/stock',

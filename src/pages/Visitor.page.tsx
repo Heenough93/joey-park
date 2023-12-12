@@ -1,16 +1,25 @@
+import React from 'react';
 import { Button } from '@mui/material';
-import { useSideBarStore } from '../stores';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
 
-const Visitor = () => {
+import { useSideBarStore } from '../stores';
+import { VisitorGrid } from '../components';
+
+
+const VisitorPage = () => {
   //
   const { openDrawer } = useSideBarStore();
 
   return (
-    <div>
-      Visitor Page
-      <Button onClick={openDrawer( true)}>drawer</Button>
-    </div>
+    <>
+      <div>
+        Visitor Page
+        <Button onClick={openDrawer( true)}>drawer</Button>
+      </div>
+      <VisitorGrid />
+    </>
   )
 }
 
-export default Visitor
+export default VisitorPage

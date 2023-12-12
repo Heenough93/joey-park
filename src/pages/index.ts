@@ -1,6 +1,6 @@
 export { default as Map } from './Map.page'
-export { default as Message } from './Message.page'
+export { default as MessagePage } from './Message.page'
 export { default as PortfolioPage } from './Portfolio.page'
 export { default as Stock } from './Stock.page'
 export { default as Test } from './Test.page'
-export { default as Visitor } from './Visitor.page'
+export { default as VisitorPage } from './Visitor.page'
