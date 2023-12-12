@@ -2,7 +2,7 @@ import React from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 
-import { Visitor } from '../interfaces';
+import { Visitor } from '../../interfaces';
 
 
 interface Props {

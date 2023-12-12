@@ -7,7 +7,7 @@ import {
   MessagePage,
   StockPage,
   TestPage,
-  Map,
+  MapPage,
 } from '../pages';
 
 
@@ -37,7 +37,7 @@ const MyRoutes = () => {
       },
       {
         path: '/map',
-        element: <Map />,
+        element: <MapPage />,
       },
     ])
 

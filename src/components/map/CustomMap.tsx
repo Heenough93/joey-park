@@ -21,20 +21,22 @@ const CustomMap = () => {
 
   return (
     <>
-      <MapContainer
-        style={{ height: '100%'}}
-        ref={setMap}
-        center={center}
-        zoom={13}
-        scrollWheelZoom={true}
-        doubleClickZoom={false}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <CustomMapChildren center={center} />
-      </MapContainer>
+      <div style={{height: 400, width: '100%'}}>
+        <MapContainer
+          style={{ height: '100%' }}
+          ref={setMap}
+          center={center}
+          zoom={13}
+          scrollWheelZoom={true}
+          doubleClickZoom={false}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <CustomMapChildren center={center} />
+        </MapContainer>
+      </div>
     </>
   );
 }
