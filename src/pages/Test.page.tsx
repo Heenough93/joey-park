@@ -11,8 +11,10 @@ const TestPage = () => {
 
   return (
     <>
-      <div>
+      <div style={{ textAlign: 'center' }}>
         Test Page
+      </div>
+      <div style={{ textAlign: 'right' }}>
         <Button onClick={openDrawer( true)}>drawer</Button>
       </div>
       <Test />

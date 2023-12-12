@@ -13,8 +13,10 @@ const MessagePage = () => {
 
   return (
     <>
-      <div>
+      <div style={{ textAlign: 'center' }}>
         Message Page
+      </div>
+      <div style={{ textAlign: 'right' }}>
         <Button onClick={openDrawer( true)}>drawer</Button>
       </div>
       <MessageGrid />

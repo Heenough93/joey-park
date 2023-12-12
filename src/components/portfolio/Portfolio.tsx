@@ -1,10 +1,10 @@
 import React from 'react';
-// import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 import { Visitor } from "../../interfaces";
 import {
   getGeolocationInfo,
-  // registerVisitor,
+  registerVisitor,
   // sendMessage,
 } from "../../functions";
 import { useSideBarStore } from '../../stores';
@@ -34,8 +34,7 @@ const Portfolio = () => {
 
     setIsLoading(false);
 
-    // todo: 주석 제거
-    // (registerVisitor)(Object.assign(visitor, { id: uuidv4(), date: new Date().toISOString() }));
+    (registerVisitor)(Object.assign(visitor, { id: uuidv4(), date: new Date().toISOString() }));
 
     // const message = JSON.stringify(visitor);
     // (sendMessage)(message);

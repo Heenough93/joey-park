@@ -13,8 +13,10 @@ const VisitorPage = () => {
 
   return (
     <>
-      <div>
+      <div style={{ textAlign: 'center' }}>
         Visitor Page
+      </div>
+      <div style={{ textAlign: 'right' }}>
         <Button onClick={openDrawer( true)}>drawer</Button>
       </div>
       <VisitorGrid />

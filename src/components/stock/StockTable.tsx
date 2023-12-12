@@ -159,7 +159,7 @@ const StockTable = () => {
   };
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: 600, width: '100%' }}>
       {isLoading && <>
         <Backdrop
           style={{color: '#fff', zIndex: 1000}}
@@ -179,7 +179,7 @@ const StockTable = () => {
 
       <TableContainer style={{
         width: '100%',
-        maxHeight: 300,
+        maxHeight: 600,
         overflowX: 'auto',
       }}>
         <Table stickyHeader style={{minWidth: 650}}>

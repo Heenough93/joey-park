@@ -42,7 +42,7 @@ const VisitorGrid = () => {
   }, [visitors]);
 
   return (
-    <div className="ag-theme-alpine" style={{ height: 400, width: '100%' }}>
+    <div className="ag-theme-alpine" style={{ height: 600, width: '100%' }}>
       <AgGridReact<Visitor>
         columnDefs={columnDefsVisitor}
         defaultColDef={defaultColDef}
