@@ -6,7 +6,7 @@ import {
   VisitorPage,
   MessagePage,
   StockPage,
-  Test,
+  TestPage,
   Map,
 } from '../pages';
 
@@ -33,7 +33,7 @@ const MyRoutes = () => {
       },
       {
         path: '/test',
-        element: <Test />,
+        element: <TestPage />,
       },
       {
         path: '/map',

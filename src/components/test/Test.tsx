@@ -36,7 +36,7 @@ const Test = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        "email": "admin@bookie.local",
+        "email": "admin@test.com",
         "password": "password123"
       })
     })
