@@ -7,11 +7,13 @@ import {
   FormGroup,
   Table,
   TableBody,
-  TableCell, TableContainer,
+  TableCell,
+  TableContainer,
   TableHead,
   TableRow,
 } from '@mui/material';
-import { HoldingStockRdo } from '../interfaces';
+
+import { HoldingStockRdo } from '../../interfaces';
 
 
 interface Column {

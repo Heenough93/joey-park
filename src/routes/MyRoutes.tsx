@@ -5,7 +5,7 @@ import {
   PortfolioPage,
   VisitorPage,
   MessagePage,
-  Stock,
+  StockPage,
   Test,
   Map,
 } from '../pages';
@@ -29,7 +29,7 @@ const MyRoutes = () => {
       },
       {
         path: '/stock',
-        element: <Stock />,
+        element: <StockPage />,
       },
       {
         path: '/test',
