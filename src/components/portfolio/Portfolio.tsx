@@ -15,7 +15,7 @@ import Contact from './Contact';
 import Footer from './Footer';
 
 
-function Portfolio() {
+const Portfolio = () => {
   //
   const { setOpen } = useSideBarStore();
 
