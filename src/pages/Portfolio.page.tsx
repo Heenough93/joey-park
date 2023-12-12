@@ -1,5 +1,6 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
+
 import {
     Loading,
     Home,
@@ -8,12 +9,15 @@ import {
     ListModal,
     Footer,
 } from "../components";
-import {Visitor} from "../interfaces";
-import {getGeolocationInfo, registerVisitor} from "../functions";
+import { Visitor } from "../interfaces";
+import { getGeolocationInfo, registerVisitor } from "../functions";
+import { useSideBarStore } from '../stores';
 
 
 function Portfolio() {
     //
+    const { setOpen } = useSideBarStore();
+
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
     const [visitor, setVisitor] = React.useState<Visitor | null>(null);
 
@@ -40,7 +44,8 @@ function Portfolio() {
     const onClickList = React.useCallback(() => {
         const password = prompt('Admin Only!');
         if (password && password === process.env.REACT_APP_ADMIN_PASSWORD) {
-            setListModalOpen(true)
+            // setListModalOpen(true)
+            setOpen(true)
         }
     }, []);
 

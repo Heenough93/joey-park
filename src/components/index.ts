@@ -7,3 +7,6 @@ export { default as CustomMap } from './CustomMap';
 export { default as StockTable } from './StockTable';
 export { default as Test } from './Test';
 export { default as Work } from './Work';
+
+export * from './layout'
+
