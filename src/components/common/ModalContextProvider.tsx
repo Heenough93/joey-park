@@ -7,7 +7,7 @@ import {
   TextField, Divider,
 } from '@mui/material';
 
-import { ModalContext, useModalOpen } from '../../hooks';
+import { ModalContext, useEnterEscButtons, useModalOpen } from '../../hooks';
 import { ModalContent } from '../../hooks/useModalContext';
 
 
@@ -38,12 +38,12 @@ const ModalContextProvider = ({ children }: Props) => {
     setText(e.target.value);
   }, []);
 
-  const handleOk = React.useCallback(() => {
+  const handleClickConfirm = React.useCallback(() => {
     content?.callbackFnc(text);
     handleClose();
-  }, []);
+  }, [text]);
 
-  const handleCancel = React.useCallback(() => {
+  const handleClickCancel = React.useCallback(() => {
     handleClose();
   }, []);
 
@@ -60,6 +60,8 @@ const ModalContextProvider = ({ children }: Props) => {
       p: 4,
     };
   }, []);
+
+  useEnterEscButtons({ handleClickConfirm, handleClickCancel });
 
   return (
     <ModalContext.Provider value={{ setModalContent }}>
@@ -104,7 +106,7 @@ const ModalContextProvider = ({ children }: Props) => {
               </Typography>
               <Divider />
               {content.message}
-              <input value={text} onChange={handleChange} />
+              <input value={text} onChange={handleChange} autoFocus />
             </>}
 
             <div style={{ marginBottom: '10px', marginTop: '10px' }}>
@@ -112,7 +114,7 @@ const ModalContextProvider = ({ children }: Props) => {
                 style={{ marginLeft: '3px', marginRight: '3px', backgroundColor: '#E8B09F' }}
                 variant='contained'
                 size='small'
-                onClick={handleOk}
+                onClick={handleClickConfirm}
               >
                 Confirm
               </Button>
@@ -120,7 +122,7 @@ const ModalContextProvider = ({ children }: Props) => {
                 style={{ marginLeft: '3px', marginRight: '3px', backgroundColor: '#E8B09F' }}
                 variant='contained'
                 size='small'
-                onClick={handleCancel}
+                onClick={handleClickCancel}
               >
                 Cancel
               </Button>
