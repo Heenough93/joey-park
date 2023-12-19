@@ -4,7 +4,7 @@ import {
   Modal,
   Button,
   Typography,
-  TextField, Divider,
+  Divider,
 } from '@mui/material';
 
 import { ModalContext, useEnterEscButtons, useModalOpen } from '../../hooks';
@@ -106,7 +106,12 @@ const ModalContextProvider = ({ children }: Props) => {
               </Typography>
               <Divider />
               {content.message}
-              <input value={text} onChange={handleChange} autoFocus />
+              <input
+                style={{ width: '100%' }}
+                value={text}
+                onChange={handleChange}
+                autoFocus
+              />
             </>}
 
             <div style={{ marginBottom: '10px', marginTop: '10px' }}>
