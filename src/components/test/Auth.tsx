@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import { Button, Grid } from '@mui/material';
+import { Button, Divider, Grid } from '@mui/material';
 
 
 const Auth = () => {
@@ -32,6 +32,12 @@ const Auth = () => {
     setPassword(event.target.value);
   }, [])
 
+  const handleClickReset = React.useCallback(() => {
+    setName('');
+    setEmail('');
+    setPassword('');
+  }, [])
+
   const handleClickRegister = React.useCallback(async () => {
     await fetch(process.env.REACT_APP_BASE_URL + 'auth/register', {
       method: "POST",
@@ -57,20 +63,14 @@ const Auth = () => {
       });
   }, [email, password])
 
-  const handleClickReset = React.useCallback(() => {
-    setName('');
-    setEmail('');
-    setPassword('');
-  }, [])
-
   return (
     <div style={{ height: 600, width: '100%' }}>
       <div>
+        <Button onClick={handleClickReset}>Reset</Button>
         <Button onClick={handleClickRegister}>Register</Button>
         <Button onClick={handleClickLogin}>Login</Button>
-        <Button onClick={handleClickReset}>Reset</Button>
       </div>
-
+      <Divider />
       <Grid container spacing={2}>
         <Grid item xs={6} md={4}>
           NAME
