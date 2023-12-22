@@ -14,15 +14,17 @@ const User = () => {
   const [users, setUsers] = React.useState<any[]>([]);
   const [selectedUser, setSelectedUser] = React.useState<any | null>(null);
 
+  const [name, setName] = React.useState<string>('');
+  const [email, setEmail] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
+  const [role, setRole] = React.useState<1 | 2>(2);
+
   React.useEffect(() => {
     setName(selectedUser ? selectedUser.name : '');
     setEmail(selectedUser ? selectedUser.email : '');
     setPassword(selectedUser ? selectedUser.password : '');
+    setRole(selectedUser ? selectedUser.role : 2);
   }, [selectedUser])
-
-  const [name, setName] = React.useState<string>('');
-  const [email, setEmail] = React.useState<string>('');
-  const [password, setPassword] = React.useState<string>('');
 
   const handleChangeName = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -36,12 +38,17 @@ const User = () => {
     setPassword(event.target.value);
   }, [])
 
+  const handleChangeRole = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    setRole(Number(event.target.value) as 1 | 2);
+  }, [])
+
   const handleClickReset = React.useCallback(() => {
     setUsers([]);
     setSelectedUser(null);
     setName('');
     setEmail('');
     setPassword('');
+    setRole(2);
   }, [])
 
   const handleClickUserList = React.useCallback(async () => {
@@ -76,7 +83,7 @@ const User = () => {
     await fetch(process.env.REACT_APP_BASE_URL + 'users', {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
-      body: JSON.stringify({ name, password, email })
+      body: JSON.stringify({ name, email, password, role })
     })
       .then((res) => res.json())
       .then((res) => {
@@ -86,7 +93,7 @@ const User = () => {
       .then(async () => {
         await handleClickUserList();
       });
-  }, [accessToken, name, password, email])
+  }, [accessToken, name, email, password, role])
 
   const handleClickUserModify = React.useCallback(async () => {
     if (!selectedUser) {
@@ -96,7 +103,7 @@ const User = () => {
     await fetch(process.env.REACT_APP_BASE_URL + 'users/' + selectedUser.id, {
       method: "PUT",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
-      body: JSON.stringify({ name, password, email })
+      body: JSON.stringify({ name, email, password, role })
     })
       .then((res) => res.json())
       .then((res) => {
@@ -106,7 +113,7 @@ const User = () => {
       .then(async () => {
         await handleClickUserList();
       });
-  }, [selectedUser, accessToken, name, password, email])
+  }, [selectedUser, accessToken, name, email, password, role])
 
   const handleClickUserRemove = React.useCallback(async () => {
     if (!selectedUser) {
@@ -165,6 +172,12 @@ const User = () => {
         </Grid>
         <Grid item xs={6} md={8}>
           <input onChange={handleChangePassword} value={password} />
+        </Grid>
+        <Grid item xs={6} md={4}>
+          ROLE
+        </Grid>
+        <Grid item xs={6} md={8}>
+          <input onChange={handleChangeRole} value={role} />
         </Grid>
       </Grid>
     </div>
