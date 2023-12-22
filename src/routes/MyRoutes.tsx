@@ -9,7 +9,7 @@ import {
   TestPage,
   MapPage,
 } from '../pages';
-import { Auth, User } from '../components';
+import { Auth, User, Author, Book } from '../components';
 
 
 const MyRoutes = () => {
@@ -46,6 +46,14 @@ const MyRoutes = () => {
           {
             path: 'user',
             element: <User />,
+          },
+          {
+            path: 'author',
+            element: <Author />,
+          },
+          {
+            path: 'book',
+            element: <Book />,
           },
         ],
       },
