@@ -13,11 +13,12 @@ import Home from './Home';
 import Work from './Work';
 import Contact from './Contact';
 import Footer from './Footer';
+import { useModalContext } from '../../hooks';
 
 
 const Portfolio = () => {
   //
-  const { setOpen } = useSideBarStore();
+  const { setOpen: setSideBarOpen } = useSideBarStore();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [visitor, setVisitor] = React.useState<Visitor | null>(null);
@@ -40,11 +41,20 @@ const Portfolio = () => {
     // (sendMessage)(message);
   }, [visitor]);
 
-  const onClickList = React.useCallback(() => {
-    const password = prompt('Admin Only!');
-    if (password && password === process.env.REACT_APP_ADMIN_PASSWORD) {
-      setOpen(true)
-    }
+  const modalContext = useModalContext();
+
+  const handleClickList = React.useCallback(async (event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+    //
+    modalContext.setModalContent({
+      type: 'prompt',
+      title: 'Password!',
+      message: null,
+      callbackFnc: (password) => {
+        if (password && password === process.env.REACT_APP_ADMIN_PASSWORD) {
+          setSideBarOpen(true)
+        }
+      },
+    });
   }, []);
 
   return (
@@ -58,10 +68,10 @@ const Portfolio = () => {
       <div hidden={isLoading}>
         <div id="wrapper">
           <nav id="nav">
-            <a href="#" className="icon solid fa-home"><span>Home</span></a>
-            <a href="#work" className="icon solid fa-folder"><span>Work</span></a>
-            <a href="#contact" className="icon solid fa-envelope"><span>Contact</span></a>
-            <a className="icon solid fa-list" onClick={onClickList}><span>List</span></a>
+            <a className="icon solid fa-home" href="#"><span>Home</span></a>
+            <a className="icon solid fa-folder" href="#work"><span>Work</span></a>
+            <a className="icon solid fa-envelope" href="#contact"><span>Contact</span></a>
+            <a className="icon solid fa-list" onClick={handleClickList}><span>List</span></a>
           </nav>
 
           <div id="main">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRoutes } from 'react-router-dom';
+import { Outlet, useRoutes } from 'react-router-dom';
 
 import {
   PortfolioPage,
@@ -9,6 +9,7 @@ import {
   TestPage,
   MapPage,
 } from '../pages';
+import { Auth, User, Author, Book } from '../components';
 
 
 const MyRoutes = () => {
@@ -20,25 +21,50 @@ const MyRoutes = () => {
         element: <PortfolioPage />,
       },
       {
-        path: '/visitor',
+        path: 'visitor',
         element: <VisitorPage />,
       },
       {
-        path: '/message',
+        path: 'message',
         element: <MessagePage />,
       },
       {
-        path: '/stock',
+        path: 'stock',
         element: <StockPage />,
       },
       {
-        path: '/test',
-        element: <TestPage />,
+        path: 'test',
+        element: (<>
+          <TestPage />
+          <Outlet />
+        </>),
+        children: [
+          {
+            path: 'auth',
+            element: <Auth />,
+          },
+          {
+            path: 'user',
+            element: <User />,
+          },
+          {
+            path: 'author',
+            element: <Author />,
+          },
+          {
+            path: 'book',
+            element: <Book />,
+          },
+        ],
       },
       {
-        path: '/map',
+        path: 'map',
         element: <MapPage />,
       },
+      {
+        path: '*',
+        element: <div>Not Found</div>,
+      }
     ])
 
   );
