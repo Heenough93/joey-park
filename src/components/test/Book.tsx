@@ -11,6 +11,24 @@ const Book = () => {
     setAccessToken(accessToken);
   }, [])
 
+  const [authors, setAuthors] = React.useState<any[]>([]);
+
+  const getAuthors = React.useCallback(async () => {
+    await fetch(process.env.REACT_APP_BASE_URL + 'authors/with-books', {
+      method: "GET",
+      headers: { "Content-Type": "application/json", "Authorization": accessToken },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log({ res });
+        setAuthors(res.data);
+      });
+  }, [accessToken])
+
+  React.useEffect(() => {
+    (getAuthors)()
+  }, [])
+
   const [books, setBooks] = React.useState<any[]>([]);
   const [selectedBook, setSelectedBook] = React.useState<any | null>(null);
 
@@ -36,7 +54,7 @@ const Book = () => {
     setDescription(event.target.value);
   }, [])
 
-  const handleChangeAuthorId = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeAuthor = React.useCallback((event: ChangeEvent<HTMLSelectElement>) => {
     setAuthorId(Number(event.target.value));
   }, [])
 
@@ -175,10 +193,18 @@ const Book = () => {
           <input onChange={handleChangeDescription} value={description} />
         </Grid>
         <Grid item xs={6} md={4}>
-          AUTHOR_ID
+          AUTHOR
         </Grid>
         <Grid item xs={6} md={8}>
-          <input onChange={handleChangeAuthorId} value={authorId} />
+          <input value={authorId} />
+          <select style={{ width: '177px' }} onChange={handleChangeAuthor}>
+            <option value={0}>--select--</option>
+            {authors.map((author) => {
+              return (
+                <option value={author.id}>{author.name}</option>
+              )
+            })}
+          </select>
         </Grid>
         <Grid item xs={6} md={4}>
           PRICE
