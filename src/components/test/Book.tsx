@@ -196,8 +196,7 @@ const Book = () => {
           AUTHOR
         </Grid>
         <Grid item xs={6} md={8}>
-          <input value={authorId} />
-          <select style={{ width: '177px' }} onChange={handleChangeAuthor}>
+          <select style={{ width: '177px' }} onChange={handleChangeAuthor} value={authorId}>
             <option value={0}>--select--</option>
             {authors.map((author) => {
               return (

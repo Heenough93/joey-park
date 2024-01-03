@@ -8,6 +8,7 @@ import {
   StockPage,
   TestPage,
   MapPage,
+  NotFoundPage,
 } from '../pages';
 import { Auth, User, Author, Book } from '../components';
 
@@ -63,7 +64,7 @@ const MyRoutes = () => {
       },
       {
         path: '*',
-        element: <div>Not Found</div>,
+        element: <NotFoundPage />,
       }
     ])
 

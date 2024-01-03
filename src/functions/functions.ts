@@ -1,5 +1,28 @@
 import {Visitor, Message} from "../interfaces";
 
+
+const positionErrorCallback = (error: GeolocationPositionError) => {
+    if (error.code === error.PERMISSION_DENIED) {
+        alert('User denied the request for Geolocation.');
+    } else if (error.code === error.POSITION_UNAVAILABLE) {
+        alert('Location information is unavailable.');
+    } else if (error.code === error.TIMEOUT) {
+        alert('The request to get user location timed out.');
+    } else {
+        alert('An unknown error occurred.');
+    }
+
+    console.log(error.message);
+}
+
+export const getCurrentPosition = (positionCallback: PositionCallback) => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(positionCallback, positionErrorCallback);
+    } else {
+        alert('Geolocation is not supported by this browser.');
+    }
+}
+
 export const getGeolocationInfo = async () => {
     return await fetch('https://geolocation-db.com/json/')
         .then((res) =>res.json())

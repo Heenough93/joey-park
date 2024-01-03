@@ -3,7 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Visitor } from "../../interfaces";
 import {
-  getGeolocationInfo,
+  getCurrentPosition,
+  // getGeolocationInfo,
   registerVisitor,
   // sendMessage,
 } from "../../functions";
@@ -13,7 +14,6 @@ import Home from './Home';
 import Work from './Work';
 import Contact from './Contact';
 import Footer from './Footer';
-import { useModalContext } from '../../hooks';
 
 
 const Portfolio = () => {
@@ -24,10 +24,31 @@ const Portfolio = () => {
   const [visitor, setVisitor] = React.useState<Visitor | null>(null);
 
   React.useEffect(() => {
-    (getGeolocationInfo)()
-      .then((data) => {
-        setVisitor(data)
-      });
+    const positionCallback = (position: GeolocationPosition) => {
+      const { latitude, longitude } = position.coords;
+      const target: Visitor = {
+        appName: '',
+        platform: '',
+        userAgent: '',
+        country_code: '',
+        country_name: '',
+        city: '',
+        postal: '',
+        latitude: latitude,
+        longitude: longitude,
+        IPv4: '',
+        state: '',
+        id: '',
+        date: '',
+      }
+      setVisitor(target);
+    }
+    getCurrentPosition(positionCallback);
+
+    // (getGeolocationInfo)()
+    //   .then((data) => {
+    //     setVisitor(data)
+    //   });
   }, []);
 
   React.useEffect(() => {
@@ -41,20 +62,12 @@ const Portfolio = () => {
     // (sendMessage)(message);
   }, [visitor]);
 
-  const modalContext = useModalContext();
-
   const handleClickList = React.useCallback(async (event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
     //
-    modalContext.setModalContent({
-      type: 'prompt',
-      title: 'Password!',
-      message: null,
-      callbackFnc: (password) => {
-        if (password && password === process.env.REACT_APP_ADMIN_PASSWORD) {
-          setSideBarOpen(true)
-        }
-      },
-    });
+    const password = prompt('Admin Only!');
+    if (password && password === process.env.REACT_APP_ADMIN_PASSWORD) {
+      setSideBarOpen(true)
+    }
   }, []);
 
   return (

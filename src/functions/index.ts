@@ -1,4 +1,5 @@
 export {
+    getCurrentPosition,
     getGeolocationInfo,
     sendMessage,
     findVisitorsOffset,
