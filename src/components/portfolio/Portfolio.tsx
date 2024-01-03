@@ -14,7 +14,6 @@ import Home from './Home';
 import Work from './Work';
 import Contact from './Contact';
 import Footer from './Footer';
-import { useModalContext } from '../../hooks';
 
 
 const Portfolio = () => {
@@ -63,20 +62,12 @@ const Portfolio = () => {
     // (sendMessage)(message);
   }, [visitor]);
 
-  const modalContext = useModalContext();
-
   const handleClickList = React.useCallback(async (event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
     //
-    modalContext.setModalContent({
-      type: 'prompt',
-      title: 'Password!',
-      message: null,
-      callbackFnc: (password) => {
-        if (password && password === process.env.REACT_APP_ADMIN_PASSWORD) {
-          setSideBarOpen(true)
-        }
-      },
-    });
+    const password = prompt('Admin Only!');
+    if (password && password === process.env.REACT_APP_ADMIN_PASSWORD) {
+      setSideBarOpen(true)
+    }
   }, []);
 
   return (
