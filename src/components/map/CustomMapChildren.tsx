@@ -12,8 +12,9 @@ import { Visitor } from '../../interfaces';
 
 interface Props {
   center: L.LatLngLiteral,
+  visitors: Visitor[],
 }
-const CustomMapChildren = ({center}: Props) => {
+const CustomMapChildren = ({ center, visitors }: Props) => {
   //
   // const map = useMap();
   //
@@ -58,18 +59,6 @@ const CustomMapChildren = ({center}: Props) => {
       info.textContent = contentText(bounds);
     });
   }, [map])
-
-  const [visitors, setVisitors] = React.useState<Visitor[]>([])
-
-  React.useEffect(() => {
-    fetch(process.env.REACT_APP_BASE_URL + 'find-visitors', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: null,
-    })
-      .then((res) => res.json())
-      .then((res) => setVisitors(res.data))
-  }, [])
 
   return (
     <>
