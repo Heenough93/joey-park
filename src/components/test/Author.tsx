@@ -1,9 +1,13 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { Button, Divider, Grid } from '@mui/material';
+
+import { useDialog } from '../../hooks';
 
 
 const Author = () => {
   //
+  const { confirm, alert } = useDialog();
+
   const [accessToken, setAccessToken] = React.useState<string>('');
 
   React.useEffect(() => {
@@ -24,19 +28,22 @@ const Author = () => {
     setBio(selectedAuthor ? selectedAuthor.bio : '');
   }, [selectedAuthor])
 
-  const handleChangeName = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeName = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   }, [])
 
-  const handleChangeEmail = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeEmail = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   }, [])
 
-  const handleChangeBio = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeBio = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setBio(event.target.value);
   }, [])
 
-  const handleClickReset = React.useCallback(() => {
+  const handleClickReset = React.useCallback(async () => {
+    const confirmed = await confirm('Are you sure?');
+    if (!confirmed) return;
+
     setAuthors([]);
     setSelectedAuthor(null);
     setName('');
@@ -44,86 +51,97 @@ const Author = () => {
     setBio('');
   }, [])
 
-  const handleClickAuthorList = React.useCallback(async () => {
-    await fetch(process.env.REACT_APP_BASE_URL + 'authors', {
+  const getAuthors = React.useCallback(async (id?: string) => {
+    await fetch(process.env.REACT_APP_BASE_URL + 'authors' + `/${id ? id : ''}`, {
       method: "GET",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
     })
       .then((res) => res.json())
       .then((res) => {
         console.log({ res });
-        setAuthors(res.data);
+        id ? setSelectedAuthor(res.data) : setAuthors(res.data);
       });
   }, [accessToken])
+
+  const handleClickAuthorList = React.useCallback(async () => {
+    await getAuthors();
+  }, [getAuthors])
 
   const handleClickAuthor = React.useCallback(async (id: string) => {
     if (!id) {
-      alert('id is empty.');
+      await alert('id is empty.');
       return;
     }
-    await fetch(process.env.REACT_APP_BASE_URL + 'authors/' + id, {
-      method: "GET",
-      headers: { "Content-Type": "application/json", "Authorization": accessToken },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log({ res });
-        setSelectedAuthor(res.data);
-      });
-  }, [accessToken])
+
+    await getAuthors(id);
+  }, [getAuthors])
 
   const handleClickAuthorRegister = React.useCallback(async () => {
+    const confirmed = await confirm('Are you sure?');
+    if (!confirmed) return;
+
     await fetch(process.env.REACT_APP_BASE_URL + 'authors', {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
       body: JSON.stringify({ name, email, bio })
     })
       .then((res) => res.json())
-      .then((res) => {
+      .then(async (res) => {
         console.log({ res });
-        setSelectedAuthor(null);
-      })
-      .then(async () => {
-        await handleClickAuthorList();
+        const ok = await alert(res.message);
+        if (ok) {
+          setSelectedAuthor(null);
+          await getAuthors();
+        }
       });
   }, [accessToken, name, email, bio])
 
   const handleClickAuthorModify = React.useCallback(async () => {
+    const confirmed = await confirm('Are you sure?');
+    if (!confirmed) return;
+
     if (!selectedAuthor) {
-      alert('You should select a author first.');
+      await alert('You should select a author first.');
       return;
     }
+
     await fetch(process.env.REACT_APP_BASE_URL + 'authors/' + selectedAuthor.id, {
       method: "PUT",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
       body: JSON.stringify({ name, email, bio })
     })
       .then((res) => res.json())
-      .then((res) => {
+      .then(async (res) => {
         console.log({ res });
-        setSelectedAuthor(null);
-      })
-      .then(async () => {
-        await handleClickAuthorList();
+        const ok = await alert(res.message);
+        if (ok) {
+          setSelectedAuthor(null);
+          await getAuthors();
+        }
       });
   }, [selectedAuthor, accessToken, name, email, bio])
 
   const handleClickAuthorRemove = React.useCallback(async () => {
+    const confirmed = await confirm('Are you sure?');
+    if (!confirmed) return;
+
     if (!selectedAuthor) {
-      alert('You should select a author first.');
+      await alert('You should select a author first.');
       return;
     }
+
     await fetch(process.env.REACT_APP_BASE_URL + 'authors/' + selectedAuthor.id, {
       method: "DELETE",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
     })
       .then((res) => res.json())
-      .then((res) => {
+      .then(async (res) => {
         console.log({ res });
-        setSelectedAuthor(null);
-      })
-      .then(async () => {
-        await handleClickAuthorList();
+        const ok = await alert(res.message);
+        if (ok) {
+          setSelectedAuthor(null);
+          await getAuthors();
+        }
       });
   }, [selectedAuthor, accessToken])
 

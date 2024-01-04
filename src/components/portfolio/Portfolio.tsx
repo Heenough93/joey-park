@@ -3,8 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Visitor } from "../../interfaces";
 import {
-  getCurrentPosition,
-  // getGeolocationInfo,
+  getGeolocationInfo,
   registerVisitor,
   // sendMessage,
 } from "../../functions";
@@ -14,41 +13,23 @@ import Home from './Home';
 import Work from './Work';
 import Contact from './Contact';
 import Footer from './Footer';
+import { useDialog } from '../../hooks';
 
 
 const Portfolio = () => {
   //
+  const { prompt } = useDialog();
+
   const { setOpen: setSideBarOpen } = useSideBarStore();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [visitor, setVisitor] = React.useState<Visitor | null>(null);
 
   React.useEffect(() => {
-    const positionCallback = (position: GeolocationPosition) => {
-      const { latitude, longitude } = position.coords;
-      const target: Visitor = {
-        appName: '',
-        platform: '',
-        userAgent: '',
-        country_code: '',
-        country_name: '',
-        city: '',
-        postal: '',
-        latitude: latitude,
-        longitude: longitude,
-        IPv4: '',
-        state: '',
-        id: '',
-        date: '',
-      }
-      setVisitor(target);
-    }
-    getCurrentPosition(positionCallback);
-
-    // (getGeolocationInfo)()
-    //   .then((data) => {
-    //     setVisitor(data)
-    //   });
+    (getGeolocationInfo)()
+      .then((data) => {
+        setVisitor(data)
+      });
   }, []);
 
   React.useEffect(() => {
@@ -62,9 +43,9 @@ const Portfolio = () => {
     // (sendMessage)(message);
   }, [visitor]);
 
-  const handleClickList = React.useCallback(async (event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+  const handleClickList = React.useCallback(async () => {
     //
-    const password = prompt('Admin Only!');
+    const password = await prompt('Admin Only!');
     if (password && password === process.env.REACT_APP_ADMIN_PASSWORD) {
       setSideBarOpen(true)
     }

@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Dialog } from './components';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,7 +13,8 @@ const root = ReactDOM.createRoot(
 root.render(
   // <React.StrictMode>
     <QueryClientProvider client={new QueryClient()}>
-        <App />
+      <App />
+      <Dialog />
     </QueryClientProvider>
   // </React.StrictMode>
 );

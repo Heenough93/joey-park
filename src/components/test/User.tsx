@@ -1,9 +1,13 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { Button, Divider, Grid } from '@mui/material';
+
+import { useDialog } from '../../hooks';
 
 
 const User = () => {
   //
+  const { confirm, alert } = useDialog();
+
   const [accessToken, setAccessToken] = React.useState<string>('');
 
   React.useEffect(() => {
@@ -26,23 +30,26 @@ const User = () => {
     setRole(selectedUser ? selectedUser.role : 2);
   }, [selectedUser])
 
-  const handleChangeName = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeName = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   }, [])
 
-  const handleChangeEmail = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeEmail = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   }, [])
 
-  const handleChangePassword = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangePassword = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   }, [])
 
-  const handleChangeRole = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRole = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setRole(Number(event.target.value) as 1 | 2);
   }, [])
 
-  const handleClickReset = React.useCallback(() => {
+  const handleClickReset = React.useCallback(async () => {
+    const confirmed = await confirm('Are you sure?');
+    if (!confirmed) return;
+
     setUsers([]);
     setSelectedUser(null);
     setName('');
@@ -51,86 +58,97 @@ const User = () => {
     setRole(2);
   }, [])
 
-  const handleClickUserList = React.useCallback(async () => {
-    await fetch(process.env.REACT_APP_BASE_URL + 'users', {
+  const getUsers = React.useCallback(async (id?: string) => {
+    await fetch(process.env.REACT_APP_BASE_URL + 'users' + `/${id ? id : ''}`, {
       method: "GET",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
     })
       .then((res) => res.json())
       .then((res) => {
         console.log({ res });
-        setUsers(res.data);
+        id ? setSelectedUser(res.data) : setUsers(res.data);
       });
   }, [accessToken])
+
+  const handleClickUserList = React.useCallback(async () => {
+    await getUsers();
+  }, [getUsers]);
 
   const handleClickUser = React.useCallback(async (id: string) => {
     if (!id) {
-      alert('id is empty.');
+      await alert('id is empty.');
       return;
     }
-    await fetch(process.env.REACT_APP_BASE_URL + 'users/' + id, {
-      method: "GET",
-      headers: { "Content-Type": "application/json", "Authorization": accessToken },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log({ res });
-        setSelectedUser(res.data);
-      });
-  }, [accessToken])
+
+    await getUsers(id);
+  }, [getUsers])
 
   const handleClickUserRegister = React.useCallback(async () => {
+    const confirmed = await confirm('Are you sure?');
+    if (!confirmed) return;
+
     await fetch(process.env.REACT_APP_BASE_URL + 'users', {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
       body: JSON.stringify({ name, email, password, role })
     })
       .then((res) => res.json())
-      .then((res) => {
+      .then(async (res) => {
         console.log({ res });
-        setSelectedUser(null);
+        const ok = await alert(res.message);
+        if (ok) {
+          setSelectedUser(null);
+          await getUsers();
+        }
       })
-      .then(async () => {
-        await handleClickUserList();
-      });
   }, [accessToken, name, email, password, role])
 
   const handleClickUserModify = React.useCallback(async () => {
+    const confirmed = await confirm('Are you sure?');
+    if (!confirmed) return;
+
     if (!selectedUser) {
-      alert('You should select a user first.');
+      await alert('You should select a user first.');
       return;
     }
+
     await fetch(process.env.REACT_APP_BASE_URL + 'users/' + selectedUser.id, {
       method: "PUT",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
       body: JSON.stringify({ name, email, password, role })
     })
       .then((res) => res.json())
-      .then((res) => {
+      .then(async (res) => {
         console.log({ res });
-        setSelectedUser(null);
-      })
-      .then(async () => {
-        await handleClickUserList();
+        const ok = await alert(res.message);
+        if (ok) {
+          setSelectedUser(null);
+          await getUsers();
+        }
       });
   }, [selectedUser, accessToken, name, email, password, role])
 
   const handleClickUserRemove = React.useCallback(async () => {
+    const confirmed = await confirm('Are you sure?');
+    if (!confirmed) return;
+
     if (!selectedUser) {
-      alert('You should select a user first.');
+      await alert('You should select a user first.');
       return;
     }
+
     await fetch(process.env.REACT_APP_BASE_URL + 'users/' + selectedUser.id, {
       method: "DELETE",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
     })
       .then((res) => res.json())
-      .then((res) => {
+      .then(async (res) => {
         console.log({ res });
-        setSelectedUser(null);
-      })
-      .then(async () => {
-        await handleClickUserList();
+        const ok = await alert(res.message);
+        if (ok) {
+          setSelectedUser(null);
+          await getUsers();
+        }
       });
   }, [selectedUser, accessToken])
 
