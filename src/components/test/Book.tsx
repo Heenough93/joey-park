@@ -1,9 +1,13 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { Button, Divider, Grid } from '@mui/material';
+
+import { useDialog } from '../../hooks';
 
 
 const Book = () => {
   //
+  const { confirm, alert } = useDialog();
+
   const [accessToken, setAccessToken] = React.useState<string>('');
 
   React.useEffect(() => {
@@ -46,27 +50,30 @@ const Book = () => {
     setCategory(selectedBook ? selectedBook.category : '');
   }, [selectedBook])
 
-  const handleChangeTitle = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeTitle = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   }, [])
 
-  const handleChangeDescription = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeDescription = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setDescription(event.target.value);
   }, [])
 
-  const handleChangeAuthor = React.useCallback((event: ChangeEvent<HTMLSelectElement>) => {
+  const handleChangeAuthor = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setAuthorId(Number(event.target.value));
   }, [])
 
-  const handleChangePrice = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangePrice = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setPrice(Number(event.target.value));
   }, [])
 
-  const handleChangeCategory = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeCategory = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setCategory(event.target.value);
   }, [])
 
-  const handleClickReset = React.useCallback(() => {
+  const handleClickReset = React.useCallback(async () => {
+    const confirmed = await confirm('Are you sure?');
+    if (!confirmed) return;
+
     setBooks([]);
     setSelectedBook(null);
     setTitle('');
@@ -76,86 +83,97 @@ const Book = () => {
     setCategory('');
   }, [])
 
-  const handleClickBookList = React.useCallback(async () => {
-    await fetch(process.env.REACT_APP_BASE_URL + 'books', {
+  const getBooks = React.useCallback(async (id?: string) => {
+    await fetch(process.env.REACT_APP_BASE_URL + 'books' + `/${id ? id : ''}`, {
       method: "GET",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
     })
       .then((res) => res.json())
       .then((res) => {
         console.log({ res });
-        setBooks(res.data);
+        id ? setSelectedBook(res.data) : setBooks(res.data);
       });
   }, [accessToken])
+
+  const handleClickBookList = React.useCallback(async () => {
+    await getBooks();
+  }, [getBooks])
 
   const handleClickBook = React.useCallback(async (id: string) => {
     if (!id) {
-      alert('id is empty.');
+      await alert('id is empty.');
       return;
     }
-    await fetch(process.env.REACT_APP_BASE_URL + 'books/' + id, {
-      method: "GET",
-      headers: { "Content-Type": "application/json", "Authorization": accessToken },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log({ res });
-        setSelectedBook(res.data);
-      });
-  }, [accessToken])
+
+    await getBooks(id);
+  }, [getBooks])
 
   const handleClickBookRegister = React.useCallback(async () => {
+    const confirmed = await confirm('Are you sure?');
+    if (!confirmed) return;
+
     await fetch(process.env.REACT_APP_BASE_URL + 'books', {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
       body: JSON.stringify({ title, description, authorId, price, category })
     })
       .then((res) => res.json())
-      .then((res) => {
+      .then(async (res) => {
         console.log({ res });
-        setSelectedBook(null);
-      })
-      .then(async () => {
-        await handleClickBookList();
+        const ok = await alert(res.message);
+        if (ok) {
+          setSelectedBook(null);
+          await getBooks();
+        }
       });
   }, [accessToken, title, description, authorId, price, category])
 
   const handleClickBookModify = React.useCallback(async () => {
+    const confirmed = await confirm('Are you sure?');
+    if (!confirmed) return;
+
     if (!selectedBook) {
-      alert('You should select a book first.');
+      await alert('You should select a book first.');
       return;
     }
+
     await fetch(process.env.REACT_APP_BASE_URL + 'books/' + selectedBook.id, {
       method: "PUT",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
       body: JSON.stringify({ title, description, authorId, price, category })
     })
       .then((res) => res.json())
-      .then((res) => {
+      .then(async (res) => {
         console.log({ res });
-        setSelectedBook(null);
-      })
-      .then(async () => {
-        await handleClickBookList();
+        const ok = await alert(res.message);
+        if (ok) {
+          setSelectedBook(null);
+          await getBooks();
+        }
       });
   }, [selectedBook, accessToken, title, description, authorId, price, category])
 
   const handleClickBookRemove = React.useCallback(async () => {
+    const confirmed = await confirm('Are you sure?');
+    if (!confirmed) return;
+
     if (!selectedBook) {
-      alert('You should select a book first.');
+      await alert('You should select a book first.');
       return;
     }
+
     await fetch(process.env.REACT_APP_BASE_URL + 'books/' + selectedBook.id, {
       method: "DELETE",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
     })
       .then((res) => res.json())
-      .then((res) => {
+      .then(async (res) => {
         console.log({ res });
-        setSelectedBook(null);
-      })
-      .then(async () => {
-        await handleClickBookList();
+        const ok = await alert(res.message);
+        if (ok) {
+          setSelectedBook(null);
+          await getBooks();
+        }
       });
   }, [selectedBook, accessToken])
 

@@ -14,10 +14,13 @@ import Home from './Home';
 import Work from './Work';
 import Contact from './Contact';
 import Footer from './Footer';
+import { useDialog } from '../../hooks';
 
 
 const Portfolio = () => {
   //
+  const { prompt } = useDialog();
+
   const { setOpen: setSideBarOpen } = useSideBarStore();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -62,9 +65,9 @@ const Portfolio = () => {
     // (sendMessage)(message);
   }, [visitor]);
 
-  const handleClickList = React.useCallback(async (event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+  const handleClickList = React.useCallback(async () => {
     //
-    const password = prompt('Admin Only!');
+    const password = await prompt('Admin Only!');
     if (password && password === process.env.REACT_APP_ADMIN_PASSWORD) {
       setSideBarOpen(true)
     }

@@ -1,9 +1,13 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { Button, Divider, Grid } from '@mui/material';
+
+import { useDialog } from '../../hooks';
 
 
 const Auth = () => {
   //
+  const { confirm, alert } = useDialog();
+
   const [accessToken, setAccessToken] = React.useState<string>('');
 
   React.useEffect(() => {
@@ -20,25 +24,31 @@ const Auth = () => {
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
 
-  const handleChangeName = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeName = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   }, [])
 
-  const handleChangeEmail = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeEmail = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   }, [])
 
-  const handleChangePassword = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangePassword = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   }, [])
 
-  const handleClickReset = React.useCallback(() => {
+  const handleClickReset = React.useCallback(async () => {
+    const confirmed = await confirm('Are you sure?');
+    if (!confirmed) return;
+
     setName('');
     setEmail('');
     setPassword('');
   }, [])
 
   const handleClickRegister = React.useCallback(async () => {
+    const confirmed = await confirm('Are you sure?');
+    if (!confirmed) return;
+
     await fetch(process.env.REACT_APP_BASE_URL + 'auth/register', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -47,6 +57,7 @@ const Auth = () => {
       .then((res) => res.json())
       .then((res) => {
         console.log({ res });
+        alert(res.message);
       });
   }, [name, email, password])
 
@@ -59,6 +70,7 @@ const Auth = () => {
       .then((res) => res.json())
       .then((res) => {
         console.log({ res });
+        alert(res.message);
         setAccessToken(res.data.accessToken);
       });
   }, [email, password])
