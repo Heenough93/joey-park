@@ -3,8 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Visitor } from "../../interfaces";
 import {
-  getCurrentPosition,
-  // getGeolocationInfo,
+  getGeolocationInfo,
   registerVisitor,
   // sendMessage,
 } from "../../functions";
@@ -27,31 +26,10 @@ const Portfolio = () => {
   const [visitor, setVisitor] = React.useState<Visitor | null>(null);
 
   React.useEffect(() => {
-    const positionCallback = (position: GeolocationPosition) => {
-      const { latitude, longitude } = position.coords;
-      const target: Visitor = {
-        appName: '',
-        platform: '',
-        userAgent: '',
-        country_code: '',
-        country_name: '',
-        city: '',
-        postal: '',
-        latitude: latitude,
-        longitude: longitude,
-        IPv4: '',
-        state: '',
-        id: '',
-        date: '',
-      }
-      setVisitor(target);
-    }
-    getCurrentPosition(positionCallback);
-
-    // (getGeolocationInfo)()
-    //   .then((data) => {
-    //     setVisitor(data)
-    //   });
+    (getGeolocationInfo)()
+      .then((data) => {
+        setVisitor(data)
+      });
   }, []);
 
   React.useEffect(() => {
