@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 
 import './Dialog.css';
 import { useDialogStore } from '../../stores';
-import { useDialog } from '../../hooks';
+import { useDialog, useEnterEscButtons } from '../../hooks';
 
 
 const Dialog = () => {
@@ -21,7 +21,7 @@ const Dialog = () => {
   
   const { onInteractionEnd } = useDialog();
   
-  const handleClickConfirm = React.useCallback(() => {
+  const handleClickOK = React.useCallback(() => {
     if (type === 'prompt') {
       onInteractionEnd(inputRef.current?.value || '');
       return;
@@ -39,6 +39,8 @@ const Dialog = () => {
     onInteractionEnd(false);
   }, [type, onInteractionEnd]);
 
+  useEnterEscButtons({ handleClickOK, handleClickCancel });
+
   const DialogComponent = React.memo(() => (
     <>
       {/*<div className='dialog-backdrop' onClick={handleClickCancel} />*/}
@@ -50,7 +52,7 @@ const Dialog = () => {
           <p className='dialog__description'>{description}</p>
         )}
         {type === 'prompt' && (
-          <form onSubmit={handleClickConfirm}>
+          <form onSubmit={handleClickOK}>
             <input
               autoFocus
               type='text'
@@ -63,7 +65,7 @@ const Dialog = () => {
           <button
             type='button'
             className='dialog__button dialog__button--confirm'
-            onClick={handleClickConfirm}
+            onClick={handleClickOK}
           >
             OK
           </button>
