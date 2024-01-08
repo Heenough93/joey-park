@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Backdrop,
+  Button,
   Checkbox,
   CircularProgress,
   FormControlLabel,
@@ -29,6 +30,13 @@ interface Data {
 }
 
 const StockTable = () => {
+  //
+  const [accessToken, setAccessToken] = React.useState<string>('');
+
+  React.useEffect(() => {
+    const accessToken = sessionStorage.getItem('accessToken') || '';
+    setAccessToken(accessToken);
+  }, [])
 
   const getHoldingStockRdos = async () => {
     setIsLoading(true);
@@ -134,6 +142,33 @@ const StockTable = () => {
     setData(newData);
   }, [holdingStockRdos]);
 
+  const handleClickBatch = React.useCallback(async () => {
+    setIsLoading(true);
+
+    const stockCodes = await fetch(process.env.REACT_APP_BASE_URL + 'stock/stocks', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((res) => res.data.map((stock: Stock) => {
+        if (stock.marketType === 'domestic') {
+          return stock.code + '.XKRX';
+        } else {
+          return stock.code;
+        }
+      }));
+
+    await fetch(process.env.REACT_APP_BASE_URL + 'stocks/execute-batch', {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": accessToken },
+      body: JSON.stringify({ symbols: stockCodes }),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setIsLoading(false);
+      });
+  }, [accessToken])
+
   const onClickCheckbox = (targetKey: string) => {
     const newColumns = columns.map(({key, value, check, disabled}) => {
       if (key === targetKey) {
@@ -171,6 +206,10 @@ const StockTable = () => {
           <CircularProgress color="inherit" />
           </Backdrop>
       </>}
+
+      <div>
+        <Button onClick={handleClickBatch}>Batch</Button>
+      </div>
 
       <FormGroup row>
         {columns.map(({key, value, check, disabled}, index) => {
