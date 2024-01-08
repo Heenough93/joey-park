@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Backdrop,
+  Button,
   Checkbox,
   CircularProgress,
   FormControlLabel,
@@ -13,7 +14,7 @@ import {
   TableRow,
 } from '@mui/material';
 
-import { HoldingStockRdo } from '../../interfaces';
+import { HoldingStockRdo, Stock } from '../../interfaces';
 
 
 interface Column {
@@ -29,24 +30,28 @@ interface Data {
 }
 
 const StockTable = () => {
+  //
+  const [accessToken, setAccessToken] = React.useState<string>('');
+
+  React.useEffect(() => {
+    const accessToken = sessionStorage.getItem('accessToken') || '';
+    setAccessToken(accessToken);
+  }, [])
 
   const getHoldingStockRdos = async () => {
     setIsLoading(true);
 
+    const stockCodes = await fetch(process.env.REACT_APP_BASE_URL + 'stock/stocks', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((res) => res.data.map((stock: Stock) => stock.code));
+
     await fetch(process.env.REACT_APP_BASE_URL + 'stock/holdingstockrdos', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: [
-          "305540",   // TIGER 2차전지테마
-          "360750",   // TIGER 미국S&P500
-          "102780",   // KOEDX 삼성그룹
-          "005930",   // 삼성전자
-          "035720",   // 카카오
-          "448740",   // 삼성스팩8호
-          "IONQ",     // 아이온큐
-          "AAPL",     // 애플
-          "SBUX",     // 스타벅스
-        ] })
+      body: JSON.stringify({ data: stockCodes })
     })
       .then((res) => res.json())
       .then((res) => {
@@ -91,6 +96,8 @@ const StockTable = () => {
       {key: 'stockHoldings', value: '보유수량', check: false, formatFnc: formatStockHoldings},
       {key: 'buyingDate', value: '매수일', check: false, formatFnc: formatDate},
       {key: 'buyingPrice', value: '매수단가', check: false, formatFnc: formatAmount},
+      {key: 'targetDate', value: '목표일', check: false, formatFnc: formatDate},
+      {key: 'targetPrice', value: '목표가', check: false, formatFnc: formatAmount},
       {key: 'currentDate', value: '현재일', check: false, formatFnc: formatDate},
       {key: 'currentPrice', value: '현재가', check: false, formatFnc: formatAmount},
       // {key: 'previousDate', value: '전일', check: false, formatFnc: formatDate},
@@ -98,13 +105,17 @@ const StockTable = () => {
       {key: 'buyingAmount', value: '매수금액', check: false, formatFnc: formatAmount},
       {key: 'currentAmount', value: '현재평가금액', check: false, formatFnc: formatAmount},
       // {key: 'previousAmount', value: '전일평가금액', check: false, formatFnc: formatAmount},
+      {key: 'targetAmount', value: '목표평가금액', check: false, formatFnc: formatAmount},
       {key: 'currentProfitAndLoss', value: '현재평가손익', check: false, formatFnc: formatAmount},
       // {key: 'previousProfitAndLoss', value: '전일평가손익', check: false, formatFnc: formatAmount},
+      {key: 'targetProfitAndLoss', value: '목표평가손익', check: false, formatFnc: formatAmount},
       {key: 'currentRateOfReturn', value: '현재수익률', check: false},
       // {key: 'previousRateOfReturn', value: '전일수익률', check: false},
+      {key: 'targetRateOfReturn', value: '목표수익률', check: false},
       // {key: 'currency', value: '통화', check: false},
       // {key: 'rateOfExchange', value: '환율', check: false},
       // {key: 'marketType', value: '시장타입', check: false},
+      {key: 'source', value: '자금 출처', check: false},
     ]
   );
 
@@ -130,6 +141,33 @@ const StockTable = () => {
     })
     setData(newData);
   }, [holdingStockRdos]);
+
+  const handleClickBatch = React.useCallback(async () => {
+    setIsLoading(true);
+
+    const stockCodes = await fetch(process.env.REACT_APP_BASE_URL + 'stock/stocks', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((res) => res.data.map((stock: Stock) => {
+        if (stock.marketType === 'domestic') {
+          return stock.code + '.XKRX';
+        } else {
+          return stock.code;
+        }
+      }));
+
+    await fetch(process.env.REACT_APP_BASE_URL + 'stocks/execute-batch', {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": accessToken },
+      body: JSON.stringify({ symbols: stockCodes }),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setIsLoading(false);
+      });
+  }, [accessToken])
 
   const onClickCheckbox = (targetKey: string) => {
     const newColumns = columns.map(({key, value, check, disabled}) => {
@@ -168,6 +206,10 @@ const StockTable = () => {
           <CircularProgress color="inherit" />
           </Backdrop>
       </>}
+
+      <div>
+        <Button onClick={handleClickBatch}>Batch</Button>
+      </div>
 
       <FormGroup row>
         {columns.map(({key, value, check, disabled}, index) => {

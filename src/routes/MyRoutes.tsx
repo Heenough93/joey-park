@@ -10,7 +10,15 @@ import {
   MapPage,
   NotFoundPage,
 } from '../pages';
-import { Auth, User, Author, Book } from '../components';
+import {
+  Auth,
+  User,
+  Author,
+  Book,
+  StockTable,
+  Stocks,
+  HoldingStocks,
+} from '../components';
 
 
 const MyRoutes = () => {
@@ -31,7 +39,24 @@ const MyRoutes = () => {
       },
       {
         path: 'stock',
-        element: <StockPage />,
+        element: (<>
+          <StockPage />
+          <Outlet />
+        </>),
+        children: [
+          {
+            path: 'stock-table',
+            element: <StockTable />,
+          },
+          {
+            path: 'stocks',
+            element: <Stocks />,
+          },
+          {
+            path: 'holding-stocks',
+            element: <HoldingStocks />,
+          },
+        ],
       },
       {
         path: 'test',
