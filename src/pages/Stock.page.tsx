@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@mui/material';
 
 import { useSideBarStore } from '../stores';
-import { StockTable } from '../components';
+import { Stock } from '../components';
 
 
 const StockPage = () => {
@@ -17,7 +17,7 @@ const StockPage = () => {
       <div style={{ textAlign: 'right' }}>
         <Button onClick={openDrawer( true)}>drawer</Button>
       </div>
-      <StockTable />
+      <Stock />
     </>
   )
 }

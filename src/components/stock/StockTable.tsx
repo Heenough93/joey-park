@@ -13,7 +13,7 @@ import {
   TableRow,
 } from '@mui/material';
 
-import { HoldingStockRdo } from '../../interfaces';
+import { HoldingStockRdo, Stock } from '../../interfaces';
 
 
 interface Column {
@@ -33,20 +33,17 @@ const StockTable = () => {
   const getHoldingStockRdos = async () => {
     setIsLoading(true);
 
+    const stockCodes = await fetch(process.env.REACT_APP_BASE_URL + 'stock/stocks', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((res) => res.data.map((stock: Stock) => stock.code));
+
     await fetch(process.env.REACT_APP_BASE_URL + 'stock/holdingstockrdos', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: [
-          "305540",   // TIGER 2차전지테마
-          "360750",   // TIGER 미국S&P500
-          "102780",   // KOEDX 삼성그룹
-          "005930",   // 삼성전자
-          "035720",   // 카카오
-          "448740",   // 삼성스팩8호
-          "IONQ",     // 아이온큐
-          "AAPL",     // 애플
-          "SBUX",     // 스타벅스
-        ] })
+      body: JSON.stringify({ data: stockCodes })
     })
       .then((res) => res.json())
       .then((res) => {
