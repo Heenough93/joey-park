@@ -91,6 +91,8 @@ const StockTable = () => {
       {key: 'stockHoldings', value: '보유수량', check: false, formatFnc: formatStockHoldings},
       {key: 'buyingDate', value: '매수일', check: false, formatFnc: formatDate},
       {key: 'buyingPrice', value: '매수단가', check: false, formatFnc: formatAmount},
+      {key: 'targetDate', value: '목표일', check: false, formatFnc: formatDate},
+      {key: 'targetPrice', value: '목표가', check: false, formatFnc: formatAmount},
       {key: 'currentDate', value: '현재일', check: false, formatFnc: formatDate},
       {key: 'currentPrice', value: '현재가', check: false, formatFnc: formatAmount},
       // {key: 'previousDate', value: '전일', check: false, formatFnc: formatDate},
@@ -98,13 +100,17 @@ const StockTable = () => {
       {key: 'buyingAmount', value: '매수금액', check: false, formatFnc: formatAmount},
       {key: 'currentAmount', value: '현재평가금액', check: false, formatFnc: formatAmount},
       // {key: 'previousAmount', value: '전일평가금액', check: false, formatFnc: formatAmount},
+      {key: 'targetAmount', value: '목표평가금액', check: false, formatFnc: formatAmount},
       {key: 'currentProfitAndLoss', value: '현재평가손익', check: false, formatFnc: formatAmount},
       // {key: 'previousProfitAndLoss', value: '전일평가손익', check: false, formatFnc: formatAmount},
+      {key: 'targetProfitAndLoss', value: '목표평가손익', check: false, formatFnc: formatAmount},
       {key: 'currentRateOfReturn', value: '현재수익률', check: false},
       // {key: 'previousRateOfReturn', value: '전일수익률', check: false},
+      {key: 'targetRateOfReturn', value: '목표수익률', check: false},
       // {key: 'currency', value: '통화', check: false},
       // {key: 'rateOfExchange', value: '환율', check: false},
       // {key: 'marketType', value: '시장타입', check: false},
+      {key: 'source', value: '자금 출처', check: false},
     ]
   );
 
