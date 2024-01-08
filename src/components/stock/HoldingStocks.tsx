@@ -235,7 +235,7 @@ const HoldingStocks = () => {
           BUYING_DATE
         </Grid>
         <Grid item xs={6} md={8}>
-          <input onChange={handleChangeBuyingDate} value={buyingDate.toString()} />
+          <input type={'date'} onChange={handleChangeBuyingDate} value={new Date(buyingDate).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll('. ', '-').replaceAll('.', '')} />
         </Grid>
         <Grid item xs={6} md={4}>
           BUYING_PRICE
@@ -247,7 +247,7 @@ const HoldingStocks = () => {
           TARGET_DATE
         </Grid>
         <Grid item xs={6} md={8}>
-          <input onChange={handleChangeTargetDate} value={targetDate.toString()} />
+          <input type={'date'} onChange={handleChangeTargetDate} value={new Date(targetDate).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll('. ', '-').replaceAll('.', '')} />
         </Grid>
         <Grid item xs={6} md={4}>
           TARGET_PRICE
