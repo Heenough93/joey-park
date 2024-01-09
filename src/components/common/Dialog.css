@@ -9,6 +9,7 @@
 
 .dialog {
     --dialog-primary: #e57373;
+    z-index: 9999;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -18,7 +19,8 @@
     background-color: #fff;
     transform: translate3d(-50%, -50%, 0);
     box-sizing: border-box;
-    border: none;
+    /*border: none;*/
+    border-color: #e57373;
     border-radius: 8px;
     line-height: 1.5;
 }
