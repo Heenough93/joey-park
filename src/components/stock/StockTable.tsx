@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 
 import { HoldingStockRdo, Stock } from '../../interfaces';
+import { useDialog } from '../../hooks';
 
 
 interface Column {
@@ -31,6 +32,8 @@ interface Data {
 
 const StockTable = () => {
   //
+  const { confirm, alert } = useDialog();
+
   const [accessToken, setAccessToken] = React.useState<string>('');
 
   React.useEffect(() => {
@@ -143,6 +146,9 @@ const StockTable = () => {
   }, [holdingStockRdos]);
 
   const handleClickBatch = React.useCallback(async () => {
+    const confirmed = await confirm('Are you sure?');
+    if (!confirmed) return;
+
     setIsLoading(true);
 
     const stockCodes = await fetch(process.env.REACT_APP_BASE_URL + 'stock/stocks', {
@@ -164,8 +170,10 @@ const StockTable = () => {
       body: JSON.stringify({ symbols: stockCodes }),
     })
       .then((res) => res.json())
-      .then(() => {
+      .then(async (res) => {
+        console.log({ res });
         setIsLoading(false);
+        await alert(res.message);
       });
   }, [accessToken])
 
