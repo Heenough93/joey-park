@@ -7,12 +7,13 @@ import { useDialog } from '../../hooks';
 
 
 interface Props {
+  stocks: Stock[],
   getHoldingStocks: (sequence?: number) => Promise<void>
 }
 
 const HoldingStockModal = (props: Props) => {
   //
-  const { getHoldingStocks } = props;
+  const { stocks, getHoldingStocks } = props;
 
   const { confirm, alert } = useDialog();
 
@@ -22,8 +23,6 @@ const HoldingStockModal = (props: Props) => {
     holdingStockModalOpen: open,
     setHoldingStockModalOpen: setOpen,
   } = useHoldingStockStore();
-
-  const [stocks, setStocks] = React.useState<Stock[]>([]);
 
   const [stockCode, setStockCode] = React.useState<string>('');
   const [stockHoldings, setStockHoldings] = React.useState<number>(0);
@@ -49,19 +48,6 @@ const HoldingStockModal = (props: Props) => {
       boxShadow: 24,
       p: 4,
     };
-  }, []);
-
-  React.useEffect(() => {
-    const getStocks = () => {
-      fetch(process.env.REACT_APP_BASE_URL + 'stock/stocks', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      })
-        .then((res) => res.json())
-        .then((res) => setStocks(res.data));
-    }
-
-    (getStocks)();
   }, []);
 
   React.useEffect(() => {
