@@ -40,24 +40,25 @@ const HoldingStocks = () => {
     return {
       editable: false,
       filter: false,
+      sortable: true,
     }
   }, []);
 
-  const columnDefsVisitor: ColDef<HoldingStock>[] = React.useMemo(() => {
+  const columnDefs: ColDef<HoldingStock>[] = React.useMemo(() => {
     return [
-      { headerName: "No.", valueGetter: (params) => typeof params.node?.rowIndex === 'number' ? params.node?.rowIndex + 1 : 0, flex: 1 },
-      { headerName: "StockName", valueGetter: (params) => stocks.find((stock) => stock.code === params.data?.stockCode || '')?.name || '', flex: 1 },
-      { field: "stockCode", headerName: "StockCode", tooltipField: "stockCode", flex: 1 },
-      { field: "stockHoldings", headerName: "StockHoldings", tooltipField: "stockHoldings", flex: 1 },
-      { field: "buyingDate", headerName: "BuyingDate", tooltipField: "buyingDate", flex: 1 },
-      { field: "buyingPrice", headerName: "BuyingPrice", tooltipField: "buyingPrice", flex: 1 },
-      { field: "targetDate", headerName: "TargetDate", tooltipField: "targetDate", flex: 1 },
-      { field: "targetPrice", headerName: "TargetPrice", tooltipField: "targetPrice", flex: 1 },
-      { field: "currency", headerName: "Currency", tooltipField: "currency", flex: 1 },
-      { field: "rateOfExchange", headerName: "RateOfExchange", tooltipField: "rateOfExchange", flex: 1 },
-      { field: "marketType", headerName: "MarketType", tooltipField: "marketType", flex: 1 },
-      { field: "stockFirmName", headerName: "StockFirmName", tooltipField: "stockFirmName", flex: 1 },
-      { field: "source", headerName: "Source", tooltipField: "source", flex: 1 },
+      { headerName: 'No.', valueGetter: (params) => typeof params.node?.rowIndex === 'number' ? params.node?.rowIndex + 1 : 0, flex: 1 },
+      { headerName: 'StockName', valueGetter: (params) => stocks.find((stock) => stock.code === params.data?.stockCode || '')?.name || '', flex: 1 },
+      { field: 'stockCode', headerName: 'StockCode', tooltipField: 'stockCode', flex: 1 },
+      { field: 'stockFirmName', headerName: 'StockFirmName', tooltipField: 'stockFirmName', flex: 1 },
+      { field: 'stockHoldings', headerName: 'StockHoldings', tooltipField: 'stockHoldings', flex: 1 },
+      { field: 'buyingDate', headerName: 'BuyingDate', tooltipField: 'buyingDate', flex: 1 },
+      { field: 'buyingPrice', headerName: 'BuyingPrice', tooltipField: 'buyingPrice', flex: 1 },
+      { field: 'targetDate', headerName: 'TargetDate', tooltipField: 'targetDate', flex: 1 },
+      { field: 'targetPrice', headerName: 'TargetPrice', tooltipField: 'targetPrice', flex: 1 },
+      { field: 'source', headerName: 'Source', tooltipField: 'source', flex: 1 },
+      { field: 'currency', headerName: 'Currency', tooltipField: 'currency', flex: 1 },
+      { field: 'rateOfExchange', headerName: 'RateOfExchange', tooltipField: 'rateOfExchange', flex: 1 },
+      { field: 'marketType', headerName: 'MarketType', tooltipField: 'marketType', flex: 1 },
     ];
   }, [stocks]);
 
@@ -105,10 +106,10 @@ const HoldingStocks = () => {
       </div>
       <Divider />
       <div>
-        <div className="ag-theme-alpine" style={{ height: 600, width: '100%' }}>
+        <div className='ag-theme-alpine' style={{ height: 600, width: '100%' }}>
           <AgGridReact<HoldingStock>
             defaultColDef={defaultColDef}
-            columnDefs={columnDefsVisitor}
+            columnDefs={columnDefs}
             rowData={holdingStocks}
             onRowClicked={handleRowClick}
           />
