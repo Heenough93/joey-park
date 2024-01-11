@@ -16,10 +16,15 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
-const CustomMap = () => {
+interface Props {
+  isVisitor: boolean,
+}
+
+const CustomMap = (props: Props) => {
   //
+  const { isVisitor } = props;
+
   const [map, setMap] = React.useState<L.Map | null>(null)
-  const [mode, setMode] = React.useState<boolean>(true)
   const [visitor, setVisitor] = React.useState<Visitor | null>(null);
   const [visitors, setVisitors] = React.useState<Visitor[]>([])
 
@@ -35,11 +40,11 @@ const CustomMap = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        mode
+        isVisitor
           ? setVisitors(res.data.filter((item: Visitor) => item.IPv4))
           : setVisitors(res.data.filter((item: Visitor) => !item.IPv4))
       })
-  }, [mode, visitor])
+  }, [isVisitor, visitor])
 
   React.useEffect(() => {
     if (!visitor) return;
@@ -47,10 +52,6 @@ const CustomMap = () => {
     (registerVisitor)(Object.assign(visitor, { id: uuidv4(), date: new Date().toISOString() }))
       .then(() => setVisitor(null));
   }, [visitor])
-
-  const handleClickSwitch = React.useCallback(() => {
-    setMode((prev) => !prev)
-  }, [])
 
   const handleClickSave = React.useCallback(() => {
     const positionCallback = (position: GeolocationPosition) => {
@@ -78,9 +79,7 @@ const CustomMap = () => {
 
   return (
     <div style={{ height: 600, width: '100%' }}>
-      {mode ? 'visitor' : 'me'}
-      <button onClick={handleClickSwitch}>SWITCH</button>
-      <button onClick={handleClickSave}>SAVE</button>
+      {!isVisitor && <button onClick={handleClickSave}>SAVE</button>}
 
       <MapContainer
         style={{ height: '100%' }}

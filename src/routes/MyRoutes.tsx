@@ -5,19 +5,20 @@ import {
   PortfolioPage,
   VisitorPage,
   MessagePage,
+  MapPage,
+  AuthPage,
   StockPage,
   TestPage,
-  MapPage,
+  MyMapPage,
   NotFoundPage,
 } from '../pages';
 import {
-  Auth,
-  User,
-  Author,
-  Book,
   StockTable,
   Stocks,
   HoldingStocks,
+  User,
+  Author,
+  Book,
 } from '../components';
 
 
@@ -36,6 +37,14 @@ const MyRoutes = () => {
       {
         path: 'message',
         element: <MessagePage />,
+      },
+      {
+        path: 'map',
+        element: <MapPage />,
+      },
+      {
+        path: 'auth',
+        element: <AuthPage />,
       },
       {
         path: 'stock',
@@ -66,10 +75,6 @@ const MyRoutes = () => {
         </>),
         children: [
           {
-            path: 'auth',
-            element: <Auth />,
-          },
-          {
             path: 'user',
             element: <User />,
           },
@@ -84,8 +89,8 @@ const MyRoutes = () => {
         ],
       },
       {
-        path: 'map',
-        element: <MapPage />,
+        path: 'my-map',
+        element: <MyMapPage />,
       },
       {
         path: '*',

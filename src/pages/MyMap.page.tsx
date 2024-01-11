@@ -4,10 +4,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useSideBarStore } from '../stores';
 import { useDialog } from '../hooks';
-import { Stock } from '../components';
+import { CustomMap } from '../components';
 
 
-const StockPage = () => {
+const MyMapPage = () => {
   //
   const location = useLocation();
 
@@ -30,14 +30,14 @@ const StockPage = () => {
   return (
     <>
       <div style={{ textAlign: 'center' }}>
-        Stock Page
+        Map Page
       </div>
       <div style={{ textAlign: 'right' }}>
         <Button onClick={openDrawer( true)}>drawer</Button>
       </div>
-      {location.state?.accessToken && <Stock />}
+      {location.state?.accessToken && <CustomMap isVisitor={false} />}
     </>
   )
 }
 
-export default StockPage
+export default MyMapPage

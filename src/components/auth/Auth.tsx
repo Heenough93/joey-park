@@ -71,7 +71,7 @@ const Auth = () => {
       .then((res) => {
         console.log({ res });
         alert(res.message);
-        setAccessToken(res.data.accessToken);
+        setAccessToken(res.data?.accessToken || '');
       });
   }, [email, password])
 

@@ -2,13 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
-  Button,
   Divider,
   Drawer,
   List,
   ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
 } from '@mui/material';
 
@@ -19,15 +17,21 @@ const SideBar = () => {
   //
   const { open, openDrawer } = useSideBarStore();
 
+  const [accessToken, setAccessToken] = React.useState<string>('');
+
+  React.useEffect(() => {
+    const accessToken = sessionStorage.getItem('accessToken') || '';
+    setAccessToken(accessToken);
+  }, [open])
+
   const list = () => (
     <Box
       // sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
       onClick={openDrawer( false)}
-      onKeyDown={openDrawer( false)}
     >
       <List>
-        {['Home'].map((text, index) => (
+        {['Portfolio'].map((text, index) => (
           <Link key={index} to={''}>
             <ListItem disablePadding>
               <ListItemButton>
@@ -42,7 +46,7 @@ const SideBar = () => {
       </List>
       <Divider />
       <List>
-        {['Visitor', 'Message'].map((text, index) => (
+        {['Visitor', 'Message', 'Map'].map((text, index) => (
           <Link key={index} to={text.toLowerCase()}>
             <ListItem disablePadding>
               <ListItemButton>
@@ -57,8 +61,23 @@ const SideBar = () => {
       </List>
       <Divider />
       <List>
-        {['Stock', 'Test', 'Map'].map((text, index) => (
+        {['Auth'].map((text, index) => (
           <Link key={index} to={text.toLowerCase()}>
+            <ListItem disablePadding>
+              <ListItemButton>
+                {/*<ListItemIcon>*/}
+                {/*  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}*/}
+                {/*</ListItemIcon>*/}
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {['Stock', 'Test', 'My-Map'].map((text, index) => (
+          <Link key={index} to={text.toLowerCase()} state={{ accessToken: accessToken }}>
             <ListItem disablePadding>
               <ListItemButton>
                 {/*<ListItemIcon>*/}

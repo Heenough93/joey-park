@@ -2,24 +2,24 @@ import React from 'react';
 import { Button } from '@mui/material';
 
 import { useSideBarStore } from '../stores';
-import { CustomMap } from '../components';
+import { Auth } from '../components';
 
 
-const MapPage = () => {
+const AuthPage = () => {
   //
   const { openDrawer } = useSideBarStore();
 
   return (
     <>
       <div style={{ textAlign: 'center' }}>
-        Map Page
+        Auth Page
       </div>
       <div style={{ textAlign: 'right' }}>
         <Button onClick={openDrawer( true)}>drawer</Button>
       </div>
-      <CustomMap isVisitor={true} />
+      <Auth />
     </>
   )
 }
 
-export default MapPage
+export default AuthPage
