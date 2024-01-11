@@ -1,3 +1,4 @@
+export { default as AuthPage } from './Auth.page'
 export { default as MapPage } from './Map.page'
 export { default as MessagePage } from './Message.page'
 export { default as MyMapPage } from './MyMap.page'

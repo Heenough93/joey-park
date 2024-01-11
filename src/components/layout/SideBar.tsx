@@ -2,13 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
-  Button,
   Divider,
   Drawer,
   List,
   ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
 } from '@mui/material';
 
@@ -18,6 +16,13 @@ import { useSideBarStore } from '../../stores';
 const SideBar = () => {
   //
   const { open, openDrawer } = useSideBarStore();
+
+  const [accessToken, setAccessToken] = React.useState<string>('');
+
+  React.useEffect(() => {
+    const accessToken = sessionStorage.getItem('accessToken') || '';
+    setAccessToken(accessToken);
+  }, [])
 
   const list = () => (
     <Box
@@ -57,8 +62,23 @@ const SideBar = () => {
       </List>
       <Divider />
       <List>
-        {['Stock', 'Test', 'My-Map'].map((text, index) => (
+        {['Auth'].map((text, index) => (
           <Link key={index} to={text.toLowerCase()}>
+            <ListItem disablePadding>
+              <ListItemButton>
+                {/*<ListItemIcon>*/}
+                {/*  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}*/}
+                {/*</ListItemIcon>*/}
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {['Stock', 'Test', 'My-Map'].map((text, index) => (
+          <Link key={index} to={text.toLowerCase()} state={{ accessToken: accessToken }}>
             <ListItem disablePadding>
               <ListItemButton>
                 {/*<ListItemIcon>*/}

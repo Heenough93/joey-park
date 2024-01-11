@@ -7,10 +7,6 @@ const Test = () => {
   //
   const navigate = useNavigate();
 
-  const handleClickAuth = React.useCallback(() => {
-    navigate('auth')
-  }, [navigate])
-
   const handleClickUser = React.useCallback(() => {
     navigate('user')
   }, [navigate])
@@ -25,7 +21,6 @@ const Test = () => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <Button onClick={handleClickAuth}>Auth</Button>
       <Button onClick={handleClickUser}>User</Button>
       <Button onClick={handleClickAuthor}>Author</Button>
       <Button onClick={handleClickBook}>Book</Button>
