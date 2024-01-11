@@ -27,7 +27,7 @@ const SideBar = () => {
       onKeyDown={openDrawer( false)}
     >
       <List>
-        {['Home'].map((text, index) => (
+        {['Portfolio'].map((text, index) => (
           <Link key={index} to={''}>
             <ListItem disablePadding>
               <ListItemButton>
@@ -42,7 +42,7 @@ const SideBar = () => {
       </List>
       <Divider />
       <List>
-        {['Visitor', 'Message'].map((text, index) => (
+        {['Visitor', 'Message', 'Map'].map((text, index) => (
           <Link key={index} to={text.toLowerCase()}>
             <ListItem disablePadding>
               <ListItemButton>
@@ -57,7 +57,7 @@ const SideBar = () => {
       </List>
       <Divider />
       <List>
-        {['Stock', 'Test', 'Map'].map((text, index) => (
+        {['Stock', 'Test', 'My-Map'].map((text, index) => (
           <Link key={index} to={text.toLowerCase()}>
             <ListItem disablePadding>
               <ListItemButton>

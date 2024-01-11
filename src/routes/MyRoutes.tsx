@@ -5,9 +5,10 @@ import {
   PortfolioPage,
   VisitorPage,
   MessagePage,
+  MapPage,
   StockPage,
   TestPage,
-  MapPage,
+  MyMapPage,
   NotFoundPage,
 } from '../pages';
 import {
@@ -36,6 +37,10 @@ const MyRoutes = () => {
       {
         path: 'message',
         element: <MessagePage />,
+      },
+      {
+        path: 'map',
+        element: <MapPage />,
       },
       {
         path: 'stock',
@@ -84,8 +89,8 @@ const MyRoutes = () => {
         ],
       },
       {
-        path: 'map',
-        element: <MapPage />,
+        path: 'my-map',
+        element: <MyMapPage />,
       },
       {
         path: '*',

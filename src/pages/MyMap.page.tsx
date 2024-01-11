@@ -5,7 +5,7 @@ import { useSideBarStore } from '../stores';
 import { CustomMap } from '../components';
 
 
-const MapPage = () => {
+const MyMapPage = () => {
   //
   const { openDrawer } = useSideBarStore();
 
@@ -17,9 +17,9 @@ const MapPage = () => {
       <div style={{ textAlign: 'right' }}>
         <Button onClick={openDrawer( true)}>drawer</Button>
       </div>
-      <CustomMap isVisitor={true} />
+      <CustomMap isVisitor={false} />
     </>
   )
 }
 
-export default MapPage
+export default MyMapPage
