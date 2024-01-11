@@ -22,14 +22,13 @@ const SideBar = () => {
   React.useEffect(() => {
     const accessToken = sessionStorage.getItem('accessToken') || '';
     setAccessToken(accessToken);
-  }, [])
+  }, [open])
 
   const list = () => (
     <Box
       // sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
       onClick={openDrawer( false)}
-      onKeyDown={openDrawer( false)}
     >
       <List>
         {['Portfolio'].map((text, index) => (
