@@ -17,13 +17,6 @@ const SideBar = () => {
   //
   const { open, openDrawer } = useSideBarStore();
 
-  const [accessToken, setAccessToken] = React.useState<string>('');
-
-  React.useEffect(() => {
-    const accessToken = sessionStorage.getItem('accessToken') || '';
-    setAccessToken(accessToken);
-  }, [open])
-
   const list = () => (
     <Box
       // sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
@@ -77,7 +70,7 @@ const SideBar = () => {
       <Divider />
       <List>
         {['Stock', 'Test', 'My-Map'].map((text, index) => (
-          <Link key={index} to={text.toLowerCase()} state={{ accessToken: accessToken }}>
+          <Link key={index} to={text.toLowerCase()}>
             <ListItem disablePadding>
               <ListItemButton>
                 {/*<ListItemIcon>*/}
