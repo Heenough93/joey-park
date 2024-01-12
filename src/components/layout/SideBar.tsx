@@ -25,7 +25,7 @@ const SideBar = () => {
     >
       <List>
         {['Portfolio'].map((text, index) => (
-          <Link key={index} to={''}>
+          <Link style={{ color: 'black', textDecoration: 'none', cursor: 'pointer' }} key={index} to={''}>
             <ListItem disablePadding>
               <ListItemButton>
                 {/*<ListItemIcon>*/}
@@ -40,7 +40,7 @@ const SideBar = () => {
       <Divider />
       <List>
         {['Visitor', 'Message', 'Map'].map((text, index) => (
-          <Link key={index} to={text.toLowerCase()}>
+          <Link style={{ color: 'black', textDecoration: 'none', cursor: 'pointer' }} key={index} to={text.toLowerCase()}>
             <ListItem disablePadding>
               <ListItemButton>
                 {/*<ListItemIcon>*/}
@@ -55,7 +55,7 @@ const SideBar = () => {
       <Divider />
       <List>
         {['Auth'].map((text, index) => (
-          <Link key={index} to={text.toLowerCase()}>
+          <Link style={{ color: 'black', textDecoration: 'none', cursor: 'pointer' }} key={index} to={text.toLowerCase()}>
             <ListItem disablePadding>
               <ListItemButton>
                 {/*<ListItemIcon>*/}
@@ -70,7 +70,7 @@ const SideBar = () => {
       <Divider />
       <List>
         {['Stock', 'Test', 'My-Map'].map((text, index) => (
-          <Link key={index} to={text.toLowerCase()}>
+          <Link style={{ color: 'black', textDecoration: 'none', cursor: 'pointer' }} key={index} to={text.toLowerCase()}>
             <ListItem disablePadding>
               <ListItemButton>
                 {/*<ListItemIcon>*/}
@@ -88,6 +88,12 @@ const SideBar = () => {
   return (
     <div>
       <Drawer
+        PaperProps={{
+          sx: {
+            backgroundColor: '#eab8b8'
+          }
+        }}
+        // hideBackdrop
         anchor={'left'}
         open={open}
         onClose={openDrawer(false)}
