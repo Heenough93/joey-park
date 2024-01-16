@@ -173,16 +173,19 @@ const StockTable = () => {
       .then(async (res) => {
         console.log({ res });
         setIsLoading(false);
-        await alert(res.message);
+        const ok = await alert(res.message);
+        if (ok) {
+          await getHoldingStockRdos();
+        }
       });
   }, [accessToken])
 
   const onClickCheckbox = (targetKey: string) => {
-    const newColumns = columns.map(({key, value, check, disabled}) => {
-      if (key === targetKey) {
-        return {key, value, check: !check, disabled};
+    const newColumns = columns.map((column) => {
+      if (column.key === targetKey) {
+        return { ...column, check: !column.check };
       } else {
-        return {key, value, check, disabled};
+        return { ...column };
       }
     });
     setColumns(newColumns);
@@ -212,7 +215,7 @@ const StockTable = () => {
           open={isLoading}
         >
           <CircularProgress color="inherit" />
-          </Backdrop>
+        </Backdrop>
       </>}
 
       <div>
