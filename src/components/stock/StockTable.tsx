@@ -173,6 +173,7 @@ const StockTable = () => {
       .then(async (res) => {
         console.log({ res });
         setIsLoading(false);
+        setHoldingStockRdos([]);
         const ok = await alert(res.message);
         if (ok) {
           await getHoldingStockRdos();
