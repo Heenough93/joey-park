@@ -59,7 +59,7 @@ const User = () => {
   }, [])
 
   const getUsers = React.useCallback(async (id?: string) => {
-    await fetch(process.env.REACT_APP_BASE_URL + 'users' + `/${id ? id : ''}`, {
+    await fetch(process.env.REACT_APP_BASE_URL + '/users' + `/${id ? id : ''}`, {
       method: "GET",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
     })
@@ -87,7 +87,7 @@ const User = () => {
     const confirmed = await confirm('Are you sure?');
     if (!confirmed) return;
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'users', {
+    await fetch(process.env.REACT_APP_BASE_URL + '/users', {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
       body: JSON.stringify({ name, email, password, role })
@@ -112,7 +112,7 @@ const User = () => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'users/' + selectedUser.id, {
+    await fetch(process.env.REACT_APP_BASE_URL + '/users/' + selectedUser.id, {
       method: "PUT",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
       body: JSON.stringify({ name, email, password, role })
@@ -137,7 +137,7 @@ const User = () => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'users/' + selectedUser.id, {
+    await fetch(process.env.REACT_APP_BASE_URL + '/users/' + selectedUser.id, {
       method: "DELETE",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
     })

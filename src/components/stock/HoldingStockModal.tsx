@@ -88,7 +88,7 @@ const HoldingStockModal = (props: Props) => {
     const confirmed = await confirm('Are you sure?');
     if (!confirmed) return;
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'stock/create/holdingstock', {
+    await fetch(process.env.REACT_APP_BASE_URL + '/stock/create/holdingstock', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ data: { stockCode, stockHoldings, buyingDate, buyingPrice, targetDate, targetPrice, currency, rateOfExchange, marketType, stockFirmName, source } })
@@ -113,7 +113,7 @@ const HoldingStockModal = (props: Props) => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'stock/update/holdingstock', {
+    await fetch(process.env.REACT_APP_BASE_URL + '/stock/update/holdingstock', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ data: { sequence: selectedHoldingStock.sequence, stockCode, stockHoldings, buyingDate, buyingPrice, targetDate, targetPrice, currency, rateOfExchange, marketType, stockFirmName, source } })
@@ -138,7 +138,7 @@ const HoldingStockModal = (props: Props) => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'stock/delete/holdingstock', {
+    await fetch(process.env.REACT_APP_BASE_URL + '/stock/delete/holdingstock', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ data: { sequence: selectedHoldingStock.sequence, stockCode, stockHoldings, buyingDate, buyingPrice, targetDate, targetPrice, currency, rateOfExchange, marketType, stockFirmName, source } })

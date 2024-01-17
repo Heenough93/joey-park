@@ -25,7 +25,7 @@ const HoldingStocks = () => {
 
   React.useEffect(() => {
     const getStocks = () => {
-      fetch(process.env.REACT_APP_BASE_URL + 'stock/stocks', {
+      fetch(process.env.REACT_APP_BASE_URL + '/stock/stocks', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       })
@@ -71,7 +71,7 @@ const HoldingStocks = () => {
   }, [])
 
   const getHoldingStocks = React.useCallback(async (sequence?: number) => {
-    await fetch(process.env.REACT_APP_BASE_URL + 'stock/holdingstocks', {
+    await fetch(process.env.REACT_APP_BASE_URL + '/stock/holdingstocks', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     })

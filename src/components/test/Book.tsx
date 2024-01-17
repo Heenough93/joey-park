@@ -18,7 +18,7 @@ const Book = () => {
   const [authors, setAuthors] = React.useState<any[]>([]);
 
   const getAuthors = React.useCallback(async () => {
-    await fetch(process.env.REACT_APP_BASE_URL + 'authors/with-books', {
+    await fetch(process.env.REACT_APP_BASE_URL + '/authors/with-books', {
       method: "GET",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
     })
@@ -84,7 +84,7 @@ const Book = () => {
   }, [])
 
   const getBooks = React.useCallback(async (id?: string) => {
-    await fetch(process.env.REACT_APP_BASE_URL + 'books' + `/${id ? id : ''}`, {
+    await fetch(process.env.REACT_APP_BASE_URL + '/books' + `/${id ? id : ''}`, {
       method: "GET",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
     })
@@ -112,7 +112,7 @@ const Book = () => {
     const confirmed = await confirm('Are you sure?');
     if (!confirmed) return;
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'books', {
+    await fetch(process.env.REACT_APP_BASE_URL + '/books', {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
       body: JSON.stringify({ title, description, authorId, price, category })
@@ -137,7 +137,7 @@ const Book = () => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'books/' + selectedBook.id, {
+    await fetch(process.env.REACT_APP_BASE_URL + '/books/' + selectedBook.id, {
       method: "PUT",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
       body: JSON.stringify({ title, description, authorId, price, category })
@@ -162,7 +162,7 @@ const Book = () => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'books/' + selectedBook.id, {
+    await fetch(process.env.REACT_APP_BASE_URL + '/books/' + selectedBook.id, {
       method: "DELETE",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
     })

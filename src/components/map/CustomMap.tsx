@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import CustomMapChildren from './CustomMapChildren';
 import './CustomMap.css'
-import { getCurrentPosition, registerVisitor } from '../../functions';
+import { findVisitors, getCurrentPosition, registerVisitor } from '../../functions';
 import { Visitor } from '../../interfaces';
 
 
@@ -33,16 +33,11 @@ const CustomMap = (props: Props) => {
   React.useEffect(() => {
     if (visitor) return;
 
-    fetch(process.env.REACT_APP_BASE_URL + 'find-visitors', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: null,
-    })
-      .then((res) => res.json())
-      .then((res) => {
+    findVisitors()
+      .then((data) => {
         isVisitor
-          ? setVisitors(res.data.filter((item: Visitor) => item.IPv4))
-          : setVisitors(res.data.filter((item: Visitor) => !item.IPv4))
+          ? setVisitors(data.filter((item) => item.IPv4))
+          : setVisitors(data.filter((item) => !item.IPv4))
       })
   }, [isVisitor, visitor])
 
