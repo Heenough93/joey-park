@@ -44,14 +44,14 @@ const StockTable = () => {
   const getHoldingStockRdos = async () => {
     setIsLoading(true);
 
-    const stockCodes = await fetch(process.env.REACT_APP_BASE_URL + 'stock/stocks', {
+    const stockCodes = await fetch(process.env.REACT_APP_BASE_URL + '/stock/stocks', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
       .then((res) => res.data.map((stock: Stock) => stock.code));
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'stock/holdingstockrdos', {
+    await fetch(process.env.REACT_APP_BASE_URL + '/stock/holdingstockrdos', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ data: stockCodes })
@@ -151,7 +151,7 @@ const StockTable = () => {
 
     setIsLoading(true);
 
-    const stockCodes = await fetch(process.env.REACT_APP_BASE_URL + 'stock/stocks', {
+    const stockCodes = await fetch(process.env.REACT_APP_BASE_URL + '/stock/stocks', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     })
@@ -164,7 +164,7 @@ const StockTable = () => {
         }
       }));
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'stocks/execute-batch', {
+    await fetch(process.env.REACT_APP_BASE_URL + '/stocks/execute-batch', {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
       body: JSON.stringify({ symbols: stockCodes }),

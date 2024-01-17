@@ -49,7 +49,7 @@ const Auth = () => {
     const confirmed = await confirm('Are you sure?');
     if (!confirmed) return;
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'auth/register', {
+    await fetch(process.env.REACT_APP_BASE_URL + '/auth/register', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password })
@@ -62,7 +62,7 @@ const Auth = () => {
   }, [name, email, password])
 
   const handleClickLogin = React.useCallback(async () => {
-    await fetch(process.env.REACT_APP_BASE_URL + 'auth/login', {
+    await fetch(process.env.REACT_APP_BASE_URL + '/auth/login', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })

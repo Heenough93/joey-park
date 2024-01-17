@@ -53,7 +53,7 @@ const Stocks = () => {
   }, [])
 
   const getStocks = React.useCallback(async (code?: string) => {
-    await fetch(process.env.REACT_APP_BASE_URL + 'stock/stocks', {
+    await fetch(process.env.REACT_APP_BASE_URL + '/stock/stocks', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     })
@@ -81,7 +81,7 @@ const Stocks = () => {
     const confirmed = await confirm('Are you sure?');
     if (!confirmed) return;
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'stock/create/stock', {
+    await fetch(process.env.REACT_APP_BASE_URL + '/stock/create/stock', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ data: { code, name, symbol, marketType } })
@@ -106,7 +106,7 @@ const Stocks = () => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'stock/update/stock', {
+    await fetch(process.env.REACT_APP_BASE_URL + '/stock/update/stock', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ data: { code: selectedStock.code, name, symbol, marketType } })
@@ -131,7 +131,7 @@ const Stocks = () => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'stock/delete/stock', {
+    await fetch(process.env.REACT_APP_BASE_URL + '/stock/delete/stock', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ data: { code: selectedStock.code, name, symbol, marketType } })

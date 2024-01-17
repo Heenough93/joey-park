@@ -52,7 +52,7 @@ const Author = () => {
   }, [])
 
   const getAuthors = React.useCallback(async (id?: string) => {
-    await fetch(process.env.REACT_APP_BASE_URL + 'authors' + `/${id ? id : ''}`, {
+    await fetch(process.env.REACT_APP_BASE_URL + '/authors' + `/${id ? id : ''}`, {
       method: "GET",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
     })
@@ -80,7 +80,7 @@ const Author = () => {
     const confirmed = await confirm('Are you sure?');
     if (!confirmed) return;
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'authors', {
+    await fetch(process.env.REACT_APP_BASE_URL + '/authors', {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
       body: JSON.stringify({ name, email, bio })
@@ -105,7 +105,7 @@ const Author = () => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'authors/' + selectedAuthor.id, {
+    await fetch(process.env.REACT_APP_BASE_URL + '/authors/' + selectedAuthor.id, {
       method: "PUT",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
       body: JSON.stringify({ name, email, bio })
@@ -130,7 +130,7 @@ const Author = () => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + 'authors/' + selectedAuthor.id, {
+    await fetch(process.env.REACT_APP_BASE_URL + '/authors/' + selectedAuthor.id, {
       method: "DELETE",
       headers: { "Content-Type": "application/json", "Authorization": accessToken },
     })
