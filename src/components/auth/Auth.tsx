@@ -75,6 +75,14 @@ const Auth = () => {
       });
   }, [email, password])
 
+  const handleKeyDownPassword = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.currentTarget.blur();
+      event.preventDefault();
+      (handleClickLogin)();
+    }
+  }, [handleClickLogin]);
+
   return (
     <div style={{ height: 600, width: '100%' }}>
       <div>
@@ -100,7 +108,7 @@ const Auth = () => {
           PASSWORD
         </Grid>
         <Grid item xs={6} md={8}>
-          <input onChange={handleChangePassword} value={password} />
+          <input onChange={handleChangePassword} value={password} onKeyDown={handleKeyDownPassword} />
         </Grid>
       </Grid>
     </div>
