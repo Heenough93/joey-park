@@ -1,20 +1,20 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
 
 
 export type DialogType = 'alert' | 'confirm' | 'prompt';
 export type ResponseHandler<T> = (value: T | PromiseLike<T>) => void;
 
 export interface DialogStore {
-  type: DialogType;
-  setType: (state: DialogType) => void;
-  title: string;
-  setTitle: (text: string) => void;
-  description: string;
-  setDescription: (description: string) => void;
-  revealed: boolean;
-  setRevealed: (show: boolean) => void;
-  responseHandler?: ResponseHandler<string | boolean>;
-  setResponseHandler: (responseHandler: ResponseHandler<string | boolean>) => void;
+  type: DialogType,
+  setType: (state: DialogType) => void,
+  title: string,
+  setTitle: (text: string) => void,
+  description: string,
+  setDescription: (description: string) => void,
+  revealed: boolean,
+  setRevealed: (show: boolean) => void,
+  responseHandler?: ResponseHandler<string | boolean>,
+  setResponseHandler: (responseHandler: ResponseHandler<string | boolean>) => void,
 }
 
 const useDialogStore = create<DialogStore>((set) => ({
