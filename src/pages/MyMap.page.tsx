@@ -27,7 +27,7 @@ const MyMapPage = () => {
         }
       });
     }
-  }, [accessToken]);
+  }, [ accessToken ]);
 
   return (
     <>
@@ -39,7 +39,7 @@ const MyMapPage = () => {
       </div>
       {accessToken && <CustomMap isVisitor={false} />}
     </>
-  )
-}
+  );
+};
 
-export default MyMapPage
+export default MyMapPage;
