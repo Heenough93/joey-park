@@ -95,10 +95,10 @@ const MyRoutes = () => {
       {
         path: '*',
         element: <NotFoundPage />,
-      }
+      },
     ])
 
   );
-}
+};
 
 export default MyRoutes;
