@@ -10,20 +10,20 @@ interface Props {
 
 const DraggableMarker = ({ position, setPositions }: Props) => {
   //
-  const [draggable, setDraggable] = React.useState(false)
+  const [ draggable, setDraggable ] = React.useState(false);
 
   const handleClickDraggable = React.useCallback(() => {
-    setDraggable((prev) => !prev)
-  }, [])
+    setDraggable((prev) => !prev);
+  }, []);
 
-  const markerRef = React.useRef<LeafletMarker>(null)
+  const markerRef = React.useRef<LeafletMarker>(null);
 
   const map = useMap();
 
   const eventHandlers = React.useMemo(() => {
     return {
       dragend() {
-        const marker = markerRef.current
+        const marker = markerRef.current;
         if (marker != null) {
           setPositions((prev) => {
             return prev.map((target) => {
@@ -32,25 +32,25 @@ const DraggableMarker = ({ position, setPositions }: Props) => {
               } else {
                 return target;
               }
-            })
+            });
           });
         }
       },
-    }
-  }, [position])
+    };
+  }, [ position ]);
 
   const removeMarker = React.useCallback((id: number) => {
     map.eachLayer((layer) => {
-      if (layer.options && layer.options.pane === "markerPane") {
+      if (layer.options && layer.options.pane === 'markerPane') {
         if (layer.options.attribution === id.toString()) {
           map.removeLayer(layer);
           setPositions((prev) => {
-            return prev.filter((target) => target.id !== id)
+            return prev.filter((target) => target.id !== id);
           });
         }
       }
     });
-  }, [map])
+  }, [ map ]);
 
   return (
     <Marker
@@ -66,7 +66,7 @@ const DraggableMarker = ({ position, setPositions }: Props) => {
         <button onClick={() => removeMarker(position.id)}>delete</button>
       </Popup>
     </Marker>
-  )
-}
+  );
+};
 
 export default DraggableMarker;

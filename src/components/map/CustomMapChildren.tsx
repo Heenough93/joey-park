@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
-import 'leaflet/dist/leaflet.css'
+import 'leaflet/dist/leaflet.css';
 
 import GroupMarker from './GroupMarker';
 import CenterMarker from './CenterMarker';
@@ -36,21 +36,21 @@ const CustomMapChildren = ({ center, visitors }: Props) => {
 
     const contentText = (bounds: L.LatLngBounds) => {
       return `latitude: ${bounds.getCenter().lat}, longitude: ${bounds.getCenter().lng}`;
-    }
+    };
 
     const info = L.DomUtil.create('div', 'legend');
 
     const position = L.Control.extend({
       options: {
-        position: 'bottomleft'
+        position: 'bottomleft',
       },
 
       onAdd: function () {
         const bounds = map.getBounds();
         info.innerHTML = contentText(bounds);
         return info;
-      }
-    })
+      },
+    });
 
     map.addControl(new position());
 
@@ -58,7 +58,7 @@ const CustomMapChildren = ({ center, visitors }: Props) => {
       const bounds = map.getBounds();
       info.textContent = contentText(bounds);
     });
-  }, [map])
+  }, [ map ]);
 
   return (
     <>
@@ -68,6 +68,6 @@ const CustomMapChildren = ({ center, visitors }: Props) => {
       <Markers />
     </>
   );
-}
+};
 
 export default CustomMapChildren;

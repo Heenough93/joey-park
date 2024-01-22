@@ -1,12 +1,12 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Visitor } from "../../interfaces";
+import { Visitor } from '../../interfaces';
 import {
   getGeolocationInfo,
   registerVisitor,
   // sendMessage,
-} from "../../functions";
+} from '../../functions';
 import { useSideBarStore } from '../../stores';
 import { Loading } from '../common';
 import Home from './Home';
@@ -22,13 +22,13 @@ const Portfolio = () => {
 
   const { setOpen: setSideBarOpen } = useSideBarStore();
 
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const [visitor, setVisitor] = React.useState<Visitor | null>(null);
+  const [ isLoading, setIsLoading ] = React.useState<boolean>(true);
+  const [ visitor, setVisitor ] = React.useState<Visitor | null>(null);
 
   React.useEffect(() => {
     (getGeolocationInfo)()
       .then((data) => {
-        setVisitor(data)
+        setVisitor(data);
       });
   }, []);
 
@@ -41,13 +41,13 @@ const Portfolio = () => {
 
     // const message = JSON.stringify(visitor);
     // (sendMessage)(message);
-  }, [visitor]);
+  }, [ visitor ]);
 
   const handleClickList = React.useCallback(async () => {
     //
     const password = await prompt('Admin Only!');
     if (password && password === process.env.REACT_APP_ADMIN_PASSWORD) {
-      setSideBarOpen(true)
+      setSideBarOpen(true);
     }
   }, []);
 
@@ -81,6 +81,6 @@ const Portfolio = () => {
       </div>
     </>
   );
-}
+};
 
 export default Portfolio;

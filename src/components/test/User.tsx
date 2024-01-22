@@ -8,43 +8,43 @@ const User = () => {
   //
   const { confirm, alert } = useDialog();
 
-  const [accessToken, setAccessToken] = React.useState<string>('');
+  const [ accessToken, setAccessToken ] = React.useState<string>('');
 
   React.useEffect(() => {
     const accessToken = sessionStorage.getItem('accessToken') || '';
     setAccessToken(accessToken);
-  }, [])
+  }, []);
 
-  const [users, setUsers] = React.useState<any[]>([]);
-  const [selectedUser, setSelectedUser] = React.useState<any | null>(null);
+  const [ users, setUsers ] = React.useState<any[]>([]);
+  const [ selectedUser, setSelectedUser ] = React.useState<any | null>(null);
 
-  const [name, setName] = React.useState<string>('');
-  const [email, setEmail] = React.useState<string>('');
-  const [password, setPassword] = React.useState<string>('');
-  const [role, setRole] = React.useState<1 | 2>(2);
+  const [ name, setName ] = React.useState<string>('');
+  const [ email, setEmail ] = React.useState<string>('');
+  const [ password, setPassword ] = React.useState<string>('');
+  const [ role, setRole ] = React.useState<1 | 2>(2);
 
   React.useEffect(() => {
     setName(selectedUser ? selectedUser.name : '');
     setEmail(selectedUser ? selectedUser.email : '');
     setPassword(selectedUser ? selectedUser.password : '');
     setRole(selectedUser ? selectedUser.role : 2);
-  }, [selectedUser])
+  }, [ selectedUser ]);
 
   const handleChangeName = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
-  }, [])
+  }, []);
 
   const handleChangeEmail = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
-  }, [])
+  }, []);
 
   const handleChangePassword = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
-  }, [])
+  }, []);
 
   const handleChangeRole = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setRole(Number(event.target.value) as 1 | 2);
-  }, [])
+  }, []);
 
   const handleClickReset = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
@@ -56,23 +56,23 @@ const User = () => {
     setEmail('');
     setPassword('');
     setRole(2);
-  }, [])
+  }, []);
 
   const getUsers = React.useCallback(async (id?: string) => {
-    await fetch(process.env.REACT_APP_BASE_URL + '/users' + `/${id ? id : ''}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json", "Authorization": accessToken },
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/users/${id ? id : ''}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json', 'Authorization': accessToken },
     })
       .then((res) => res.json())
       .then((res) => {
         console.log({ res });
         id ? setSelectedUser(res.data) : setUsers(res.data);
       });
-  }, [accessToken])
+  }, [ accessToken ]);
 
   const handleClickUserList = React.useCallback(async () => {
     await getUsers();
-  }, [getUsers]);
+  }, [ getUsers ]);
 
   const handleClickUser = React.useCallback(async (id: string) => {
     if (!id) {
@@ -81,16 +81,16 @@ const User = () => {
     }
 
     await getUsers(id);
-  }, [getUsers])
+  }, [ getUsers ]);
 
   const handleClickUserRegister = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
     if (!confirmed) return;
 
-    await fetch(process.env.REACT_APP_BASE_URL + '/users', {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": accessToken },
-      body: JSON.stringify({ name, email, password, role })
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/users`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': accessToken },
+      body: JSON.stringify({ name, email, password, role }),
     })
       .then((res) => res.json())
       .then(async (res) => {
@@ -100,8 +100,8 @@ const User = () => {
           setSelectedUser(null);
           await getUsers();
         }
-      })
-  }, [accessToken, name, email, password, role])
+      });
+  }, [ accessToken, name, email, password, role ]);
 
   const handleClickUserModify = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
@@ -112,10 +112,10 @@ const User = () => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + '/users/' + selectedUser.id, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", "Authorization": accessToken },
-      body: JSON.stringify({ name, email, password, role })
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/users/${selectedUser.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': accessToken },
+      body: JSON.stringify({ name, email, password, role }),
     })
       .then((res) => res.json())
       .then(async (res) => {
@@ -126,7 +126,7 @@ const User = () => {
           await getUsers();
         }
       });
-  }, [selectedUser, accessToken, name, email, password, role])
+  }, [ selectedUser, accessToken, name, email, password, role ]);
 
   const handleClickUserRemove = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
@@ -137,9 +137,9 @@ const User = () => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + '/users/' + selectedUser.id, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json", "Authorization": accessToken },
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/users/${selectedUser.id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', 'Authorization': accessToken },
     })
       .then((res) => res.json())
       .then(async (res) => {
@@ -150,7 +150,7 @@ const User = () => {
           await getUsers();
         }
       });
-  }, [selectedUser, accessToken])
+  }, [ selectedUser, accessToken ]);
 
   return (
     <div style={{ height: 600, width: '100%' }}>
@@ -168,7 +168,7 @@ const User = () => {
             <div key={index} onClick={() => handleClickUser(user.id)}>
               {`NAME: ${user.name} / EMAIL: ${user.email} / ROLE: ${user.role}`}
             </div>
-          )
+          );
         })}
       </div>
       <Divider />
@@ -200,6 +200,6 @@ const User = () => {
       </Grid>
     </div>
   );
-}
+};
 
 export default User;

@@ -28,7 +28,7 @@ const Dialog = () => {
     }
 
     onInteractionEnd(true);
-  }, [inputRef.current, type, onInteractionEnd]);
+  }, [ inputRef.current, type, onInteractionEnd ]);
   
   const handleClickCancel = React.useCallback(() => {
     if (type === 'prompt') {
@@ -37,7 +37,7 @@ const Dialog = () => {
     }
 
     onInteractionEnd(false);
-  }, [type, onInteractionEnd]);
+  }, [ type, onInteractionEnd ]);
 
   useEnterEscButtons({ handleClickOK, handleClickCancel });
 
@@ -84,6 +84,6 @@ const Dialog = () => {
   ));
 
   return createPortal(revealed ? <DialogComponent /> : null, dialogRoot);
-}
+};
 
 export default Dialog;

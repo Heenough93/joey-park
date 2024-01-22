@@ -8,33 +8,33 @@ const Auth = () => {
   //
   const { confirm, alert } = useDialog();
 
-  const [accessToken, setAccessToken] = React.useState<string>('');
+  const [ accessToken, setAccessToken ] = React.useState<string>('');
 
   React.useEffect(() => {
     setAccessToken('');
-  }, [])
+  }, []);
 
   React.useEffect(() => {
     if (accessToken) {
       sessionStorage.setItem('accessToken', accessToken);
     }
-  }, [accessToken])
+  }, [ accessToken ]);
 
-  const [name, setName] = React.useState<string>('');
-  const [email, setEmail] = React.useState<string>('');
-  const [password, setPassword] = React.useState<string>('');
+  const [ name, setName ] = React.useState<string>('');
+  const [ email, setEmail ] = React.useState<string>('');
+  const [ password, setPassword ] = React.useState<string>('');
 
   const handleChangeName = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
-  }, [])
+  }, []);
 
   const handleChangeEmail = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
-  }, [])
+  }, []);
 
   const handleChangePassword = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
-  }, [])
+  }, []);
 
   const handleClickReset = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
@@ -43,29 +43,29 @@ const Auth = () => {
     setName('');
     setEmail('');
     setPassword('');
-  }, [])
+  }, []);
 
   const handleClickRegister = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
     if (!confirmed) return;
 
-    await fetch(process.env.REACT_APP_BASE_URL + '/auth/register', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password })
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password }),
     })
       .then((res) => res.json())
       .then((res) => {
         console.log({ res });
         alert(res.message);
       });
-  }, [name, email, password])
+  }, [ name, email, password ]);
 
   const handleClickLogin = React.useCallback(async () => {
-    await fetch(process.env.REACT_APP_BASE_URL + '/auth/login', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -73,7 +73,7 @@ const Auth = () => {
         alert(res.message);
         setAccessToken(res.data?.accessToken || '');
       });
-  }, [email, password])
+  }, [ email, password ]);
 
   const handleKeyDownPassword = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -81,7 +81,7 @@ const Auth = () => {
       event.preventDefault();
       (handleClickLogin)();
     }
-  }, [handleClickLogin]);
+  }, [ handleClickLogin ]);
 
   return (
     <div style={{ height: 600, width: '100%' }}>
@@ -113,6 +113,6 @@ const Auth = () => {
       </Grid>
     </div>
   );
-}
+};
 
 export default Auth;
