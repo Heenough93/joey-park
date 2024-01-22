@@ -27,7 +27,7 @@ const TestPage = () => {
         }
       });
     }
-  }, [accessToken]);
+  }, [ accessToken ]);
 
   return (
     <>
@@ -39,7 +39,7 @@ const TestPage = () => {
       </div>
       {accessToken && <Test />}
     </>
-  )
-}
+  );
+};
 
-export default TestPage
+export default TestPage;

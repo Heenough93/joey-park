@@ -9,25 +9,25 @@ interface Props {
 
 const CenterMarker = ({ center }: Props) => {
   //
-  const map = useMap()
+  const map = useMap();
 
   React.useEffect(() => {
     if (!map) return;
 
     const customControler = L.Control.extend({
       options: {
-        position: "topright",
+        position: 'topright',
       },
 
       onAdd: function () {
-        const btn = L.DomUtil.create("button", "back-to-home");
-        btn.title = "center";
+        const btn = L.DomUtil.create('button', 'back-to-home');
+        btn.title = 'center';
         btn.innerHTML =
           '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M32 18.451L16 6.031 0 18.451v-5.064L16 .967l16 12.42zM28 18v12h-8v-8h-8v8H4V18l12-9z"></path></svg>';
 
         btn.onclick = function () {
-          map.flyTo(center, map.getZoom())
-          document.body.classList.remove("show-button-home");
+          map.flyTo(center, map.getZoom());
+          document.body.classList.remove('show-button-home');
         };
 
         return btn;
@@ -35,7 +35,7 @@ const CenterMarker = ({ center }: Props) => {
     });
 
     map.addControl(new customControler());
-  }, [map]);
+  }, [ map ]);
 
   useMapEvents({
     dragend() {
@@ -44,7 +44,7 @@ const CenterMarker = ({ center }: Props) => {
 
       const checkEqualArrays = lat !== latFromMap && lng !== lngFromMap;
 
-      document.body.classList[checkEqualArrays ? "add" : "remove"]("show-button-home");
+      document.body.classList[checkEqualArrays ? 'add' : 'remove']('show-button-home');
     },
   });
 
@@ -55,6 +55,6 @@ const CenterMarker = ({ center }: Props) => {
       </Marker>
     </>
   );
-}
+};
 
 export default CenterMarker;

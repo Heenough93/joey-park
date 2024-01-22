@@ -56,4 +56,4 @@ export const useDialog = () => {
     alert,
     prompt,
   };
-}
+};

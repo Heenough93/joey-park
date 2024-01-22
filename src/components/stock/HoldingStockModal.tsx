@@ -8,7 +8,7 @@ import { useDialog } from '../../hooks';
 
 interface Props {
   stocks: Stock[],
-  getHoldingStocks: (sequence?: number) => Promise<void>
+  getHoldingStocks: (sequence?: number) => Promise<void>,
 }
 
 const HoldingStockModal = (props: Props) => {
@@ -24,21 +24,21 @@ const HoldingStockModal = (props: Props) => {
     setHoldingStockModalOpen: setOpen,
   } = useHoldingStockStore();
 
-  const [stockCode, setStockCode] = React.useState<string>('');
-  const [stockHoldings, setStockHoldings] = React.useState<number>(0);
-  const [buyingDate, setBuyingDate] = React.useState<Date>(new Date());
-  const [buyingPrice, setBuyingPrice] = React.useState<number>(0);
-  const [targetDate, setTargetDate] = React.useState<Date>(new Date());
-  const [targetPrice, setTargetPrice] = React.useState<number>(0);
-  const [currency, setCurrency] = React.useState<string>('');
-  const [rateOfExchange, setRateOfExchange] = React.useState<string>('');
-  const [marketType, setMarketType] = React.useState<MarketType>('domestic');
-  const [stockFirmName, setStockFirmName] = React.useState<string>('');
-  const [source, setSource] = React.useState<string>('');
+  const [ stockCode, setStockCode ] = React.useState<string>('');
+  const [ stockHoldings, setStockHoldings ] = React.useState<number>(0);
+  const [ buyingDate, setBuyingDate ] = React.useState<Date>(new Date());
+  const [ buyingPrice, setBuyingPrice ] = React.useState<number>(0);
+  const [ targetDate, setTargetDate ] = React.useState<Date>(new Date());
+  const [ targetPrice, setTargetPrice ] = React.useState<number>(0);
+  const [ currency, setCurrency ] = React.useState<string>('');
+  const [ rateOfExchange, setRateOfExchange ] = React.useState<string>('');
+  const [ marketType, setMarketType ] = React.useState<MarketType>('domestic');
+  const [ stockFirmName, setStockFirmName ] = React.useState<string>('');
+  const [ source, setSource ] = React.useState<string>('');
 
   const style = React.useMemo(()  => {
     return {
-      position: 'absolute' as 'absolute',
+      position: 'absolute' as const,
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
@@ -78,20 +78,20 @@ const HoldingStockModal = (props: Props) => {
 
       setOpen(false);
     }
-  }, [selectedHoldingStock])
+  }, [ selectedHoldingStock ]);
 
   const handleClose = React.useCallback(() => {
-    setOpen(false)
+    setOpen(false);
   }, []);
 
   const handleClickRegister = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
     if (!confirmed) return;
 
-    await fetch(process.env.REACT_APP_BASE_URL + '/stock/create/holdingstock', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: { stockCode, stockHoldings, buyingDate, buyingPrice, targetDate, targetPrice, currency, rateOfExchange, marketType, stockFirmName, source } })
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/stock/create/holdingstock`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: { stockCode, stockHoldings, buyingDate, buyingPrice, targetDate, targetPrice, currency, rateOfExchange, marketType, stockFirmName, source } }),
     })
       .then((res) => res.json())
       .then(async (res) => {
@@ -101,8 +101,8 @@ const HoldingStockModal = (props: Props) => {
           setSelectedHoldingStock(null);
           await getHoldingStocks();
         }
-      })
-  }, [stockCode, stockHoldings, buyingDate, buyingPrice, targetDate, targetPrice, currency, rateOfExchange, marketType, stockFirmName, source])
+      });
+  }, [ stockCode, stockHoldings, buyingDate, buyingPrice, targetDate, targetPrice, currency, rateOfExchange, marketType, stockFirmName, source ]);
 
   const handleClickModify = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
@@ -113,10 +113,10 @@ const HoldingStockModal = (props: Props) => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + '/stock/update/holdingstock', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: { sequence: selectedHoldingStock.sequence, stockCode, stockHoldings, buyingDate, buyingPrice, targetDate, targetPrice, currency, rateOfExchange, marketType, stockFirmName, source } })
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/stock/update/holdingstock`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: { sequence: selectedHoldingStock.sequence, stockCode, stockHoldings, buyingDate, buyingPrice, targetDate, targetPrice, currency, rateOfExchange, marketType, stockFirmName, source } }),
     })
       .then((res) => res.json())
       .then(async (res) => {
@@ -127,7 +127,7 @@ const HoldingStockModal = (props: Props) => {
           await getHoldingStocks();
         }
       });
-  }, [selectedHoldingStock, stockCode, stockHoldings, buyingDate, buyingPrice, targetDate, targetPrice, currency, rateOfExchange, marketType, stockFirmName, source])
+  }, [ selectedHoldingStock, stockCode, stockHoldings, buyingDate, buyingPrice, targetDate, targetPrice, currency, rateOfExchange, marketType, stockFirmName, source ]);
 
   const handleClickRemove = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
@@ -138,10 +138,10 @@ const HoldingStockModal = (props: Props) => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + '/stock/delete/holdingstock', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: { sequence: selectedHoldingStock.sequence, stockCode, stockHoldings, buyingDate, buyingPrice, targetDate, targetPrice, currency, rateOfExchange, marketType, stockFirmName, source } })
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/stock/delete/holdingstock`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: { sequence: selectedHoldingStock.sequence, stockCode, stockHoldings, buyingDate, buyingPrice, targetDate, targetPrice, currency, rateOfExchange, marketType, stockFirmName, source } }),
     })
       .then((res) => res.json())
       .then(async (res) => {
@@ -152,51 +152,51 @@ const HoldingStockModal = (props: Props) => {
           await getHoldingStocks();
         }
       });
-  }, [selectedHoldingStock, stockCode, stockHoldings, buyingDate, buyingPrice, targetDate, targetPrice, currency, rateOfExchange, marketType, stockFirmName, source])
+  }, [ selectedHoldingStock, stockCode, stockHoldings, buyingDate, buyingPrice, targetDate, targetPrice, currency, rateOfExchange, marketType, stockFirmName, source ]);
 
   const handleChangeStockCode = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setStockCode(event.target.value);
-  }, [])
+  }, []);
 
   const handleChangeStockHoldings = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setStockHoldings(Number(event.target.value));
-  }, [])
+  }, []);
 
   const handleChangeBuyingDate = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setBuyingDate(new Date(event.target.value));
-  }, [])
+  }, []);
 
   const handleChangeBuyingPrice = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setBuyingPrice(Number(event.target.value));
-  }, [])
+  }, []);
 
   const handleChangeTargetDate = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setTargetDate(new Date(event.target.value));
-  }, [])
+  }, []);
 
   const handleChangeTargetPrice = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setTargetPrice(Number(event.target.value));
-  }, [])
+  }, []);
 
   const handleChangeCurrency = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setCurrency(event.target.value);
-  }, [])
+  }, []);
 
   const handleChangeRateOfExchange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setRateOfExchange(event.target.value);
-  }, [])
+  }, []);
 
   const handleChangeMarketType = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setMarketType(event.target.value as MarketType);
-  }, [])
+  }, []);
 
   const handleChangeStockFirmName = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setStockFirmName(event.target.value);
-  }, [])
+  }, []);
 
   const handleChangeSource = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSource(event.target.value);
-  }, [])
+  }, []);
 
   return (
     <Modal
@@ -219,7 +219,7 @@ const HoldingStockModal = (props: Props) => {
           <Button onClick={handleClickRemove}>Remove</Button>
         </div>
         <Divider />
-        <div style={{height: 400, width: '100%'}}>
+        <div style={{ height: 400, width: '100%' }}>
           <Grid container spacing={2}>
             <Grid item xs={6} md={4}>
               STOCK_CODE
@@ -292,6 +292,6 @@ const HoldingStockModal = (props: Props) => {
       </Box>
     </Modal>
   );
-}
+};
 
 export default HoldingStockModal;

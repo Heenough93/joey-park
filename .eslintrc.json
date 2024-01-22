@@ -1,0 +1,68 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "sourceType": "module"
+  },
+  "rules": {
+    "indent": ["error", 2],
+    "semi": ["error", "always"],
+    "quotes": ["error", "single"],
+    "comma-dangle": ["error", {
+      "arrays": "always-multiline",
+      "objects": "always-multiline",
+      "imports": "always-multiline",
+      "exports": "always-multiline",
+      "functions": "always-multiline"
+    }],
+    "object-curly-spacing": ["warn", "always"],
+    "array-bracket-spacing": ["warn", "always"],
+    "@typescript-eslint/member-delimiter-style": [
+      "warn",
+      {
+        "multiline": {
+          "delimiter": "comma",
+          "requireLast": true
+        },
+        "singleline": {
+          "delimiter": "comma",
+          "requireLast": false
+        }
+      }
+    ],
+    "@typescript-eslint/object-curly-spacing": ["error", "always"],
+    "@typescript-eslint/semi": ["error", "always"],
+    "@typescript-eslint/no-explicit-any": "off"
+  },
+  "globals": {
+    "process": false,
+    "require": false,
+    "module": false
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+      ],
+      "parserOptions": {
+        "project": ["./tsconfig.json"]
+      }
+    }
+  ]
+}

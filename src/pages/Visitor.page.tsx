@@ -21,7 +21,7 @@ const VisitorPage = () => {
       </div>
       <VisitorGrid />
     </>
-  )
-}
+  );
+};
 
-export default VisitorPage
+export default VisitorPage;

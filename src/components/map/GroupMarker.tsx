@@ -15,19 +15,19 @@ const GroupMarker = ({ visitors }: Props) => {
     return {
       lat: visitor.latitude,
       lng: visitor.longitude,
-      title: visitor.date
-    }
+      title: visitor.date,
+    };
   });
 
   return (
     <MarkerClusterGroup>
       {points.map(({ lat, lng, title }, index) => (
-        <Marker key={index} position={{lat, lng}}>
+        <Marker key={index} position={{ lat, lng }}>
           <Popup>{title}</Popup>
         </Marker>
       ))}
     </MarkerClusterGroup>
-  )
-}
+  );
+};
 
 export default GroupMarker;

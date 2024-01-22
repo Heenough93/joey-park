@@ -1,4 +1,4 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
 import { HoldingStock } from '../interfaces';
 
 
@@ -12,11 +12,11 @@ export interface HoldingStockStore {
 const useHoldingStockStore = create<HoldingStockStore>((set) => ({
   selectedHoldingStock: null,
   setSelectedHoldingStock: (selectedHoldingStock) => {
-    set((prev) => ({ ...prev, selectedHoldingStock }))
+    set((prev) => ({ ...prev, selectedHoldingStock }));
   },
   holdingStockModalOpen: false,
   setHoldingStockModalOpen: (holdingStockModalOpen) => {
-    set((prev) => ({ ...prev, holdingStockModalOpen }))
+    set((prev) => ({ ...prev, holdingStockModalOpen }));
   },
 }));
 

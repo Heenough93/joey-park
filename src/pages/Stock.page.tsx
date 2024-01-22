@@ -27,7 +27,7 @@ const StockPage = () => {
         }
       });
     }
-  }, [accessToken]);
+  }, [ accessToken ]);
 
   return (
     <>
@@ -39,7 +39,7 @@ const StockPage = () => {
       </div>
       {accessToken && <Stock />}
     </>
-  )
-}
+  );
+};
 
-export default StockPage
+export default StockPage;

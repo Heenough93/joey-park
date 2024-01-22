@@ -8,39 +8,39 @@ const Book = () => {
   //
   const { confirm, alert } = useDialog();
 
-  const [accessToken, setAccessToken] = React.useState<string>('');
+  const [ accessToken, setAccessToken ] = React.useState<string>('');
 
   React.useEffect(() => {
     const accessToken = sessionStorage.getItem('accessToken') || '';
     setAccessToken(accessToken);
-  }, [])
+  }, []);
 
-  const [authors, setAuthors] = React.useState<any[]>([]);
+  const [ authors, setAuthors ] = React.useState<any[]>([]);
 
   const getAuthors = React.useCallback(async () => {
-    await fetch(process.env.REACT_APP_BASE_URL + '/authors/with-books', {
-      method: "GET",
-      headers: { "Content-Type": "application/json", "Authorization": accessToken },
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/authors/with-books`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json', 'Authorization': accessToken },
     })
       .then((res) => res.json())
       .then((res) => {
         console.log({ res });
         setAuthors(res.data);
       });
-  }, [accessToken])
+  }, [ accessToken ]);
 
   React.useEffect(() => {
-    (getAuthors)()
-  }, [])
+    (getAuthors)();
+  }, []);
 
-  const [books, setBooks] = React.useState<any[]>([]);
-  const [selectedBook, setSelectedBook] = React.useState<any | null>(null);
+  const [ books, setBooks ] = React.useState<any[]>([]);
+  const [ selectedBook, setSelectedBook ] = React.useState<any | null>(null);
 
-  const [title, setTitle] = React.useState<string>('');
-  const [description, setDescription] = React.useState<string>('');
-  const [authorId, setAuthorId] = React.useState<number>(0);
-  const [price, setPrice] = React.useState<number>(0);
-  const [category, setCategory] = React.useState<string>('');
+  const [ title, setTitle ] = React.useState<string>('');
+  const [ description, setDescription ] = React.useState<string>('');
+  const [ authorId, setAuthorId ] = React.useState<number>(0);
+  const [ price, setPrice ] = React.useState<number>(0);
+  const [ category, setCategory ] = React.useState<string>('');
 
   React.useEffect(() => {
     setTitle(selectedBook ? selectedBook.title : '');
@@ -48,27 +48,27 @@ const Book = () => {
     setAuthorId(selectedBook ? selectedBook.authorId : 0);
     setPrice(selectedBook ? selectedBook.price : 0);
     setCategory(selectedBook ? selectedBook.category : '');
-  }, [selectedBook])
+  }, [ selectedBook ]);
 
   const handleChangeTitle = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
-  }, [])
+  }, []);
 
   const handleChangeDescription = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setDescription(event.target.value);
-  }, [])
+  }, []);
 
   const handleChangeAuthor = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setAuthorId(Number(event.target.value));
-  }, [])
+  }, []);
 
   const handleChangePrice = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setPrice(Number(event.target.value));
-  }, [])
+  }, []);
 
   const handleChangeCategory = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setCategory(event.target.value);
-  }, [])
+  }, []);
 
   const handleClickReset = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
@@ -81,23 +81,23 @@ const Book = () => {
     setAuthorId(0);
     setPrice(0);
     setCategory('');
-  }, [])
+  }, []);
 
   const getBooks = React.useCallback(async (id?: string) => {
-    await fetch(process.env.REACT_APP_BASE_URL + '/books' + `/${id ? id : ''}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json", "Authorization": accessToken },
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/books/${id ? id : ''}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json', 'Authorization': accessToken },
     })
       .then((res) => res.json())
       .then((res) => {
         console.log({ res });
         id ? setSelectedBook(res.data) : setBooks(res.data);
       });
-  }, [accessToken])
+  }, [ accessToken ]);
 
   const handleClickBookList = React.useCallback(async () => {
     await getBooks();
-  }, [getBooks])
+  }, [ getBooks ]);
 
   const handleClickBook = React.useCallback(async (id: string) => {
     if (!id) {
@@ -106,16 +106,16 @@ const Book = () => {
     }
 
     await getBooks(id);
-  }, [getBooks])
+  }, [ getBooks ]);
 
   const handleClickBookRegister = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
     if (!confirmed) return;
 
-    await fetch(process.env.REACT_APP_BASE_URL + '/books', {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": accessToken },
-      body: JSON.stringify({ title, description, authorId, price, category })
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/books`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': accessToken },
+      body: JSON.stringify({ title, description, authorId, price, category }),
     })
       .then((res) => res.json())
       .then(async (res) => {
@@ -126,7 +126,7 @@ const Book = () => {
           await getBooks();
         }
       });
-  }, [accessToken, title, description, authorId, price, category])
+  }, [ accessToken, title, description, authorId, price, category ]);
 
   const handleClickBookModify = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
@@ -137,10 +137,10 @@ const Book = () => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + '/books/' + selectedBook.id, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", "Authorization": accessToken },
-      body: JSON.stringify({ title, description, authorId, price, category })
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/books/${selectedBook.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': accessToken },
+      body: JSON.stringify({ title, description, authorId, price, category }),
     })
       .then((res) => res.json())
       .then(async (res) => {
@@ -151,7 +151,7 @@ const Book = () => {
           await getBooks();
         }
       });
-  }, [selectedBook, accessToken, title, description, authorId, price, category])
+  }, [ selectedBook, accessToken, title, description, authorId, price, category ]);
 
   const handleClickBookRemove = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
@@ -162,9 +162,9 @@ const Book = () => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + '/books/' + selectedBook.id, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json", "Authorization": accessToken },
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/books/${selectedBook.id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', 'Authorization': accessToken },
     })
       .then((res) => res.json())
       .then(async (res) => {
@@ -175,7 +175,7 @@ const Book = () => {
           await getBooks();
         }
       });
-  }, [selectedBook, accessToken])
+  }, [ selectedBook, accessToken ]);
 
   return (
     <div style={{ height: 600, width: '100%' }}>
@@ -193,7 +193,7 @@ const Book = () => {
             <div key={index} onClick={() => handleClickBook(book.id)}>
               {`TITLE: ${book.title} / DESCRIPTION: ${book.description} / AUTHOR_ID: ${book.authorId} / PRICE: ${book.price} / CATEGORY: ${book.category}`}
             </div>
-          )
+          );
         })}
       </div>
       <Divider />
@@ -219,7 +219,7 @@ const Book = () => {
             {authors.map((author) => {
               return (
                 <option value={author.id}>{author.name}</option>
-              )
+              );
             })}
           </select>
         </Grid>
@@ -238,6 +238,6 @@ const Book = () => {
       </Grid>
     </div>
   );
-}
+};
 
 export default Book;

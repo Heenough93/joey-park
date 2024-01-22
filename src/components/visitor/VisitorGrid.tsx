@@ -2,7 +2,7 @@ import React from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { BodyScrollEndEvent, ColDef } from 'ag-grid-community';
 
-import { Visitor } from "../../interfaces";
+import { Visitor } from '../../interfaces';
 import { useVisitor } from '../../hooks';
 import ActionsRenderer from '../Renderers/ActionsRenderer';
 
@@ -15,18 +15,18 @@ const VisitorGrid = () => {
     return {
       editable: false,
       filter: false,
-    }
+    };
   }, []);
 
   const columnDefsVisitor: ColDef[] = React.useMemo(() => {
     return [
-      { headerName: "No.", valueGetter: (params) => typeof params.node?.rowIndex === 'number' ? params.node?.rowIndex + 1 : 0, flex: 1 },
-      { field: "IPv4", headerName: "IPv4", tooltipField: "IPv4", flex: 1 },
-      { field: "platform", headerName: "Platform", tooltipField: "platform", flex: 1 },
-      { field: "country_name", headerName: "Country", tooltipField: "country_name", flex: 1 },
-      { field: "city", headerName: "City", tooltipField: "city", flex: 1 },
-      { field: "date", headerName: "Date", tooltipField: "date", flex: 1 },
-      { cellRenderer: "actionsRenderer", cellRendererParams: { removeFn: removeVisitor },flex: 0.5 },
+      { headerName: 'No.', valueGetter: (params) => typeof params.node?.rowIndex === 'number' ? params.node?.rowIndex + 1 : 0, flex: 1 },
+      { field: 'IPv4', headerName: 'IPv4', tooltipField: 'IPv4', flex: 1 },
+      { field: 'platform', headerName: 'Platform', tooltipField: 'platform', flex: 1 },
+      { field: 'country_name', headerName: 'Country', tooltipField: 'country_name', flex: 1 },
+      { field: 'city', headerName: 'City', tooltipField: 'city', flex: 1 },
+      { field: 'date', headerName: 'Date', tooltipField: 'date', flex: 1 },
+      { cellRenderer: 'actionsRenderer', cellRendererParams: { removeFn: removeVisitor },flex: 0.5 },
     ];
   }, []);
 
@@ -39,7 +39,7 @@ const VisitorGrid = () => {
     if (direction === 'vertical' && api.getLastDisplayedRow() + 1 === visitors.length) {
       await fetchNextPageVisitors();
     }
-  }, [visitors]);
+  }, [ visitors ]);
 
   return (
     <div className="ag-theme-alpine" style={{ height: 600, width: '100%' }}>
@@ -61,6 +61,6 @@ const VisitorGrid = () => {
       />
     </div>
   );
-}
+};
 
 export default VisitorGrid;

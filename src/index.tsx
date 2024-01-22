@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import './index.css';
 import App from './App';
@@ -8,14 +8,14 @@ import reportWebVitals from './reportWebVitals';
 import { Dialog } from './components';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById('root') as HTMLElement,
 );
 root.render(
   // <React.StrictMode>
-    <QueryClientProvider client={new QueryClient()}>
-      <App />
-      <Dialog />
-    </QueryClientProvider>
+  <QueryClientProvider client={new QueryClient()}>
+    <App />
+    <Dialog />
+  </QueryClientProvider>,
   // </React.StrictMode>
 );
 

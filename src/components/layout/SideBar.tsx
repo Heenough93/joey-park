@@ -24,7 +24,7 @@ const SideBar = () => {
       onClick={openDrawer( false)}
     >
       <List>
-        {['Portfolio'].map((text, index) => (
+        {[ 'Portfolio' ].map((text, index) => (
           <Link style={{ color: 'black', textDecoration: 'none', cursor: 'pointer' }} key={index} to={''}>
             <ListItem disablePadding>
               <ListItemButton>
@@ -39,22 +39,7 @@ const SideBar = () => {
       </List>
       <Divider />
       <List>
-        {['Visitor', 'Message', 'Map'].map((text, index) => (
-          <Link style={{ color: 'black', textDecoration: 'none', cursor: 'pointer' }} key={index} to={text.toLowerCase()}>
-            <ListItem disablePadding>
-              <ListItemButton>
-                {/*<ListItemIcon>*/}
-                {/*  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}*/}
-                {/*</ListItemIcon>*/}
-                  <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['Auth'].map((text, index) => (
+        {[ 'Visitor', 'Message', 'Map' ].map((text, index) => (
           <Link style={{ color: 'black', textDecoration: 'none', cursor: 'pointer' }} key={index} to={text.toLowerCase()}>
             <ListItem disablePadding>
               <ListItemButton>
@@ -69,14 +54,29 @@ const SideBar = () => {
       </List>
       <Divider />
       <List>
-        {['Stock', 'Test', 'My-Map'].map((text, index) => (
+        {[ 'Auth' ].map((text, index) => (
           <Link style={{ color: 'black', textDecoration: 'none', cursor: 'pointer' }} key={index} to={text.toLowerCase()}>
             <ListItem disablePadding>
               <ListItemButton>
                 {/*<ListItemIcon>*/}
                 {/*  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}*/}
                 {/*</ListItemIcon>*/}
-                  <ListItemText primary={text} />
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {[ 'Stock', 'Test', 'My-Map' ].map((text, index) => (
+          <Link style={{ color: 'black', textDecoration: 'none', cursor: 'pointer' }} key={index} to={text.toLowerCase()}>
+            <ListItem disablePadding>
+              <ListItemButton>
+                {/*<ListItemIcon>*/}
+                {/*  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}*/}
+                {/*</ListItemIcon>*/}
+                <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
           </Link>
@@ -90,8 +90,8 @@ const SideBar = () => {
       <Drawer
         PaperProps={{
           sx: {
-            backgroundColor: '#eab8b8'
-          }
+            backgroundColor: '#eab8b8',
+          },
         }}
         // hideBackdrop
         anchor={'left'}
@@ -102,6 +102,6 @@ const SideBar = () => {
       </Drawer>
     </div>
   );
-}
+};
 
 export default SideBar;

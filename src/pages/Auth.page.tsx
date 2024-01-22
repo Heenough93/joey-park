@@ -19,7 +19,7 @@ const AuthPage = () => {
       </div>
       <Auth />
     </>
-  )
-}
+  );
+};
 
-export default AuthPage
+export default AuthPage;

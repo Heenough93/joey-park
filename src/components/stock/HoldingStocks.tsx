@@ -20,18 +20,18 @@ const HoldingStocks = () => {
     setHoldingStockModalOpen,
   } = useHoldingStockStore();
 
-  const [stocks, setStocks] = React.useState<Stock[]>([]);
-  const [holdingStocks, setHoldingStocks] = React.useState<HoldingStock[]>([]);
+  const [ stocks, setStocks ] = React.useState<Stock[]>([]);
+  const [ holdingStocks, setHoldingStocks ] = React.useState<HoldingStock[]>([]);
 
   React.useEffect(() => {
     const getStocks = () => {
-      fetch(process.env.REACT_APP_BASE_URL + '/stock/stocks', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      fetch(`${process.env.REACT_APP_BASE_URL || ''}/stock/stocks`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
       })
         .then((res) => res.json())
         .then((res) => setStocks(res.data));
-    }
+    };
 
     (getStocks)();
   }, []);
@@ -41,7 +41,7 @@ const HoldingStocks = () => {
       editable: false,
       filter: false,
       sortable: true,
-    }
+    };
   }, []);
 
   const columnDefs: ColDef<HoldingStock>[] = React.useMemo(() => {
@@ -60,7 +60,7 @@ const HoldingStocks = () => {
       { field: 'rateOfExchange', headerName: 'RateOfExchange', tooltipField: 'rateOfExchange', flex: 1 },
       { field: 'marketType', headerName: 'MarketType', tooltipField: 'marketType', flex: 1 },
     ];
-  }, [stocks]);
+  }, [ stocks ]);
 
   const handleClickReset = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
@@ -68,23 +68,23 @@ const HoldingStocks = () => {
 
     setHoldingStocks([]);
     setSelectedHoldingStock(null);
-  }, [])
+  }, []);
 
   const getHoldingStocks = React.useCallback(async (sequence?: number) => {
-    await fetch(process.env.REACT_APP_BASE_URL + '/stock/holdingstocks', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/stock/holdingstocks`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
     })
       .then((res) => res.json())
       .then((res) => {
         console.log({ res });
         sequence ? setSelectedHoldingStock(res.data.find((holdingStock: HoldingStock) => holdingStock.sequence === sequence)) : setHoldingStocks(res.data);
       });
-  }, [])
+  }, []);
 
   const handleClickHoldingStockList = React.useCallback(async () => {
     await getHoldingStocks();
-  }, [getHoldingStocks]);
+  }, [ getHoldingStocks ]);
 
   const handleRowClick = React.useCallback(async (event: RowClickedEvent<HoldingStock>) => {
     const sequence = event.data?.sequence;
@@ -96,7 +96,7 @@ const HoldingStocks = () => {
 
     await getHoldingStocks(sequence)
       .then(() => setHoldingStockModalOpen(true));
-  }, [getHoldingStocks]);
+  }, [ getHoldingStocks ]);
 
   return (
     <div style={{ height: 600, width: '100%' }}>
@@ -122,6 +122,6 @@ const HoldingStocks = () => {
       />
     </div>
   );
-}
+};
 
 export default HoldingStocks;

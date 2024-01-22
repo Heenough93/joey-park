@@ -8,16 +8,16 @@ const Test = () => {
   const navigate = useNavigate();
 
   const handleClickUser = React.useCallback(() => {
-    navigate('user')
-  }, [navigate])
+    navigate('user');
+  }, [ navigate ]);
 
   const handleClickAuthor = React.useCallback(() => {
-    navigate('author')
-  }, [navigate])
+    navigate('author');
+  }, [ navigate ]);
 
   const handleClickBook = React.useCallback(() => {
-    navigate('book')
-  }, [navigate])
+    navigate('book');
+  }, [ navigate ]);
 
   return (
     <div style={{ textAlign: 'center' }}>
@@ -26,6 +26,6 @@ const Test = () => {
       <Button onClick={handleClickBook}>Book</Button>
     </div>
   );
-}
+};
 
 export default Test;

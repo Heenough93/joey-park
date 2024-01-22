@@ -9,36 +9,36 @@ const Stocks = () => {
   //
   const { confirm, alert } = useDialog();
 
-  const [stocks, setStocks] = React.useState<Stock[]>([]);
-  const [selectedStock, setSelectedStock] = React.useState<Stock | null>(null);
+  const [ stocks, setStocks ] = React.useState<Stock[]>([]);
+  const [ selectedStock, setSelectedStock ] = React.useState<Stock | null>(null);
 
-  const [code, setCode] = React.useState<string>('');
-  const [name, setName] = React.useState<string>('');
-  const [symbol, setSymbol] = React.useState<string>('');
-  const [marketType, setMarketType] = React.useState<MarketType>('domestic');
+  const [ code, setCode ] = React.useState<string>('');
+  const [ name, setName ] = React.useState<string>('');
+  const [ symbol, setSymbol ] = React.useState<string>('');
+  const [ marketType, setMarketType ] = React.useState<MarketType>('domestic');
 
   React.useEffect(() => {
     setCode(selectedStock ? selectedStock.code : '');
     setName(selectedStock ? selectedStock.name : '');
     setSymbol(selectedStock ? selectedStock.symbol : '');
     setMarketType(selectedStock ? selectedStock.marketType : 'domestic');
-  }, [selectedStock])
+  }, [ selectedStock ]);
 
   const handleChangeCode = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setCode(event.target.value);
-  }, [])
+  }, []);
 
   const handleChangeName = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
-  }, [])
+  }, []);
 
   const handleChangeSymbol = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSymbol(event.target.value);
-  }, [])
+  }, []);
 
   const handleChangeMarketType = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setMarketType(event.target.value as MarketType);
-  }, [])
+  }, []);
 
   const handleClickReset = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
@@ -50,23 +50,23 @@ const Stocks = () => {
     setName('');
     setSymbol('');
     setMarketType('domestic');
-  }, [])
+  }, []);
 
   const getStocks = React.useCallback(async (code?: string) => {
-    await fetch(process.env.REACT_APP_BASE_URL + '/stock/stocks', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/stock/stocks`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
     })
       .then((res) => res.json())
       .then((res) => {
         console.log({ res });
         code ? setSelectedStock(res.data.find((stock: Stock) => stock.code === code)) : setStocks(res.data);
       });
-  }, [])
+  }, []);
 
   const handleClickStockList = React.useCallback(async () => {
     await getStocks();
-  }, [getStocks]);
+  }, [ getStocks ]);
 
   const handleClickStock = React.useCallback(async (code: string) => {
     if (!code) {
@@ -75,16 +75,16 @@ const Stocks = () => {
     }
 
     await getStocks(code);
-  }, [getStocks])
+  }, [ getStocks ]);
 
   const handleClickStockRegister = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
     if (!confirmed) return;
 
-    await fetch(process.env.REACT_APP_BASE_URL + '/stock/create/stock', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: { code, name, symbol, marketType } })
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/stock/create/stock`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: { code, name, symbol, marketType } }),
     })
       .then((res) => res.json())
       .then(async (res) => {
@@ -94,8 +94,8 @@ const Stocks = () => {
           setSelectedStock(null);
           await getStocks();
         }
-      })
-  }, [code, name, symbol, marketType])
+      });
+  }, [ code, name, symbol, marketType ]);
 
   const handleClickStockModify = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
@@ -106,10 +106,10 @@ const Stocks = () => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + '/stock/update/stock', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: { code: selectedStock.code, name, symbol, marketType } })
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/stock/update/stock`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: { code: selectedStock.code, name, symbol, marketType } }),
     })
       .then((res) => res.json())
       .then(async (res) => {
@@ -120,7 +120,7 @@ const Stocks = () => {
           await getStocks();
         }
       });
-  }, [selectedStock, code, name, symbol, marketType])
+  }, [ selectedStock, code, name, symbol, marketType ]);
 
   const handleClickStockRemove = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
@@ -131,10 +131,10 @@ const Stocks = () => {
       return;
     }
 
-    await fetch(process.env.REACT_APP_BASE_URL + '/stock/delete/stock', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: { code: selectedStock.code, name, symbol, marketType } })
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/stock/delete/stock`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: { code: selectedStock.code, name, symbol, marketType } }),
     })
       .then((res) => res.json())
       .then(async (res) => {
@@ -145,7 +145,7 @@ const Stocks = () => {
           await getStocks();
         }
       });
-  }, [selectedStock])
+  }, [ selectedStock ]);
 
   return (
     <div style={{ height: 600, width: '100%' }}>
@@ -163,7 +163,7 @@ const Stocks = () => {
             <div key={index} onClick={() => handleClickStock(stock.code)}>
               {`CODE: ${stock.code} / NAME: ${stock.name} / SYMBOL: ${stock.symbol} / MARKET_TYPE: ${stock.marketType}`}
             </div>
-          )
+          );
         })}
       </div>
       <Divider />
@@ -195,6 +195,6 @@ const Stocks = () => {
       </Grid>
     </div>
   );
-}
+};
 
 export default Stocks;

@@ -21,7 +21,7 @@ const MessagePage = () => {
       </div>
       <MessageGrid />
     </>
-  )
-}
+  );
+};
 
-export default MessagePage
+export default MessagePage;

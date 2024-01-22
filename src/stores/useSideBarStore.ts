@@ -1,16 +1,16 @@
 import React from 'react';
-import { create } from 'zustand'
-import { persist, createJSONStorage } from 'zustand/middleware'
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 
 type State = {
   open: boolean,
-}
+};
 
 type Action = {
   setOpen: (open: State['open']) => void,
   openDrawer: (open: State['open']) => (event: React.KeyboardEvent | React.MouseEvent) => void,
-}
+};
 
 const useSideBarStore = create<State & Action>((set) => ({
   open: false,
@@ -24,7 +24,7 @@ const useSideBarStore = create<State & Action>((set) => ({
     }
     set((state) => ({ open: open }));
   },
-}))
+}));
 
 // const useSideBarStore = create<State & Action>()(
 //   persist(

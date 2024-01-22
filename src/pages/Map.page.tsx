@@ -19,7 +19,7 @@ const MapPage = () => {
       </div>
       <CustomMap isVisitor={true} />
     </>
-  )
-}
+  );
+};
 
-export default MapPage
+export default MapPage;

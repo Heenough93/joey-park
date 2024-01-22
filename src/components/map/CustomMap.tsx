@@ -1,11 +1,11 @@
 import React from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
-import 'leaflet/dist/leaflet.css'
+import 'leaflet/dist/leaflet.css';
 import { v4 as uuidv4 } from 'uuid';
 
 import CustomMapChildren from './CustomMapChildren';
-import './CustomMap.css'
+import './CustomMap.css';
 import { findVisitors, getCurrentPosition, registerVisitor } from '../../functions';
 import { Visitor } from '../../interfaces';
 
@@ -24,29 +24,29 @@ const CustomMap = (props: Props) => {
   //
   const { isVisitor } = props;
 
-  const [map, setMap] = React.useState<L.Map | null>(null)
-  const [visitor, setVisitor] = React.useState<Visitor | null>(null);
-  const [visitors, setVisitors] = React.useState<Visitor[]>([])
+  const [ map, setMap ] = React.useState<L.Map | null>(null);
+  const [ visitor, setVisitor ] = React.useState<Visitor | null>(null);
+  const [ visitors, setVisitors ] = React.useState<Visitor[]>([]);
 
-  const center = React.useMemo<L.LatLngLiteral>(() => ({ lat: 51.505, lng: -0.09 }), [map]);
+  const center = React.useMemo<L.LatLngLiteral>(() => ({ lat: 51.505, lng: -0.09 }), [ map ]);
 
   React.useEffect(() => {
     if (visitor) return;
 
-    findVisitors()
+    (findVisitors)()
       .then((data) => {
         isVisitor
           ? setVisitors(data.filter((item) => item.IPv4))
-          : setVisitors(data.filter((item) => !item.IPv4))
-      })
-  }, [isVisitor, visitor])
+          : setVisitors(data.filter((item) => !item.IPv4));
+      });
+  }, [ isVisitor, visitor ]);
 
   React.useEffect(() => {
     if (!visitor) return;
 
     (registerVisitor)(Object.assign(visitor, { id: uuidv4(), date: new Date().toISOString() }))
       .then(() => setVisitor(null));
-  }, [visitor])
+  }, [ visitor ]);
 
   const handleClickSave = React.useCallback(() => {
     const positionCallback = (position: GeolocationPosition) => {
@@ -65,12 +65,12 @@ const CustomMap = (props: Props) => {
         state: '',
         id: '',
         date: '',
-      }
+      };
       setVisitor(target);
-    }
+    };
 
     getCurrentPosition(positionCallback);
-  }, [])
+  }, []);
 
   return (
     <div style={{ height: 600, width: '100%' }}>
@@ -92,6 +92,6 @@ const CustomMap = (props: Props) => {
       </MapContainer>
     </div>
   );
-}
+};
 
 export default CustomMap;

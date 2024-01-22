@@ -8,16 +8,16 @@ const Stock = () => {
   const navigate = useNavigate();
 
   const handleClickStockTable = React.useCallback(() => {
-    navigate('stock-table')
-  }, [navigate])
+    navigate('stock-table');
+  }, [ navigate ]);
 
   const handleClickStocks = React.useCallback(() => {
-    navigate('stocks')
-  }, [navigate])
+    navigate('stocks');
+  }, [ navigate ]);
 
   const handleClickHoldingStocks = React.useCallback(() => {
-    navigate('holding-stocks')
-  }, [navigate])
+    navigate('holding-stocks');
+  }, [ navigate ]);
 
   return (
     <div style={{ textAlign: 'center' }}>
@@ -26,6 +26,6 @@ const Stock = () => {
       <Button onClick={handleClickHoldingStocks}>HoldingStocks</Button>
     </div>
   );
-}
+};
 
 export default Stock;
