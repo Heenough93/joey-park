@@ -157,11 +157,7 @@ const StockTable = () => {
     })
       .then((res) => res.json())
       .then((res) => res.data.map((stock: Stock) => {
-        if (stock.marketType === 'domestic') {
-          return stock.code + '.XKRX';
-        } else {
-          return stock.code;
-        }
+        return stock.symbol;
       }));
 
     await fetch(`${process.env.REACT_APP_BASE_URL || ''}/stocks/execute-batch`, {
