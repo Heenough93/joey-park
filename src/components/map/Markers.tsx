@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMapEvent } from 'react-leaflet';
+import { Polyline, useMapEvent } from 'react-leaflet';
 import L from 'leaflet';
 
 import DraggableMarker from './DraggableMarker';
@@ -19,11 +19,14 @@ const Markers = () => {
   return (
     <>
       {positions.length > 0 && positions.map((position, index) => (
-        <DraggableMarker
-          key={index}
-          position={position}
-          setPositions={setPositions}
-        />
+        <>
+          <DraggableMarker
+            key={index}
+            position={position}
+            setPositions={setPositions}
+          />
+          <Polyline pathOptions={{ color: 'black' }} positions={positions} />
+        </>
       ))}
     </>
   );
