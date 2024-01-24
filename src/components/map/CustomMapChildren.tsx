@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMap } from 'react-leaflet';
+import { Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -13,8 +13,9 @@ import { Visitor } from '../../interfaces';
 interface Props {
   center: L.LatLngLiteral,
   visitors: Visitor[],
+  isLineVisible: boolean,
 }
-const CustomMapChildren = ({ center, visitors }: Props) => {
+const CustomMapChildren = ({ center, visitors, isLineVisible }: Props) => {
   //
   // const map = useMap();
   //
@@ -60,12 +61,52 @@ const CustomMapChildren = ({ center, visitors }: Props) => {
     });
   }, [ map ]);
 
+  const positions: L.LatLngExpression[][] = React.useMemo(() => {
+    if (!visitors.length) {
+      return [] as L.LatLngExpression[][];
+    }
+
+    return visitors.reduce((previousValue, currentValue, currentIndex, array) => {
+      if ((array[currentIndex - 1]?.date.slice(0, 10) || '') === currentValue.date.slice(0, 10)) {
+        previousValue[previousValue.length - 1].push({ lat: currentValue.latitude, lng: currentValue.longitude });
+        return previousValue;
+      } else {
+        previousValue.push([ { lat: currentValue.latitude, lng: currentValue.longitude } ]);
+        return previousValue;
+      }
+    }, [] as L.LatLngExpression[][]);
+  }, [ visitors ]);
+
+  const colors = React.useMemo(() => {
+    return [
+      'blue',
+      'gray',
+      'green',
+      'red',
+      'black',
+      'beige',
+      'orange',
+      'pink',
+      'purple',
+      'cadetblue',
+      'darkblue',
+      'darkgreen',
+      'darkred',
+      'lightblue',
+      'lightgray',
+      'lightgreen',
+    ];
+  }, []);
+
   return (
     <>
       <GroupMarker visitors={visitors} />
       <CenterMarker center={center} />
       <LocationMarker />
       <Markers />
+      {isLineVisible && positions.length && positions.map((position, index) => {
+        return (<Polyline key={index} pathOptions={{ color:  colors.at(Math.floor(Math.random() * colors.length)) }} positions={position} />);
+      })}
     </>
   );
 };

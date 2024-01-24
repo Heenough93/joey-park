@@ -24,6 +24,8 @@ const CustomMap = (props: Props) => {
   //
   const { isVisitor } = props;
 
+  const [ isLineVisible, setIsLineVisible ] = React.useState<boolean>(false);
+
   const [ map, setMap ] = React.useState<L.Map | null>(null);
   const [ visitor, setVisitor ] = React.useState<Visitor | null>(null);
   const [ visitors, setVisitors ] = React.useState<Visitor[]>([]);
@@ -72,9 +74,14 @@ const CustomMap = (props: Props) => {
     getCurrentPosition(positionCallback);
   }, []);
 
+  const handleClickShow = React.useCallback(() => {
+    setIsLineVisible(prev => !prev);
+  }, []);
+
   return (
     <div style={{ height: 600, width: '100%' }}>
       {!isVisitor && <button onClick={handleClickSave}>SAVE</button>}
+      {!isVisitor && <button onClick={handleClickShow}>SHOW</button>}
 
       <MapContainer
         style={{ height: '100%' }}
@@ -88,7 +95,7 @@ const CustomMap = (props: Props) => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <CustomMapChildren center={center} visitors={visitors} />
+        <CustomMapChildren center={center} visitors={visitors} isLineVisible={isLineVisible} />
       </MapContainer>
     </div>
   );
