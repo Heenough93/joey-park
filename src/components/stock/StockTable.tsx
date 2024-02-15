@@ -202,9 +202,9 @@ const StockTable = () => {
         <Button onClick={handleClickBatch}>Batch</Button>
       </div>
 
-      {data && data.stockCodes.map((stockCode, index) => {
-        return (
-          <List>
+      <List style={{ width: '90%', margin: 'auto' }}>
+        {data && data.stockCodes.map((stockCode, index) => {
+          return (
             <ListItem>
               <TableContainer>
                 <Table size={'small'}>
@@ -215,14 +215,14 @@ const StockTable = () => {
                           <TableRow>
                             {columns.map((column) => {
                               return (
-                                <TableCell sx={{ fontSize: 10 }}>{column.value}</TableCell>
+                                <TableCell sx={{ fontSize: 8 }}>{column.value}</TableCell>
                               );
                             })}
                           </TableRow>
                           <TableRow>
                             {columns.map((column) => {
                               return (
-                                <TableCell sx={{ fontSize: 10 }}>
+                                <TableCell sx={{ fontSize: 8 }}>
                                   {data[column.key + 's'][index].split('\n').map(i => <div style={{ color: i.charAt(0) === '-' ? 'red' : 'black' }}>{i}</div>)}
                                 </TableCell>
                               );
@@ -235,9 +235,9 @@ const StockTable = () => {
                 </Table>
               </TableContainer>
             </ListItem>
-          </List>
-        );
-      })}
+          );
+        })}
+      </List>
 
       <TopButton />
     </div>
