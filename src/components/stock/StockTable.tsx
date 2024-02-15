@@ -207,7 +207,7 @@ const StockTable = () => {
           return (
             <ListItem>
               <TableContainer>
-                <Table size={'small'}>
+                <Table size={'small'} border={2}>
                   <TableBody>
                     {arrayColumns.map((columns) => {
                       return (
@@ -215,14 +215,14 @@ const StockTable = () => {
                           <TableRow>
                             {columns.map((column) => {
                               return (
-                                <TableCell sx={{ fontSize: 8 }}>{column.value}</TableCell>
+                                <TableCell sx={{ fontSize: 8, textAlign: 'center' }}>{column.value}</TableCell>
                               );
                             })}
                           </TableRow>
                           <TableRow>
                             {columns.map((column) => {
                               return (
-                                <TableCell sx={{ fontSize: 8 }}>
+                                <TableCell sx={{ fontSize: 8, textAlign: 'center'  }}>
                                   {data[column.key + 's'][index].split('\n').map(i => <div style={{ color: i.charAt(0) === '-' ? 'red' : 'black' }}>{i}</div>)}
                                 </TableCell>
                               );
