@@ -188,7 +188,7 @@ const StockTable = () => {
   }, [ columns ]);
 
   return (
-    <div style={{ height: 600, width: '100%' }}>
+    <div style={{ height: 1000, width: '100%' }}>
       {isLoading && <>
         <Backdrop
           style={{ color: '#fff', zIndex: 1000 }}
