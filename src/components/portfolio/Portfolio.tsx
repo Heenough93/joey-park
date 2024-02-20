@@ -7,20 +7,17 @@ import {
   registerVisitor,
   // sendMessage,
 } from '../../functions';
-import { useSideBarStore } from '../../stores';
 import { Loading } from '../common';
 import Home from './Home';
 import Work from './Work';
 import Contact from './Contact';
 import Footer from './Footer';
-import { useDialog } from '../../hooks';
+import { useNavigate } from 'react-router-dom';
 
 
 const Portfolio = () => {
   //
-  const { prompt } = useDialog();
-
-  const { setOpen: setSideBarOpen } = useSideBarStore();
+  const navigate = useNavigate();
 
   const [ isLoading, setIsLoading ] = React.useState<boolean>(true);
   const [ visitor, setVisitor ] = React.useState<Visitor | null>(null);
@@ -45,11 +42,8 @@ const Portfolio = () => {
 
   const handleClickList = React.useCallback(async () => {
     //
-    const password = await prompt('Admin Only!');
-    if (password && password === process.env.REACT_APP_ADMIN_PASSWORD) {
-      setSideBarOpen(true);
-    }
-  }, []);
+    navigate('/auth');
+  }, [ navigate ]);
 
   return (
     <>
