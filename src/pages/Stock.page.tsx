@@ -31,13 +31,16 @@ const StockPage = () => {
 
   return (
     <>
-      <div style={{ textAlign: 'center' }}>
-        Stock Page
+      <div style={{ backgroundColor: '#ffffff', position: 'fixed', zIndex: 50, width: '100%', height: '100px' }}>
+        <div style={{ textAlign: 'center' }}>
+            Stock Page
+        </div>
+        <div style={{ textAlign: 'right' }}>
+          <Button onClick={openDrawer( true)}>drawer</Button>
+        </div>
+        {accessToken && <Stock />}
       </div>
-      <div style={{ textAlign: 'right' }}>
-        <Button onClick={openDrawer( true)}>drawer</Button>
-      </div>
-      {accessToken && <Stock />}
+      <div style={{ height: '100px' }}></div>
     </>
   );
 };

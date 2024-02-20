@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Divider, Grid } from '@mui/material';
 
 import { useDialog } from '../../hooks';
-import { MarketType, Stock } from '../../interfaces';
+import { MarketType, ScrapedStockInfo, Stock } from '../../interfaces';
 
 
 const Stocks = () => {
@@ -11,6 +11,7 @@ const Stocks = () => {
 
   const [ stocks, setStocks ] = React.useState<Stock[]>([]);
   const [ selectedStock, setSelectedStock ] = React.useState<Stock | null>(null);
+  const [ scrapedStockInfos, setScrapedStockInfos ] = React.useState<ScrapedStockInfo[]>([]);
 
   const [ code, setCode ] = React.useState<string>('');
   const [ name, setName ] = React.useState<string>('');
@@ -46,6 +47,7 @@ const Stocks = () => {
 
     setStocks([]);
     setSelectedStock(null);
+    setScrapedStockInfos([]);
     setCode('');
     setName('');
     setSymbol('');
@@ -61,6 +63,7 @@ const Stocks = () => {
       .then((res) => {
         console.log({ res });
         code ? setSelectedStock(res.data.find((stock: Stock) => stock.code === code)) : setStocks(res.data);
+        setScrapedStockInfos([]);
       });
   }, []);
 
@@ -147,6 +150,20 @@ const Stocks = () => {
       });
   }, [ selectedStock ]);
 
+  const handleClickScrapedStockList = React.useCallback(async () => {
+    await fetch(`${process.env.REACT_APP_BASE_URL || ''}/stock/scrapedstockinfos`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log({ res });
+        setScrapedStockInfos(res.data);
+        setStocks([]);
+        setSelectedStock(null);
+      });
+  }, []);
+
   return (
     <div style={{ height: 600, width: '100%' }}>
       <div>
@@ -156,43 +173,61 @@ const Stocks = () => {
         <Button onClick={handleClickStockModify}>Stock Modify</Button>
         <Button onClick={handleClickStockRemove}>Stock Remove</Button>
       </div>
-      <Divider />
-      <div style={{ height: 200 }}>
-        {stocks.map((stock, index) => {
-          return (
-            <div key={index} onClick={() => handleClickStock(stock.code)}>
-              {`CODE: ${stock.code} / NAME: ${stock.name} / SYMBOL: ${stock.symbol} / MARKET_TYPE: ${stock.marketType}`}
-            </div>
-          );
-        })}
+      <div>
+        <Button onClick={handleClickScrapedStockList}>Scraped Stock List</Button>
       </div>
       <Divider />
-      <Grid container spacing={2}>
-        <Grid item xs={6} md={4}>
-          CODE
+      {!!stocks.length && <>
+        <div style={{ height: 300, overflowY: 'auto' }}>
+          {stocks.map((stock, index) => {
+            return (
+              <div key={index} onClick={() => handleClickStock(stock.code)}>
+                {`CODE: ${stock.code} / NAME: ${stock.name} / SYMBOL: ${stock.symbol} / MARKET_TYPE: ${stock.marketType}`}
+              </div>
+            );
+          })}
+        </div>
+        <Divider />
+        <Grid container spacing={2}>
+          <Grid item xs={6} md={4}>
+            CODE
+          </Grid>
+          <Grid item xs={6} md={8}>
+            <input onChange={handleChangeCode} value={code} />
+          </Grid>
+          <Grid item xs={6} md={4}>
+            NAME
+          </Grid>
+          <Grid item xs={6} md={8}>
+            <input onChange={handleChangeName} value={name} />
+          </Grid>
+          <Grid item xs={6} md={4}>
+            SYMBOL
+          </Grid>
+          <Grid item xs={6} md={8}>
+            <input onChange={handleChangeSymbol} value={symbol} />
+          </Grid>
+          <Grid item xs={6} md={4}>
+            MARKET_TYPE
+          </Grid>
+          <Grid item xs={6} md={8}>
+            <input onChange={handleChangeMarketType} value={marketType} />
+          </Grid>
         </Grid>
-        <Grid item xs={6} md={8}>
-          <input onChange={handleChangeCode} value={code} />
-        </Grid>
-        <Grid item xs={6} md={4}>
-          NAME
-        </Grid>
-        <Grid item xs={6} md={8}>
-          <input onChange={handleChangeName} value={name} />
-        </Grid>
-        <Grid item xs={6} md={4}>
-          SYMBOL
-        </Grid>
-        <Grid item xs={6} md={8}>
-          <input onChange={handleChangeSymbol} value={symbol} />
-        </Grid>
-        <Grid item xs={6} md={4}>
-          MARKET_TYPE
-        </Grid>
-        <Grid item xs={6} md={8}>
-          <input onChange={handleChangeMarketType} value={marketType} />
-        </Grid>
-      </Grid>
+      </>}
+
+      {!!scrapedStockInfos.length && <>
+        <div style={{ height: 300, overflowY: 'auto' }}>
+          {scrapedStockInfos.map((scrapedStockInfo, index) => {
+            return (
+              <div key={index}>
+                {`NAME: ${scrapedStockInfo.stockName} / CURRENT: ${new Date(scrapedStockInfo.currentDate).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll('. ', '-').replaceAll('.', '')} (${scrapedStockInfo.currentPrice}) / PREVIOUS: ${new Date(scrapedStockInfo.previousDate).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll('. ', '-').replaceAll('.', '')} (${scrapedStockInfo.previousClosePrice})`}
+              </div>
+            );
+          })}
+        </div>
+        <Divider />
+      </>}
     </div>
   );
 };

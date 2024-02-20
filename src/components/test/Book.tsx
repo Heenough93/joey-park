@@ -187,7 +187,7 @@ const Book = () => {
         <Button onClick={handleClickBookRemove}>Book Remove</Button>
       </div>
       <Divider />
-      <div style={{ height: 200 }}>
+      <div style={{ height: 300, overflowY: 'auto' }}>
         {books.map((book, index) => {
           return (
             <div key={index} onClick={() => handleClickBook(book.id)}>

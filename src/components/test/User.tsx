@@ -162,7 +162,7 @@ const User = () => {
         <Button onClick={handleClickUserRemove}>User Remove</Button>
       </div>
       <Divider />
-      <div style={{ height: 200 }}>
+      <div style={{ height: 300, overflowY: 'auto' }}>
         {users.map((user, index) => {
           return (
             <div key={index} onClick={() => handleClickUser(user.id)}>

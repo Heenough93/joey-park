@@ -2,19 +2,20 @@ import React from 'react';
 import {
   Backdrop,
   Button,
+  Checkbox,
   CircularProgress,
-  List,
-  ListItem,
+  FormControlLabel,
+  FormGroup,
   Table,
   TableBody,
   TableCell,
   TableContainer,
+  TableHead,
   TableRow,
 } from '@mui/material';
 
 import { HoldingStockRdo, Stock } from '../../interfaces';
 import { useDialog } from '../../hooks';
-import { TopButton } from '../common';
 
 
 interface Column {
@@ -92,8 +93,8 @@ const StockTable = () => {
 
   const [ columns, setColumns ] = React.useState<Column[]>(
     [
-      { key: 'stockName', value: '종목명', check: true, disabled: true },
-      { key: 'stockCode', value: '종목코드', check: true, disabled: true },
+      // {key: 'stockName', value: '종목명', check: true, disabled: true},
+      { key: 'stockCode', value: '종목코드', check: true, disabled: true, formatFnc: formatStockCode },
       { key: 'stockFirmName', value: '증권사명', check: false },
       { key: 'stockHoldings', value: '보유수량', check: false, formatFnc: formatStockHoldings },
       { key: 'buyingDate', value: '매수일', check: false, formatFnc: formatDate },
@@ -142,7 +143,7 @@ const StockTable = () => {
       return v;
     });
     setData(newData);
-  }, [ columns, holdingStockRdos ]);
+  }, [ holdingStockRdos ]);
 
   const handleClickBatch = React.useCallback(async () => {
     const confirmed = await confirm('Are you sure?');
@@ -175,17 +176,32 @@ const StockTable = () => {
       });
   }, [ accessToken ]);
 
-  const arrayColumns = React.useMemo(() => {
-    return columns.reduce((previousValue, currentValue, currentIndex) => {
-      if ((currentIndex % 4) === 0) {
-        previousValue.push([ currentValue ]);
+  const onClickCheckbox = (targetKey: string) => {
+    const newColumns = columns.map((column) => {
+      if (column.key === targetKey) {
+        return { ...column, check: !column.check };
+      } else {
+        return { ...column };
+      }
+    });
+    setColumns(newColumns);
+  };
+
+  const callbackFnc = (previousValue: number[], currentValue: string, currentIndex: number, array: string[]) => {
+    if (currentIndex === 0) {
+      previousValue.push(1);
+      return previousValue;
+    } else {
+      if (array[currentIndex - 1] === currentValue) {
+        previousValue[array.indexOf(currentValue)]++;
+        previousValue.push(0);
         return previousValue;
       } else {
-        previousValue[Math.floor(currentIndex / 4)].push(currentValue);
+        previousValue.push(1);
         return previousValue;
       }
-    }, [] as Column[][]);
-  }, [ columns ]);
+    }
+  };
 
   return (
     <div style={{ height: 1000, width: '100%' }}>
@@ -202,44 +218,59 @@ const StockTable = () => {
         <Button onClick={handleClickBatch}>Batch</Button>
       </div>
 
-      <List style={{ width: '90%', margin: 'auto' }}>
-        {data && data.stockCodes.map((stockCode, index) => {
+      <FormGroup row>
+        {columns.map(({ key, value, check, disabled }, index) => {
           return (
-            <ListItem>
-              <TableContainer>
-                <Table size={'small'} border={2}>
-                  <TableBody>
-                    {arrayColumns.map((columns) => {
-                      return (
-                        <>
-                          <TableRow>
-                            {columns.map((column) => {
-                              return (
-                                <TableCell sx={{ fontSize: 8, textAlign: 'center' }}>{column.value}</TableCell>
-                              );
-                            })}
-                          </TableRow>
-                          <TableRow>
-                            {columns.map((column) => {
-                              return (
-                                <TableCell sx={{ fontSize: 8, textAlign: 'center'  }}>
-                                  {data[column.key + 's'][index].split('\n').map(i => <div style={{ color: i.charAt(0) === '-' ? 'red' : 'black' }}>{i}</div>)}
-                                </TableCell>
-                              );
-                            })}
-                          </TableRow>
-                        </>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </ListItem>
+            <FormControlLabel control={<Checkbox key={index} checked={check} disabled={disabled} onClick={() => onClickCheckbox(key)} />} label={value} />
           );
         })}
-      </List>
+      </FormGroup>
 
-      <TopButton />
+      <TableContainer style={{
+        width: '100%',
+        maxHeight: 1000,
+        overflowX: 'auto',
+      }}>
+        <Table stickyHeader style={{ minWidth: 650 }}>
+          <TableHead>
+            <TableRow>
+              {columns.map((column) => {
+                return (
+                  <>{column.check && <TableCell key={column.key}>{column.value}</TableCell>}</>
+                );
+              })}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data && data.stockCodes.map((stockCode, index) => {
+              return (
+                <TableRow key={index}>
+                  {columns.map((column) => {
+                    if (column.disabled) {
+                      const counts = data[column.key + 's'].reduce(callbackFnc, [] as number[]);
+                      return (
+                        <>
+                          {column.check && counts[index] !== 0 && <TableCell rowSpan={counts[index]}>
+                            {data[column.key + 's'][index].split('\n').map(i => <div>{i}</div>)}
+                          </TableCell>}
+                        </>
+                      );
+                    } else {
+                      return (
+                        <>
+                          {column.check && <TableCell>
+                            {data[column.key + 's'][index].split('\n').map(i => <div style={{ color: i.charAt(0) === '-' ? 'red' : 'black' }}>{i}</div>)}
+                          </TableCell>}
+                        </>
+                      );
+                    }
+                  })}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };
