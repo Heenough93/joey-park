@@ -226,6 +226,7 @@ const Stocks = () => {
             );
           })}
         </div>
+        <Divider />
       </>}
     </div>
   );
