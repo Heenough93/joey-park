@@ -157,7 +157,7 @@ const Stocks = () => {
         <Button onClick={handleClickStockRemove}>Stock Remove</Button>
       </div>
       <Divider />
-      <div style={{ height: 200 }}>
+      <div style={{ height: 300, overflowY: 'auto' }}>
         {stocks.map((stock, index) => {
           return (
             <div key={index} onClick={() => handleClickStock(stock.code)}>

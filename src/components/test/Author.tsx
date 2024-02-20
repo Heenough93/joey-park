@@ -155,7 +155,7 @@ const Author = () => {
         <Button onClick={handleClickAuthorRemove}>Author Remove</Button>
       </div>
       <Divider />
-      <div style={{ height: 200 }}>
+      <div style={{ height: 300, overflowY: 'auto' }}>
         {authors.map((author, index) => {
           return (
             <div key={index} onClick={() => handleClickAuthor(author.id)}>
