@@ -36,7 +36,7 @@ const TopButton = () => {
       top: 0,
       behavior: 'smooth',
     });
-  }, []);2;
+  }, []);
 
   return (
     <Zoom
